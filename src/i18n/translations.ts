@@ -1,6 +1,15 @@
 export type Lang = "en" | "fr";
 
-export const translations = {
+type Dict = {
+  nav: { home: string; about: string; ministries: string; sermons: string; events: string; contact: string; donate: string; join: string };
+  hero: { eyebrow: string; title: string; subtitle: string; cta1: string; cta2: string };
+  intro: { eyebrow: string; title: string; body: string; cta: string };
+  upcoming: string;
+  quickLinks: { sermons: { title: string; body: string }; ministries: { title: string; body: string }; contact: { title: string; body: string } };
+  footer: { tagline: string; quick: string; visit: string; stay: string; newsletter: string; subscribe: string; email: string; rights: string };
+};
+
+export const translations: Record<Lang, Dict> = {
   en: {
     nav: {
       home: "Home",
@@ -87,6 +96,6 @@ export const translations = {
       rights: "Tous droits réservés.",
     },
   },
-} as const;
+};
 
-export type TranslationKey = keyof typeof translations["en"];
+export type TranslationKey = keyof Dict;
