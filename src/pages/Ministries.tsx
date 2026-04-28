@@ -1,45 +1,23 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageHero from "@/components/PageHero";
+import { useLanguage } from "@/i18n/LanguageContext";
 import youthImg from "@/assets/ministry-youth.jpg";
 import worshipImg from "@/assets/ministry-worship.jpg";
 import prayerImg from "@/assets/ministry-prayer.jpg";
 import outreachImg from "@/assets/ministry-outreach.jpg";
 
-const ministries = [
-  {
-    name: "Youth",
-    tag: "Ages 13–25",
-    body: "A vibrant tribe of students and young adults pursuing Jesus together — every Friday night. Honest conversations, deep friendships, and a generation rising up.",
-    img: youthImg,
-  },
-  {
-    name: "Worship",
-    tag: "Music & Creative",
-    body: "Musicians, vocalists, and creatives who craft an environment where heaven meets earth — week after week. Auditions open quarterly.",
-    img: worshipImg,
-  },
-  {
-    name: "Prayer",
-    tag: "Intercession",
-    body: "We believe everything begins on our knees. Join the prayer house every Tuesday and Saturday morning to seek God for our cities.",
-    img: prayerImg,
-  },
-  {
-    name: "Outreach",
-    tag: "Compassion in action",
-    body: "Serving the poor, the orphan, the refugee. We carry the love of Jesus into Casablanca's neighborhoods through food drives, mentoring, and partnerships.",
-    img: outreachImg,
-  },
-];
+const imgs = [youthImg, worshipImg, prayerImg, outreachImg];
 
 const Ministries = () => {
+  const { t } = useLanguage();
+  const ministries = t.ministries.items.map((m, i) => ({ ...m, img: imgs[i] ?? youthImg }));
   return (
     <>
       <PageHero
-        eyebrow="Find your people"
-        title={<>Ministries that move you closer to Jesus.</>}
-        subtitle="Twelve teams. One mission. Discover where you belong, grow your gifts, and serve the family."
+        eyebrow={t.ministries.eyebrow}
+        title={<>{t.ministries.title}</>}
+        subtitle={t.ministries.subtitle}
         image={worshipImg}
       />
 
@@ -68,7 +46,7 @@ const Ministries = () => {
                   to="/contact"
                   className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-accent hover:gap-3 transition-all"
                 >
-                  Get involved <ArrowRight className="h-4 w-4" />
+                  {t.common.getInvolved} <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
             </article>
