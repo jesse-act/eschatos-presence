@@ -12,6 +12,9 @@ import Sermons from "./pages/Sermons.tsx";
 import Events from "./pages/Events.tsx";
 import Contact from "./pages/Contact.tsx";
 import Donate from "./pages/Donate.tsx";
+import Leadership from "./pages/Leadership.tsx";
+import Visit from "./pages/Visit.tsx";
+import Live from "./pages/Live.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -32,6 +35,9 @@ const App = () => (
               <Route path="/events" element={<Events />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/donate" element={<Donate />} />
+              <Route path="/leadership" element={<Leadership />} />
+              <Route path="/visit" element={<Visit />} />
+              <Route path="/live" element={<Live />} />
             </Route>
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
