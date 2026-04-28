@@ -1,6 +1,7 @@
 import { type ElementType, type CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 import { useInView } from "./useInView";
+import { useReducedMotion } from "@/components/sacred3d/useReducedMotion";
 
 type SplitMode = "word" | "letter";
 
@@ -48,6 +49,10 @@ const SplitText = ({
     threshold,
     once: !replay,
   });
+  const reducedMotion = useReducedMotion();
+  // Treat reduced-motion users as already-in-view: each unit renders at its
+  // final state, no stagger, no opacity-0 flash.
+  const visible = inView || reducedMotion;
 
   const defaultStagger = mode === "letter" ? 24 : 60;
   const step = stagger ?? defaultStagger;
@@ -70,9 +75,9 @@ const SplitText = ({
           // whitespace — keep as plain text node so wrapping works
           return <span key={`s-${i}`} aria-hidden="true">{unit}</span>;
         }
-        const style: CSSProperties = inView
+        const style: CSSProperties | undefined = inView && !reducedMotion
           ? { animationDelay: `${delay + i * step}ms` }
-          : undefined as unknown as CSSProperties;
+          : undefined;
         return (
           <span
             key={`u-${i}`}
@@ -80,8 +85,8 @@ const SplitText = ({
             style={style}
             className={cn(
               "inline-block",
-              !inView && "opacity-0",
-              inView && animClass,
+              !visible && "opacity-0",
+              visible && !reducedMotion && animClass,
               // Letters need to keep their original kerning context; words do not
               mode === "letter" && unit === " " ? "w-[0.25em]" : "",
             )}

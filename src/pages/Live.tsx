@@ -12,8 +12,7 @@ import {
 import { Scene3D, HeartbeatSphere, SanctuaryLights } from "@/components/sacred3d";
 import { RevealOnView } from "@/components/animation";
 import liveImg from "@/assets/live-stream.jpg";
-
-const CHANNEL_ID = "UCuAXFkgsw1L7xaCfnd5JJOw"; // placeholder channel
+import { CHANNEL_ID } from "@/data/videos";
 
 const Live = () => {
   const { t } = useLanguage();
@@ -64,6 +63,7 @@ const Live = () => {
                 title="Eschatos Church Live"
                 src={`https://www.youtube.com/embed/live_stream?channel=${CHANNEL_ID}`}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
                 allowFullScreen
                 className="h-full w-full"
               />

@@ -4,15 +4,23 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 
 const Layout = () => {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
-  }, [pathname]);
+    // Honor in-page anchors (e.g. /about#leadership) before falling back to top.
+    if (hash) {
+      const el = document.getElementById(hash.slice(1));
+      if (el) {
+        el.scrollIntoView({ block: "start" });
+        return;
+      }
+    }
+    // "auto" is the cross-browser equivalent of "instant"; "instant" is rejected by Safari < 15.4.
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, [pathname, hash]);
 
   return (
     <div className="sacred-grain relative flex min-h-screen flex-col bg-background text-foreground">
-      {/* Ambient glory — barely-perceptible radial light from above, on every page */}
       <div
         aria-hidden="true"
         className="pointer-events-none fixed inset-x-0 top-0 z-0 h-[60vh] bg-gradient-glory opacity-40"
@@ -25,7 +33,8 @@ const Layout = () => {
         Skip to content
       </a>
       <Navbar />
-      <main id="main" className="relative z-10 flex-1">
+      {/* tabIndex=-1 lets the skip link move keyboard focus into the main region. */}
+      <main id="main" tabIndex={-1} className="relative z-10 flex-1 focus:outline-none">
         <Outlet />
       </main>
       <Footer />

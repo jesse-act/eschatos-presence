@@ -48,7 +48,7 @@ const CategoryFilter = ({ active, onChange }: Props) => {
             className={cn(
               "group inline-flex items-center gap-2 rounded-full border px-4 py-2 cursor-pointer",
               "font-liturgical text-[10px] font-bold uppercase tracking-[0.32em]",
-              "transition-[background-color,border-color,color,letter-spacing] duration-500 ease-[var(--ease-divine)]",
+              "transition-[background-color,border-color,color,letter-spacing] duration-500 ease-divine",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background",
               isActive
                 ? "border-foreground bg-foreground text-background"

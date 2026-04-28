@@ -111,12 +111,12 @@ const Navbar = () => {
   const linkBase = cn(
     "relative font-liturgical text-[11px] font-bold uppercase",
     "tracking-[0.24em] text-foreground/70",
-    "transition-[letter-spacing,color] duration-500 ease-[var(--ease-divine)]",
+    "transition-[letter-spacing,color] duration-500 ease-divine",
     "hover:tracking-[0.32em] hover:text-foreground",
     "after:pointer-events-none after:absolute after:left-1/2 after:-bottom-2",
     "after:h-px after:w-0 after:bg-foreground",
     "after:-translate-x-1/2 after:transition-[width,height] after:duration-700",
-    "after:ease-[var(--ease-divine)]",
+    "after:ease-divine",
     "hover:after:w-[calc(100%+0.75rem)]",
   );
   const linkActive =
@@ -150,7 +150,7 @@ const Navbar = () => {
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50",
-        "transition-[transform,background-color,backdrop-filter,box-shadow] duration-700 ease-[var(--ease-divine)]",
+        "transition-[transform,background-color,backdrop-filter,box-shadow] duration-700 ease-divine",
         // Sanctuary recall — translate up out of view on scroll-down past tier 1
         hidden ? "-translate-y-full" : "translate-y-0",
         scrolled
@@ -161,7 +161,7 @@ const Navbar = () => {
       {/* TIER 1 — utility (retreats on scroll) */}
       <div
         className={cn(
-          "hidden lg:block overflow-hidden transition-[max-height,opacity,border-color] duration-700 ease-[var(--ease-divine)]",
+          "hidden lg:block overflow-hidden transition-[max-height,opacity,border-color] duration-700 ease-divine",
           scrolled
             ? "max-h-0 opacity-0 border-b-0"
             : "max-h-14 opacity-100 border-b border-border/40",
@@ -181,7 +181,7 @@ const Navbar = () => {
           <div className="flex items-center gap-5">
             <Link
               to="/live"
-              className="group font-liturgical inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.32em] text-muted-foreground transition-[letter-spacing,color] duration-500 ease-[var(--ease-divine)] hover:tracking-[0.4em] hover:text-accent"
+              className="group font-liturgical inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.32em] text-muted-foreground transition-[letter-spacing,color] duration-500 ease-divine hover:tracking-[0.4em] hover:text-accent"
             >
               <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
                 <span className="absolute inset-0 animate-heartbeat rounded-full bg-accent opacity-70" />
@@ -196,12 +196,12 @@ const Navbar = () => {
             {/* Oblation register — Cardo small caps + Cormorant italic */}
             <Link
               to="/donate"
-              className="group inline-flex items-baseline gap-2 cursor-pointer transition-[letter-spacing] duration-500 ease-[var(--ease-divine)]"
+              className="group inline-flex items-baseline gap-2 cursor-pointer transition-[letter-spacing] duration-500 ease-divine"
             >
-              <span className="font-liturgical text-[10px] font-bold uppercase tracking-[0.5em] text-accent transition-[letter-spacing] duration-500 ease-[var(--ease-divine)] group-hover:tracking-[0.6em]">
+              <span className="font-liturgical text-[10px] font-bold uppercase tracking-[0.5em] text-accent transition-[letter-spacing] duration-500 ease-divine group-hover:tracking-[0.6em]">
                 {lang === "fr" ? "Offrande" : "Offering"}
               </span>
-              <span className="font-editorial italic text-[13px] leading-none text-foreground/75 transition-[transform,color] duration-500 ease-[var(--ease-divine)] group-hover:translate-x-0.5 group-hover:text-foreground">
+              <span className="font-editorial italic text-[13px] leading-none text-foreground/75 transition-[transform,color] duration-500 ease-divine group-hover:translate-x-0.5 group-hover:text-foreground">
                 — {lang === "fr" ? "donner" : "give"}
               </span>
             </Link>
@@ -239,21 +239,21 @@ const Navbar = () => {
           {/* Vertical pinstripe rule — manuscript central column (deepens on hover) */}
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute -top-3 left-1/2 h-[calc(100%+1.5rem)] w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-foreground/15 to-transparent transition-opacity duration-700 ease-[var(--ease-divine)] group-hover:via-foreground/35"
+            className="pointer-events-none absolute -top-3 left-1/2 h-[calc(100%+1.5rem)] w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-foreground/15 to-transparent transition-opacity duration-700 ease-divine group-hover:via-foreground/35"
           />
           {/* Flanking dingbats — bow inward (anti-symmetric rotation) on hover */}
           <CrossDingbat
-            className="pointer-events-none absolute left-1 top-1/2 -translate-y-1/2 text-foreground/25 transition-[transform,color] duration-700 ease-[var(--ease-divine)] group-hover:text-accent/70 group-hover:[transform:translateY(-50%)_rotate(-8deg)]"
+            className="pointer-events-none absolute left-1 top-1/2 -translate-y-1/2 text-foreground/25 transition-[transform,color] duration-700 ease-divine group-hover:text-accent/70 group-hover:[transform:translateY(-50%)_rotate(-8deg)]"
             size={11}
           />
           <CrossDingbat
-            className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-foreground/25 transition-[transform,color] duration-700 ease-[var(--ease-divine)] group-hover:text-accent/70 group-hover:[transform:translateY(-50%)_rotate(8deg)]"
+            className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-foreground/25 transition-[transform,color] duration-700 ease-divine group-hover:text-accent/70 group-hover:[transform:translateY(-50%)_rotate(8deg)]"
             size={11}
           />
-          <div className="animate-breath-soft relative transition-transform duration-700 ease-[var(--ease-divine)] group-hover:scale-[1.03]">
+          <div className="animate-breath-soft relative transition-transform duration-700 ease-divine group-hover:scale-[1.03]">
             <Logo tone="dark" />
           </div>
-          <span className="mt-1 font-liturgical text-[8px] font-bold uppercase tracking-[0.5em] text-muted-foreground/80 transition-[letter-spacing,color] duration-700 ease-[var(--ease-divine)] group-hover:tracking-[0.6em] group-hover:text-foreground/80">
+          <span className="mt-1 font-liturgical text-[8px] font-bold uppercase tracking-[0.5em] text-muted-foreground/80 transition-[letter-spacing,color] duration-700 ease-divine group-hover:tracking-[0.6em] group-hover:text-foreground/80">
             Anno Domini
           </span>
         </Link>
@@ -287,18 +287,18 @@ const Navbar = () => {
             onClick={() => setOpen((p) => !p)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
-            className="group inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-foreground/20 text-foreground transition-[border-color,color,transform] duration-500 ease-[var(--ease-divine)] hover:border-accent hover:text-accent active:scale-95"
+            className="group inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-foreground/20 text-foreground transition-[border-color,color,transform] duration-500 ease-divine hover:border-accent hover:text-accent active:scale-95"
           >
             <span className="relative inline-flex h-5 w-5 items-center justify-center">
               <Menu
                 className={cn(
-                  "absolute h-5 w-5 transition-[opacity,transform] duration-500 ease-[var(--ease-divine)]",
+                  "absolute h-5 w-5 transition-[opacity,transform] duration-500 ease-divine",
                   open ? "opacity-0 rotate-90 scale-75" : "opacity-100 rotate-0 scale-100",
                 )}
               />
               <X
                 className={cn(
-                  "absolute h-5 w-5 transition-[opacity,transform] duration-500 ease-[var(--ease-divine)]",
+                  "absolute h-5 w-5 transition-[opacity,transform] duration-500 ease-divine",
                   open ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-90 scale-75",
                 )}
               />
@@ -349,7 +349,7 @@ const Navbar = () => {
       {/* MOBILE SHEET — sanctuary feel with cross watermark + service time */}
       <div
         className={cn(
-          "lg:hidden overflow-hidden border-t border-border bg-background/98 backdrop-blur-md transition-[max-height,opacity,clip-path] duration-700 ease-[var(--ease-divine)]",
+          "lg:hidden overflow-hidden border-t border-border bg-background/98 backdrop-blur-md transition-[max-height,opacity,clip-path] duration-700 ease-divine",
           open
             ? "max-h-[92vh] opacity-100 [clip-path:inset(0_0_0_0)]"
             : "max-h-0 opacity-0 [clip-path:inset(0_50%_0_50%)]",
@@ -387,7 +387,7 @@ const Navbar = () => {
                 >
                   {({ isActive }) => (
                     <>
-                      <span className="font-display text-2xl tracking-[0.01em] transition-[transform,letter-spacing] duration-500 ease-[var(--ease-divine)] group-hover:translate-x-2 group-hover:tracking-[0.04em]">
+                      <span className="font-display text-2xl tracking-[0.01em] transition-[transform,letter-spacing] duration-500 ease-divine group-hover:translate-x-2 group-hover:tracking-[0.04em]">
                         {l.label}
                       </span>
                       {isActive ? (
@@ -395,7 +395,7 @@ const Navbar = () => {
                       ) : (
                         <CrossDingbat
                           size={10}
-                          className="text-foreground/20 transition-[transform,color] duration-500 ease-[var(--ease-divine)] group-hover:text-accent group-hover:translate-x-1"
+                          className="text-foreground/20 transition-[transform,color] duration-500 ease-divine group-hover:text-accent group-hover:translate-x-1"
                         />
                       )}
                     </>
@@ -418,7 +418,7 @@ const Navbar = () => {
               onClick={() => setOpen(false)}
               className="group inline-flex items-baseline gap-2 cursor-pointer"
             >
-              <span className="font-liturgical text-[10px] font-bold uppercase tracking-[0.5em] text-accent transition-[letter-spacing] duration-500 ease-[var(--ease-divine)] group-hover:tracking-[0.6em]">
+              <span className="font-liturgical text-[10px] font-bold uppercase tracking-[0.5em] text-accent transition-[letter-spacing] duration-500 ease-divine group-hover:tracking-[0.6em]">
                 {lang === "fr" ? "Offrande" : "Offering"}
               </span>
               <span className="font-editorial italic text-[15px] leading-none text-foreground transition-colors duration-500 group-hover:text-accent">

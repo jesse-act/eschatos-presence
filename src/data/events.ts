@@ -276,7 +276,7 @@ export const EVENTS: Event[] = [
     city: "Casablanca",
     time: "09:00 – 14:00",
     category: "outreach",
-    image: "/Ushers/Ushers.jpeg",
+    image: "/Ushers/Ushers.jpg",
     en: {
       title: "Outreach Day",
       tagline: "Carrying the love of Jesus into the streets we call home.",
@@ -406,7 +406,7 @@ export const EVENTS: Event[] = [
     city: "Rabat",
     time: "20:00 – 22:30",
     category: "worship",
-    image: "/Les Musiciens/Les Musiciens.jpeg",
+    image: "/Les Musiciens/Les Musiciens.jpg",
     en: {
       title: "Worship Night",
       tagline: "Two and a half hours with no agenda but His presence.",

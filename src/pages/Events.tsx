@@ -58,8 +58,7 @@ const Events = () => {
                     <div className="relative aspect-[4/3] overflow-hidden">
                       <img
                         src={e.image}
-                        alt=""
-                        role="presentation"
+                        alt={ev.title}
                         loading="lazy"
                         width={1280}
                         height={896}
@@ -87,7 +86,7 @@ const Events = () => {
                         <span className="inline-flex items-center gap-1.5">
                           <MapPin className="h-3.5 w-3.5 text-accent animate-breath-soft" /> {e.city}
                         </span>
-                        <span className="ml-auto inline-flex items-center gap-1 font-liturgical text-[10px] font-bold uppercase tracking-[0.32em] text-foreground/70 transition-[letter-spacing,color] duration-500 ease-[var(--ease-divine)] group-hover:tracking-[0.4em] group-hover:text-accent">
+                        <span className="ml-auto inline-flex items-center gap-1 font-liturgical text-[10px] font-bold uppercase tracking-[0.32em] text-foreground/70 transition-[letter-spacing,color] duration-500 ease-divine group-hover:tracking-[0.4em] group-hover:text-accent">
                           {lang === "fr" ? "Voir" : "View"}
                           <ArrowUpRight className="h-3 w-3 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
                         </span>

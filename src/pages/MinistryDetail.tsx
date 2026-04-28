@@ -44,7 +44,7 @@ const MinistryDetail = () => {
         <div className="relative mx-auto max-w-7xl px-6 md:px-10">
           <Link
             to="/ministries"
-            className="group inline-flex items-center gap-2 font-liturgical text-[10px] font-bold uppercase tracking-[0.32em] text-muted-foreground transition-[letter-spacing,color] duration-500 ease-[var(--ease-divine)] hover:tracking-[0.4em] hover:text-foreground"
+            className="group inline-flex items-center gap-2 font-liturgical text-[10px] font-bold uppercase tracking-[0.32em] text-muted-foreground transition-[letter-spacing,color] duration-500 ease-divine hover:tracking-[0.4em] hover:text-foreground"
           >
             <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-500 group-hover:-translate-x-0.5" aria-hidden="true" />
             {lang === "fr" ? "Retour aux ministères" : "Back to ministries"}

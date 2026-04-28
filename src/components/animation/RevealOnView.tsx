@@ -1,6 +1,7 @@
 import { type ReactNode, type ElementType } from "react";
 import { cn } from "@/lib/utils";
 import { useInView } from "./useInView";
+import { useReducedMotion } from "@/components/sacred3d/useReducedMotion";
 
 type Variant =
   | "rise"
@@ -54,15 +55,18 @@ const RevealOnView = ({
     threshold,
     once: !replay,
   });
+  const reducedMotion = useReducedMotion();
+  // In reduced-motion: skip the opacity-0 + animation entirely so content is
+  // immediately visible. Belt-and-braces with the global @media RM CSS rules.
+  const shouldReveal = inView || reducedMotion;
 
   return (
     <Tag
       ref={ref}
-      style={inView ? { animationDelay: `${delay}ms` } : undefined}
+      style={inView && !reducedMotion ? { animationDelay: `${delay}ms` } : undefined}
       className={cn(
-        // Pre-paint hidden — prevents flash-of-unstyled-content before observer fires
-        !inView && "opacity-0",
-        inView && VARIANT_CLASS[variant],
+        !shouldReveal && "opacity-0",
+        shouldReveal && !reducedMotion && VARIANT_CLASS[variant],
         className,
       )}
     >

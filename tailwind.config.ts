@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import tailwindAnimate from "tailwindcss-animate";
 
 export default {
   darkMode: ["class"],
@@ -13,6 +14,12 @@ export default {
       },
     },
     extend: {
+      transitionTimingFunction: {
+        divine: "var(--ease-divine)",
+      },
+      transitionDuration: {
+        "1400": "1400ms",
+      },
       fontFamily: {
         // Cinzel — Roman ecclesiastical inscriptions (cathedrals, Pantocrator) — display
         display: ['Cinzel', 'ui-serif', 'Georgia', 'serif'],
@@ -201,5 +208,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [tailwindAnimate],
 } satisfies Config;

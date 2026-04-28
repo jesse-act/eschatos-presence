@@ -79,8 +79,8 @@ const About = () => {
       />
 
       {/* Mission / Vision / Values */}
-      <section className="bg-background py-24 md:py-32">
-        <div className="mx-auto grid max-w-6xl gap-16 px-6 md:px-10 lg:grid-cols-3">
+      <section className="bg-background py-16 md:py-24 lg:py-28">
+        <div className="mx-auto grid max-w-6xl gap-10 px-6 md:grid-cols-3 md:gap-8 md:px-10 lg:gap-16">
           <div>
             <RevealOnView variant="eyebrow-spread" as="div" className="mb-4">
               <SacredEyebrow>{t.about.mission.eyebrow}</SacredEyebrow>

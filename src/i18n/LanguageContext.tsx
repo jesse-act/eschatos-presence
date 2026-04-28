@@ -14,13 +14,24 @@ const LanguageContext = createContext<Ctx | undefined>(undefined);
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [lang, setLangState] = useState<Lang>(() => {
     if (typeof window === "undefined") return "en";
-    const stored = window.localStorage.getItem("eschatos-lang");
-    return stored === "fr" ? "fr" : "en";
+    // localStorage can throw in Safari private mode and on browsers with strict
+    // partitioned storage. A throw inside a useState initializer crashes the
+    // entire React tree before first render, so swallow it and fall back.
+    try {
+      const stored = window.localStorage.getItem("eschatos-lang");
+      return stored === "fr" ? "fr" : "en";
+    } catch {
+      return "en";
+    }
   });
 
   useEffect(() => {
     document.documentElement.lang = lang;
-    window.localStorage.setItem("eschatos-lang", lang);
+    try {
+      window.localStorage.setItem("eschatos-lang", lang);
+    } catch {
+      // Storage unavailable — language switch still works in-session, just not persisted.
+    }
   }, [lang]);
 
   const setLang = useCallback((l: Lang) => setLangState(l), []);

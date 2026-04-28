@@ -21,6 +21,14 @@ export const translations = {
       learnMore: "Learn more", getInvolved: "Get involved", viewAll: "View all",
       readMore: "Read more", close: "Close", discover: "Discover",
     },
+    notFound: {
+      eyebrow: "404 · Page lost",
+      title: "A sheep has wandered.",
+      body: "The page you're looking for doesn't exist — or no longer does. But the Shepherd leaves the 99 for the one who strays. Let's go home.",
+      cta: "Back to home",
+      verse: "What man of you, having a hundred sheep, if he loses one of them, does not leave the ninety-nine and go after the one which is lost until he finds it?",
+      reference: "Luke 15:4",
+    },
     hero: {
       eyebrow: "Eschatos Church · Casablanca & Rabat",
       title: "A place to belong, a people to become.",
@@ -129,8 +137,7 @@ export const translations = {
       faqEyebrow: "Before you knock", faqTitle: "Questions.",
       scripture: {
         eyebrow: "His promise",
-        verse: "oici, je me tiens à la porte, et je frappe. Si quelqu'un entend ma voix et ouvre la porte, j'entrerai chez lui.",
-        verseFull: "Behold, I stand at the door, and knock. If any man hear my voice, and open the door, I will come in to him.",
+        verse: "Behold, I stand at the door, and knock. If any man hear my voice, and open the door, I will come in to him.",
         reference: "Revelation 3:20",
       },
       requiredLegend: "* indicates a required field",
@@ -279,6 +286,14 @@ export const translations = {
       learnMore: "En savoir plus", getInvolved: "S'impliquer", viewAll: "Voir tout",
       readMore: "Lire la suite", close: "Fermer", discover: "Découvrir",
     },
+    notFound: {
+      eyebrow: "404 · Page égarée",
+      title: "Une brebis s'est perdue.",
+      body: "La page que vous cherchez n'existe pas — ou plus. Mais le Berger laisse les 99 pour celle qui s'égare. Revenons à la maison.",
+      cta: "Retour à l'accueil",
+      verse: "Quel est l'homme parmi vous qui, ayant cent brebis et en perdant une, ne laisse les quatre-vingt-dix-neuf et n'aille après celle qui est perdue, jusqu'à ce qu'il la retrouve ?",
+      reference: "Luc 15:4",
+    },
     hero: {
       eyebrow: "Église Eschatos · Casablanca & Rabat",
       title: "Un lieu où appartenir, un peuple à devenir.",
@@ -387,8 +402,7 @@ export const translations = {
       faqEyebrow: "Avant de frapper", faqTitle: "Questions.",
       scripture: {
         eyebrow: "Sa promesse",
-        verse: "oici, je me tiens à la porte, et je frappe. Si quelqu'un entend ma voix et ouvre la porte, j'entrerai chez lui.",
-        verseFull: "Voici, je me tiens à la porte, et je frappe. Si quelqu'un entend ma voix et ouvre la porte, j'entrerai chez lui.",
+        verse: "Voici, je me tiens à la porte, et je frappe. Si quelqu'un entend ma voix et ouvre la porte, j'entrerai chez lui.",
         reference: "Apocalypse 3:20",
       },
       requiredLegend: "* indique un champ requis",

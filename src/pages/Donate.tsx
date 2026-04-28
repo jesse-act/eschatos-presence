@@ -164,7 +164,7 @@ const Donate = () => {
                   value={custom}
                   onChange={(e) => setCustom(e.target.value)}
                   placeholder="500"
-                  className="font-display text-3xl md:text-4xl bg-transparent border-0 border-b border-border focus:border-accent focus:outline-none focus:ring-0 px-0 py-1 w-32 placeholder:text-muted-foreground/40"
+                  className="font-display text-3xl md:text-4xl bg-transparent border-0 border-b border-border focus:border-accent focus:outline-none focus:ring-0 px-0 py-1 w-full max-w-[8rem] placeholder:text-muted-foreground/55"
                 />
                 <span className="text-xs uppercase tracking-[0.32em] text-muted-foreground ml-3">
                   MAD

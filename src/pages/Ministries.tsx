@@ -7,10 +7,11 @@ import { LightBeam, ScriptureRef, SacredEyebrow, CrossWatermark } from "@/compon
 import { RevealOnView, SplitText } from "@/components/animation";
 import { MINISTRIES } from "@/data/ministries";
 import { cn } from "@/lib/utils";
-
+import { useReducedMotion } from "@/components/sacred3d/useReducedMotion";
 
 const Ministries = () => {
   const { lang } = useLanguage();
+  const reducedMotion = useReducedMotion();
 
   // Active chapter for the sticky index — driven by IntersectionObserver
   const [activeSlug, setActiveSlug] = useState<string>(MINISTRIES[0].slug);
@@ -37,7 +38,7 @@ const Ministries = () => {
   const scrollTo = (slug: string) => {
     const el = chapterRefs.current[slug];
     if (!el) return;
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    el.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
   };
 
   return (
@@ -153,7 +154,7 @@ const Ministries = () => {
                   >
                     <span
                       className={cn(
-                        "block h-px transition-[width,background-color] duration-500 ease-[var(--ease-divine)]",
+                        "block h-px transition-[width,background-color] duration-500 ease-divine",
                         isActive
                           ? "w-10 bg-accent"
                           : "w-5 bg-foreground/30 group-hover:w-8 group-hover:bg-foreground/60",
@@ -266,7 +267,7 @@ const Ministries = () => {
                           loading={i < 2 ? "eager" : "lazy"}
                           width={1280}
                           height={960}
-                          className="h-full w-full object-cover object-top transition-transform duration-[1400ms] ease-[var(--ease-divine)] group-hover/plate:scale-[1.015]"
+                          className="h-full w-full object-cover object-top transition-transform duration-1400 ease-divine group-hover/plate:scale-[1.015]"
                         />
                       </div>
                       {/* Subtle ring inside the rounded frame — gallery border without eating pixels */}

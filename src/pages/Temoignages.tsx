@@ -30,7 +30,7 @@ const Temoignages = () => {
   );
 
   // Reuse the first testimony's image as the hero ambient backdrop
-  const heroImage = TESTIMONIES[0].image;
+  const heroImage = TESTIMONIES[0]?.image ?? "";
 
   return (
     <>
@@ -75,7 +75,7 @@ const Temoignages = () => {
           </div>
 
           <div
-            className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+            className="mt-12 grid gap-8 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
             // Re-key on filter change so cards re-trigger their procession-rise stagger
             key={filter}
           >

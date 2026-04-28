@@ -28,7 +28,7 @@ const TestimonyCard = ({ testimony, stagger = 0 }: Props) => {
       aria-label={`${t.testimoniesPage.ariaLabel} ${testimony.name}`}
       className={cn(
         "group relative flex flex-col overflow-hidden rounded-sm border border-border/50 bg-card",
-        "transition-[transform,box-shadow,border-color] duration-700 ease-[var(--ease-divine)]",
+        "transition-[transform,box-shadow,border-color] duration-700 ease-divine",
         "hover:-translate-y-1 hover:border-foreground/40 hover:shadow-elegant",
         "animate-procession-rise focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2",
       )}
@@ -45,7 +45,7 @@ const TestimonyCard = ({ testimony, stagger = 0 }: Props) => {
           height={500}
           className={cn(
             "h-full w-full object-cover object-top",
-            "transition-transform duration-[1400ms] ease-[var(--ease-divine)]",
+            "transition-transform duration-1400 ease-divine",
             "group-hover:scale-105",
           )}
         />
@@ -81,11 +81,11 @@ const TestimonyCard = ({ testimony, stagger = 0 }: Props) => {
           &ldquo;{tx.pullQuote}&rdquo;
         </p>
         <div className="flex items-center justify-between border-t border-border/60 pt-4">
-          <span className="font-liturgical text-[10px] font-bold uppercase tracking-[0.32em] text-muted-foreground transition-[letter-spacing,color] duration-500 ease-[var(--ease-divine)] group-hover:tracking-[0.4em] group-hover:text-foreground">
+          <span className="font-liturgical text-[10px] font-bold uppercase tracking-[0.32em] text-muted-foreground transition-[letter-spacing,color] duration-500 ease-divine group-hover:tracking-[0.4em] group-hover:text-foreground">
             {t.testimoniesPage.readStory}
           </span>
           <ArrowUpRight
-            className="h-4 w-4 text-foreground/60 transition-[transform,color] duration-500 ease-[var(--ease-divine)] group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            className="h-4 w-4 text-foreground/60 transition-[transform,color] duration-500 ease-divine group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
             aria-hidden="true"
           />
         </div>

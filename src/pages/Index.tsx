@@ -198,10 +198,10 @@ const Index = () => {
             <div className="mt-12 flex justify-center">
               <Link
                 to="/temoignages"
-                className="group inline-flex items-center gap-2 font-liturgical text-[10px] font-bold uppercase tracking-[0.32em] text-foreground/70 transition-[letter-spacing,color] duration-500 ease-[var(--ease-divine)] hover:tracking-[0.4em] hover:text-accent"
+                className="group inline-flex items-center gap-2 font-liturgical text-[10px] font-bold uppercase tracking-[0.32em] text-foreground/70 transition-[letter-spacing,color] duration-500 ease-divine hover:tracking-[0.4em] hover:text-accent"
               >
                 {lang === "fr" ? "Lire tous les témoignages" : "Read all testimonies"}
-                <span aria-hidden="true" className="inline-block transition-transform duration-500 ease-[var(--ease-divine)] group-hover:translate-x-1">
+                <span aria-hidden="true" className="inline-block transition-transform duration-500 ease-divine group-hover:translate-x-1">
                   →
                 </span>
               </Link>

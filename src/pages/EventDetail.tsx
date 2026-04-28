@@ -30,27 +30,10 @@ const EventDetail = () => {
   const { t, lang } = useLanguage();
   const event = slug ? getEventBySlug(slug) : undefined;
 
-  if (!event) return <NotFound />;
-
-  const ev = getEventTranslated(event, lang);
-  const month = lang === "fr" ? event.monthFr : event.monthEn;
-  const related = getRelatedEvents(event.slug, 3);
-  const detail = t.events.detail;
-  // Poster falls back to the card image. Orientation drives the aspect ratio
-  // of the dedicated media panel (so a portrait flyer is shown 3:4, not 4:3).
-  const posterSrc = event.poster ?? event.image;
-  const posterAspectClass =
-    event.posterOrientation === "portrait"
-      ? "aspect-[3/4] max-w-md"
-      : event.posterOrientation === "square"
-      ? "aspect-square max-w-lg"
-      : "aspect-[16/9] max-w-3xl";
-  const isVideo = event.mediaType === "video" && event.videoUrl;
-
-  // Fullscreen lightbox — only for static posters (the iframe is already interactive)
+  // Hooks must run in the same order on every render — declare them BEFORE
+  // the early return, otherwise React throws "Rendered fewer hooks than expected".
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  // ESC closes the lightbox + lock body scroll while it is open
   useEffect(() => {
     if (!lightboxOpen) return;
     const onKey = (e: KeyboardEvent) => {
@@ -65,13 +48,33 @@ const EventDetail = () => {
     };
   }, [lightboxOpen]);
 
-  // Build a Google Calendar link without leaving React
+  if (!event) return <NotFound />;
+
+  const ev = getEventTranslated(event, lang);
+  const month = lang === "fr" ? event.monthFr : event.monthEn;
+  const related = getRelatedEvents(event.slug, 3);
+  const detail = t.events.detail;
+  const posterSrc = event.poster ?? event.image;
+  const posterAspectClass =
+    event.posterOrientation === "portrait"
+      ? "aspect-[3/4] max-w-md"
+      : event.posterOrientation === "square"
+      ? "aspect-square max-w-lg"
+      : "aspect-[16/9] max-w-3xl";
+  const isVideo = event.mediaType === "video" && event.videoUrl;
+
+  // Build a Google Calendar link without leaving React. Google's `dates=` param
+  // wants `start/end` — using `start/start` produces a zero-duration event.
+  // Add one day to the end so the entry shows up as an all-day event for the date.
   const calendarHref = (() => {
     const start = event.isoDate.replace(/-/g, "");
+    const next = new Date(event.isoDate);
+    next.setDate(next.getDate() + 1);
+    const end = next.toISOString().slice(0, 10).replace(/-/g, "");
     const text = encodeURIComponent(`${ev.title} · Eschatos Church`);
     const details = encodeURIComponent(ev.summary);
     const location = encodeURIComponent(ev.address);
-    return `https://www.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${start}/${start}&details=${details}&location=${location}`;
+    return `https://www.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${start}/${end}&details=${details}&location=${location}`;
   })();
 
   return (
@@ -88,7 +91,7 @@ const EventDetail = () => {
         <div className="relative mx-auto max-w-7xl px-6 md:px-10">
           <Link
             to="/events"
-            className="group inline-flex items-center gap-2 font-liturgical text-[10px] font-bold uppercase tracking-[0.32em] text-muted-foreground transition-[letter-spacing,color] duration-500 ease-[var(--ease-divine)] hover:tracking-[0.4em] hover:text-foreground"
+            className="group inline-flex items-center gap-2 font-liturgical text-[10px] font-bold uppercase tracking-[0.32em] text-muted-foreground transition-[letter-spacing,color] duration-500 ease-divine hover:tracking-[0.4em] hover:text-foreground"
           >
             <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-500 group-hover:-translate-x-0.5" aria-hidden="true" />
             {detail.backToList}
@@ -207,6 +210,7 @@ const EventDetail = () => {
                         title={ev.title}
                         loading="lazy"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
                         allowFullScreen
                         className="h-full w-full"
                       />
@@ -228,7 +232,7 @@ const EventDetail = () => {
                           width={1600}
                           height={1200}
                           // object-contain — no crop, full flyer visible
-                          className="h-full w-full object-contain transition-transform duration-700 ease-[var(--ease-divine)] group-hover/poster:scale-[1.02]"
+                          className="h-full w-full object-contain transition-transform duration-700 ease-divine group-hover/poster:scale-[1.02]"
                         />
                         {/* Subtle hover veil + zoom hint */}
                         <span
@@ -520,7 +524,7 @@ const EventDetail = () => {
               setLightboxOpen(false);
             }}
             aria-label={lang === "fr" ? "Fermer" : "Close"}
-            className="absolute right-5 top-5 z-10 grid h-12 w-12 cursor-pointer place-items-center rounded-full border border-primary-foreground/20 bg-foreground/60 text-primary-foreground backdrop-blur-md transition-[border-color,color,transform] duration-500 ease-[var(--ease-divine)] hover:border-accent hover:text-accent hover:rotate-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-foreground"
+            className="absolute right-5 top-5 z-10 grid h-12 w-12 cursor-pointer place-items-center rounded-full border border-primary-foreground/20 bg-foreground/60 text-primary-foreground backdrop-blur-md transition-[border-color,color,transform] duration-500 ease-divine hover:border-accent hover:text-accent hover:rotate-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-foreground"
           >
             <X className="h-5 w-5" aria-hidden="true" />
           </button>

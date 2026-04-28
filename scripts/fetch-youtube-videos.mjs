@@ -77,8 +77,10 @@ const parseFeed = (xml) => {
 const main = async () => {
   console.log(`[youtube] Fetching feed for channel ${CHANNEL_ID}…`);
   try {
+    // 10s ceiling — a slow YouTube response should not hang CI for minutes.
     const res = await fetch(FEED_URL, {
       headers: { "User-Agent": "eschatos-presence-build/1.0" },
+      signal: AbortSignal.timeout(10_000),
     });
     if (!res.ok) {
       throw new Error(`HTTP ${res.status} ${res.statusText}`);

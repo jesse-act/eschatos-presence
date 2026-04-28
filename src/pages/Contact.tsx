@@ -113,8 +113,8 @@ const Contact = () => {
             <SacredEyebrow>{t.contact.scripture.eyebrow}</SacredEyebrow>
           </RevealOnView>
           <RevealOnView variant="ink-rise" delay={120}>
-            <p className="font-display text-[1.45rem] md:text-[1.75rem] leading-[1.55] text-foreground/90 [text-wrap:balance]">
-              <span className="float-left mr-4 mt-1 select-none" aria-hidden="true">
+            <p className="font-display text-[1.25rem] sm:text-[1.45rem] md:text-[1.75rem] leading-[1.55] text-foreground/90 [text-wrap:balance]">
+              <span className="float-left mr-4 mt-1 hidden select-none sm:block" aria-hidden="true">
                 <svg
                   viewBox="0 0 120 120"
                   className="h-[5.5rem] w-[5.5rem] md:h-[6.5rem] md:w-[6.5rem]"
@@ -162,7 +162,7 @@ const Contact = () => {
                     fontStyle="italic"
                     fill="hsl(var(--accent))"
                   >
-                    V
+                    {t.contact.scripture.verse.charAt(0)}
                   </text>
                   <circle cx="10" cy="10" r="2" className="fill-accent" />
                   <circle cx="110" cy="10" r="2" className="fill-accent" />
@@ -171,11 +171,12 @@ const Contact = () => {
                 </svg>
               </span>
               <span className="font-editorial italic">
-                {t.contact.scripture.verse}
+                <span className="sr-only">{t.contact.scripture.verse.charAt(0)}</span>
+                <span aria-hidden="true">{t.contact.scripture.verse.slice(1)}</span>
               </span>
               <span className="text-accent">.</span>
             </p>
-            <p className="mt-8 pl-[6.5rem] font-liturgical text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground">
+            <p className="mt-8 font-liturgical text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground sm:pl-[6.5rem]">
               {t.contact.scripture.reference.split(" ")[0]}{" "}
               <span className="text-accent">·</span>{" "}
               {t.contact.scripture.reference.split(" ")[1]}

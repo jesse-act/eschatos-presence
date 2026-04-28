@@ -17,10 +17,12 @@ import {
   formatPublishedDate,
   type Video,
 } from "@/data/videos";
+import { useReducedMotion } from "@/components/sacred3d/useReducedMotion";
 
 const Sermons = () => {
   const { t, lang } = useLanguage();
   const [active, setActive] = useState<Video | null>(null);
+  const reducedMotion = useReducedMotion();
 
   // Lock body scroll while the modal is open + close on Escape.
   useEffect(() => {
@@ -125,7 +127,7 @@ const Sermons = () => {
                       <div className="relative aspect-video overflow-hidden rounded-2xl border border-transparent shadow-soft transition-all duration-500 group-hover:border-accent group-hover:shadow-elegant group-hover:shadow-anoint">
                         <img
                           src={v.thumbnail}
-                          alt=""
+                          alt={v.title}
                           loading="lazy"
                           width={480}
                           height={360}
@@ -176,8 +178,9 @@ const Sermons = () => {
             <div className="aspect-video w-full">
               <iframe
                 title={active.title}
-                src={embedUrl(active.id, true)}
+                src={embedUrl(active.id, !reducedMotion)}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
                 allowFullScreen
                 className="h-full w-full"
               />
@@ -196,7 +199,7 @@ const Sermons = () => {
               <button
                 type="button"
                 onClick={() => setActive(null)}
-                className="shrink-0 rounded-full border border-border px-4 py-2 text-sm font-medium hover:border-accent hover:text-accent"
+                className="shrink-0 rounded-full border border-border px-4 py-2 text-sm font-medium min-h-[44px] hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
               >
                 {t.common.close}
               </button>

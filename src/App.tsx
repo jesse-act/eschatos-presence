@@ -35,7 +35,18 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Suspense fallback={null}>
+          <Suspense
+            fallback={
+              <div
+                role="status"
+                aria-live="polite"
+                aria-label="Loading"
+                className="flex min-h-[60vh] items-center justify-center bg-background"
+              >
+                <span className="h-6 w-6 animate-spin rounded-full border-2 border-foreground/20 border-t-accent" />
+              </div>
+            }
+          >
             <Routes>
               <Route element={<Layout />}>
                 <Route path="/" element={<Index />} />
