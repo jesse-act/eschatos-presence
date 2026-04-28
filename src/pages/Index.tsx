@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Calendar, MapPin, PlayCircle, Users, HandHeart, BookOpen } from "lucide-react";
+import { ArrowRight, MapPin, PlayCircle, Users, HandHeart, BookOpen, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/i18n/LanguageContext";
 import heroImg from "@/assets/hero-worship.jpg";
@@ -190,9 +190,35 @@ const Index = () => {
         <div className="mx-auto max-w-4xl px-6 text-center md:px-10">
           <BookOpen className="mx-auto h-8 w-8 text-accent" />
           <blockquote className="mt-8 font-display text-3xl leading-snug text-balance md:text-5xl">
-            "For where two or three gather in my name, there am I with them."
+            {t.scripture.verse}
           </blockquote>
-          <p className="mt-6 text-sm uppercase tracking-[0.3em] text-accent">Matthew 18:20</p>
+          <p className="mt-6 text-sm uppercase tracking-[0.3em] text-accent">{t.scripture.ref}</p>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS */}
+      <section className="bg-secondary/40 py-24 md:py-32">
+        <div className="mx-auto max-w-6xl px-6 md:px-10">
+          <div className="mb-14 max-w-2xl">
+            <p className="eyebrow mb-4">{t.testimonials.eyebrow}</p>
+            <h2 className="font-display text-4xl leading-tight md:text-5xl">{t.testimonials.title}</h2>
+          </div>
+          <div className="grid gap-6 md:grid-cols-3">
+            {t.testimonials.items.map((it) => (
+              <figure
+                key={it.name}
+                className="group relative rounded-2xl border border-border bg-card p-8 shadow-soft transition-all duration-500 hover:-translate-y-1 hover:border-accent hover:shadow-elegant"
+              >
+                <Quote className="h-7 w-7 text-accent/70" />
+                <blockquote className="mt-4 font-display text-xl leading-snug text-balance">
+                  {it.quote}
+                </blockquote>
+                <figcaption className="mt-6 text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                  {it.name}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -201,10 +227,10 @@ const Index = () => {
         <div className="mx-auto max-w-4xl px-6 text-center md:px-10">
           <HandHeart className="mx-auto h-10 w-10 text-accent" />
           <h2 className="mt-6 font-display text-4xl text-balance md:text-5xl">
-            Partner with what God is doing in Morocco
+            {t.giveCta.title}
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-muted-foreground">
-            Every gift fuels worship, outreach, and the next generation of leaders across Casablanca and Rabat.
+            {t.giveCta.body}
           </p>
           <Button asChild variant="hero" size="xl" className="mt-8">
             <Link to="/donate">{t.nav.donate} <ArrowRight className="h-4 w-4" /></Link>

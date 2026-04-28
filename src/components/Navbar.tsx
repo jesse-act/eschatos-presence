@@ -27,8 +27,10 @@ const Navbar = () => {
   const links = [
     { to: "/", label: t.nav.home },
     { to: "/about", label: t.nav.about },
+    { to: "/leadership", label: t.nav.leadership },
     { to: "/ministries", label: t.nav.ministries },
     { to: "/sermons", label: t.nav.sermons },
+    { to: "/live", label: t.nav.live },
     { to: "/events", label: t.nav.events },
     { to: "/contact", label: t.nav.contact },
   ];

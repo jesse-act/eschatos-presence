@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
+import { useLanguage } from "@/i18n/LanguageContext";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import aboutImg from "@/assets/about-church.jpg";
 
 const schema = z.object({
@@ -15,6 +17,7 @@ const schema = z.object({
 });
 
 const Contact = () => {
+  const { t } = useLanguage();
   const [submitting, setSubmitting] = useState(false);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -26,23 +29,24 @@ const Contact = () => {
       message: fd.get("message"),
     });
     if (!parsed.success) {
-      toast({ title: "Please check the form", description: parsed.error.issues[0]?.message });
+      toast({ title: t.contact.errorTitle, description: parsed.error.issues[0]?.message });
       return;
     }
+    const form = e.currentTarget;
     setSubmitting(true);
     setTimeout(() => {
       setSubmitting(false);
-      e.currentTarget?.reset();
-      toast({ title: "Message sent", description: "We'll get back to you within 48 hours." });
+      form.reset();
+      toast({ title: t.contact.sent, description: t.contact.sentDesc });
     }, 800);
   };
 
   return (
     <>
       <PageHero
-        eyebrow="Say hello"
-        title={<>We'd love to meet you.</>}
-        subtitle="Plan a visit, ask a question, share a prayer request — our team is here for you."
+        eyebrow={t.contact.eyebrow}
+        title={<>{t.contact.title}</>}
+        subtitle={t.contact.subtitle}
         image={aboutImg}
       />
 
@@ -50,23 +54,23 @@ const Contact = () => {
         <div className="mx-auto grid max-w-6xl gap-16 px-6 md:px-10 lg:grid-cols-2">
           {/* Form */}
           <div>
-            <p className="eyebrow mb-4">Send us a message</p>
-            <h2 className="mb-8 font-display text-4xl md:text-5xl">Get in touch.</h2>
+            <p className="eyebrow mb-4">{t.contact.formEyebrow}</p>
+            <h2 className="mb-8 font-display text-4xl md:text-5xl">{t.contact.formTitle}</h2>
             <form onSubmit={onSubmit} className="space-y-5">
               <div>
-                <label htmlFor="name" className="mb-2 block text-sm font-medium">Full name</label>
-                <Input id="name" name="name" required maxLength={80} placeholder="Your name" />
+                <label htmlFor="name" className="mb-2 block text-sm font-medium">{t.contact.name}</label>
+                <Input id="name" name="name" required maxLength={80} placeholder={t.contact.namePh} />
               </div>
               <div>
-                <label htmlFor="email" className="mb-2 block text-sm font-medium">Email</label>
-                <Input id="email" name="email" type="email" required maxLength={255} placeholder="you@example.com" />
+                <label htmlFor="email" className="mb-2 block text-sm font-medium">{t.contact.email}</label>
+                <Input id="email" name="email" type="email" required maxLength={255} placeholder={t.contact.emailPh} />
               </div>
               <div>
-                <label htmlFor="message" className="mb-2 block text-sm font-medium">Message</label>
-                <Textarea id="message" name="message" required maxLength={1000} rows={5} placeholder="How can we serve you?" />
+                <label htmlFor="message" className="mb-2 block text-sm font-medium">{t.contact.message}</label>
+                <Textarea id="message" name="message" required maxLength={1000} rows={5} placeholder={t.contact.messagePh} />
               </div>
               <Button type="submit" variant="hero" size="lg" disabled={submitting} className="w-full sm:w-auto">
-                {submitting ? "Sending…" : "Send message"}
+                {submitting ? t.contact.sending : t.contact.send}
               </Button>
             </form>
           </div>
@@ -74,13 +78,13 @@ const Contact = () => {
           {/* Info */}
           <div className="space-y-10">
             <div>
-              <p className="eyebrow mb-4">Our locations</p>
-              <h2 className="mb-8 font-display text-4xl md:text-5xl">Visit us.</h2>
+              <p className="eyebrow mb-4">{t.contact.locEyebrow}</p>
+              <h2 className="mb-8 font-display text-4xl md:text-5xl">{t.contact.locTitle}</h2>
 
               <div className="space-y-6">
                 {[
-                  { city: "Casablanca · Main Church", addr: "12 Rue Tahar Sebti, Casablanca 20000", phone: "+212 5 22 00 00 00", q: "Casablanca,+Morocco" },
-                  { city: "Rabat · Branch", addr: "45 Avenue Mohammed V, Rabat 10000", phone: "+212 5 37 00 00 00", q: "Rabat,+Morocco" },
+                  { city: `Casablanca · ${t.about.casaRole}`, addr: "12 Rue Tahar Sebti, Casablanca 20000", phone: "+212 5 22 00 00 00", q: "Casablanca,+Morocco" },
+                  { city: `Rabat · ${t.about.rabatRole}`, addr: "45 Avenue Mohammed V, Rabat 10000", phone: "+212 5 37 00 00 00", q: "Rabat,+Morocco" },
                 ].map((c) => (
                   <div key={c.city} className="rounded-2xl border border-border bg-card p-6 shadow-soft">
                     <h3 className="font-display text-xl">{c.city}</h3>
@@ -105,7 +109,7 @@ const Contact = () => {
             </div>
 
             <div>
-              <p className="eyebrow mb-4">Follow us</p>
+              <p className="eyebrow mb-4">{t.contact.followUs}</p>
               <p className="mb-4 flex items-center gap-2 text-sm text-muted-foreground">
                 <Mail className="h-4 w-4 text-accent" /> hello@eschatos.church
               </p>
@@ -129,6 +133,26 @@ const Contact = () => {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="bg-secondary/40 py-20 md:py-28">
+        <div className="mx-auto max-w-3xl px-6 md:px-10">
+          <p className="eyebrow mb-4">{t.contact.faqEyebrow}</p>
+          <h2 className="mb-10 font-display text-4xl md:text-5xl">{t.contact.faqTitle}</h2>
+          <Accordion type="single" collapsible className="w-full">
+            {t.contact.faq.map((item, i) => (
+              <AccordionItem key={i} value={`item-${i}`} className="border-border">
+                <AccordionTrigger className="text-left font-display text-xl hover:text-accent hover:no-underline">
+                  {item.q}
+                </AccordionTrigger>
+                <AccordionContent className="text-base leading-relaxed text-muted-foreground">
+                  {item.a}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       </section>
     </>

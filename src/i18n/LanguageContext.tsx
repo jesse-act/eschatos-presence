@@ -1,11 +1,12 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { translations, type Lang } from "./translations";
 
+type Translation = typeof translations["en"];
 type Ctx = {
   lang: Lang;
   setLang: (l: Lang) => void;
   toggleLang: () => void;
-  t: typeof translations["en"];
+  t: Translation;
 };
 
 const LanguageContext = createContext<Ctx | undefined>(undefined);
@@ -26,7 +27,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const toggleLang = useCallback(() => setLangState((p) => (p === "en" ? "fr" : "en")), []);
 
   const value = useMemo<Ctx>(
-    () => ({ lang, setLang, toggleLang, t: translations[lang] }),
+    () => ({ lang, setLang, toggleLang, t: translations[lang] as Translation }),
     [lang, setLang, toggleLang],
   );
 

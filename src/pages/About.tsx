@@ -1,31 +1,22 @@
 import { Heart, Compass, Flame, Users } from "lucide-react";
 import PageHero from "@/components/PageHero";
+import { useLanguage } from "@/i18n/LanguageContext";
 import aboutImg from "@/assets/about-church.jpg";
 import casaImg from "@/assets/location-casablanca.jpg";
 import rabatImg from "@/assets/location-rabat.jpg";
 
-const values = [
-  { Icon: Heart, title: "Christ-centered", body: "Jesus is the foundation, the message, and the goal of everything we do." },
-  { Icon: Users, title: "Family", body: "We do life together — celebrating, mourning, and growing as one body." },
-  { Icon: Compass, title: "On mission", body: "We exist for those who are not yet here. Morocco and beyond." },
-  { Icon: Flame, title: "Spirit-led", body: "We make room for the Holy Spirit in our worship, prayer, and decisions." },
-];
-
-const timeline = [
-  { year: "2014", text: "A small prayer group of seven begins meeting in a Casablanca apartment." },
-  { year: "2017", text: "First public Sunday celebration launches in downtown Casablanca." },
-  { year: "2020", text: "Online ministry expands; hundreds tune in across Morocco and the diaspora." },
-  { year: "2023", text: "Rabat branch opens, planting deep roots in the capital." },
-  { year: "Today", text: "Two cities, twelve ministries, one mission — a place to belong, a people to become." },
-];
+const valueIcons = [Heart, Users, Compass, Flame];
 
 const About = () => {
+  const { t } = useLanguage();
+  const values = t.about.values.map((v, i) => ({ ...v, Icon: valueIcons[i] ?? Heart }));
+  const timeline = t.about.timeline;
   return (
     <>
       <PageHero
-        eyebrow="Our story"
-        title={<>One family.<br className="hidden md:block" /> Two cities. One mission.</>}
-        subtitle="From a living-room prayer meeting to a vibrant church across Casablanca and Rabat — this is how Eschatos came to be."
+        eyebrow={t.about.eyebrow}
+        title={<>{t.about.title1}<br className="hidden md:block" /> {t.about.title2}</>}
+        subtitle={t.about.subtitle}
         image={aboutImg}
       />
 
@@ -33,16 +24,16 @@ const About = () => {
       <section className="bg-background py-24 md:py-32">
         <div className="mx-auto grid max-w-6xl gap-16 px-6 md:px-10 lg:grid-cols-3">
           <div>
-            <p className="eyebrow mb-4">Mission</p>
-            <h2 className="font-display text-3xl leading-tight">To make disciples of Jesus who love God, love people, and serve Morocco.</h2>
+            <p className="eyebrow mb-4">{t.about.mission.eyebrow}</p>
+            <h2 className="font-display text-3xl leading-tight">{t.about.mission.body}</h2>
           </div>
           <div>
-            <p className="eyebrow mb-4">Vision</p>
-            <h2 className="font-display text-3xl leading-tight">A flourishing church in every Moroccan city — passionate for Christ and His coming.</h2>
+            <p className="eyebrow mb-4">{t.about.vision.eyebrow}</p>
+            <h2 className="font-display text-3xl leading-tight">{t.about.vision.body}</h2>
           </div>
           <div>
-            <p className="eyebrow mb-4">Heart</p>
-            <h2 className="font-display text-3xl leading-tight">"Eschatos" — the last days. We live with eternity in view and joy in the present.</h2>
+            <p className="eyebrow mb-4">{t.about.heart.eyebrow}</p>
+            <h2 className="font-display text-3xl leading-tight">{t.about.heart.body}</h2>
           </div>
         </div>
 
@@ -65,8 +56,8 @@ const About = () => {
       {/* Timeline */}
       <section className="bg-secondary/40 py-24 md:py-32">
         <div className="mx-auto max-w-4xl px-6 md:px-10">
-          <p className="eyebrow mb-4">Our journey</p>
-          <h2 className="mb-16 font-display text-4xl md:text-5xl">A decade of grace.</h2>
+          <p className="eyebrow mb-4">{t.about.journey.eyebrow}</p>
+          <h2 className="mb-16 font-display text-4xl md:text-5xl">{t.about.journey.title}</h2>
           <ol className="relative border-l border-accent/40">
             {timeline.map((it) => (
               <li key={it.year} className="mb-12 ml-8 last:mb-0">
@@ -82,12 +73,12 @@ const About = () => {
       {/* Locations */}
       <section className="bg-background py-24 md:py-32">
         <div className="mx-auto max-w-6xl px-6 md:px-10">
-          <p className="eyebrow mb-4">Where we gather</p>
-          <h2 className="mb-16 font-display text-4xl md:text-5xl">Two homes across Morocco.</h2>
+          <p className="eyebrow mb-4">{t.about.locations.eyebrow}</p>
+          <h2 className="mb-16 font-display text-4xl md:text-5xl">{t.about.locations.title}</h2>
           <div className="grid gap-10 md:grid-cols-2">
             {[
-              { img: casaImg, name: "Casablanca", role: "Main Church", line1: "12 Rue Tahar Sebti, Casablanca", line2: "Sundays · 10:30 & 17:00" },
-              { img: rabatImg, name: "Rabat", role: "Branch", line1: "45 Avenue Mohammed V, Rabat", line2: "Sundays · 11:00" },
+              { img: casaImg, name: "Casablanca", role: t.about.casaRole, line1: "12 Rue Tahar Sebti, Casablanca", line2: t.about.casaSchedule },
+              { img: rabatImg, name: "Rabat", role: t.about.rabatRole, line1: "45 Avenue Mohammed V, Rabat", line2: t.about.rabatSchedule },
             ].map((c) => (
               <article key={c.name} className="group overflow-hidden rounded-2xl bg-card shadow-soft transition-all duration-500 hover:shadow-elegant">
                 <div className="aspect-[4/3] overflow-hidden">
