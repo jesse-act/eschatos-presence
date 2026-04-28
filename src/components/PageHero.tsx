@@ -16,7 +16,7 @@ const PageHero = ({ eyebrow, title, subtitle, image, align = "center", enablePar
   const reducedMotion = useReducedMotion();
 
   return (
-    <section className="sacred-grain relative isolate overflow-hidden pt-32 md:pt-40 pb-20 md:pb-28 text-primary-foreground">
+    <section className="sacred-grain relative isolate overflow-hidden pt-40 md:pt-52 lg:pt-56 pb-20 md:pb-28 text-primary-foreground">
       <div className="absolute inset-0 -z-10">
         <img
           src={image}
@@ -36,7 +36,7 @@ const PageHero = ({ eyebrow, title, subtitle, image, align = "center", enablePar
             dpr={[1, 1.5]}
           >
             <ambientLight intensity={0.5} />
-            <LightParticles count={120} spread={9} size={0.02} color="#FFFFFF" />
+            <LightParticles count={200} spread={10} size={0.035} color="#FFFFFF" />
           </Scene3D>
         </div>
       )}

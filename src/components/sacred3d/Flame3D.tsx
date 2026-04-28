@@ -28,16 +28,16 @@ const Flame3D = ({ position = [0, 0, 0], scale = 1 }: Flame3DProps) => {
   return (
     <group position={position} scale={scale}>
       <mesh ref={meshRef}>
-        <coneGeometry args={[0.3, 0.9, 16]} />
-        <meshBasicMaterial color="#E10600" transparent opacity={0.5} />
+        <coneGeometry args={[0.32, 1.0, 20]} />
+        <meshBasicMaterial color="#E10600" transparent opacity={0.55} blending={2 /* AdditiveBlending */} />
       </mesh>
-      <mesh ref={innerRef} position={[0, 0.05, 0]}>
-        <coneGeometry args={[0.18, 0.7, 16]} />
-        <meshBasicMaterial color="#FF8C00" transparent opacity={0.8} />
+      <mesh ref={innerRef} position={[0, 0.06, 0]}>
+        <coneGeometry args={[0.2, 0.8, 20]} />
+        <meshBasicMaterial color="#FF8C00" transparent opacity={0.8} blending={2} />
       </mesh>
-      <mesh position={[0, 0.1, 0]}>
-        <coneGeometry args={[0.08, 0.5, 16]} />
-        <meshBasicMaterial color="#FFFFFF" transparent opacity={1} />
+      <mesh position={[0, 0.12, 0]}>
+        <coneGeometry args={[0.1, 0.6, 20]} />
+        <meshBasicMaterial color="#FFFFFF" transparent opacity={0.95} blending={2} />
       </mesh>
     </group>
   );

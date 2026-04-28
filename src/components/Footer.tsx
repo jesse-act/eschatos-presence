@@ -71,6 +71,7 @@ const Footer = () => {
               { to: "/visit", label: t.nav.join },
               { to: "/ministries", label: t.nav.ministries },
               { to: "/sermons", label: t.nav.sermons },
+              { to: "/temoignages", label: t.nav.testimonies },
               { to: "/live", label: t.nav.live },
               { to: "/events", label: t.nav.events },
               { to: "/donate", label: t.nav.donate },
@@ -163,9 +164,9 @@ const Footer = () => {
       <div className="border-t border-primary-foreground/10">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-6 py-6 text-xs text-primary-foreground/60 md:flex-row md:items-center md:justify-between md:px-10">
           <p>© {year} Eschatos Church. {t.footer.rights}</p>
-          <p className="font-display tracking-wide flex items-center gap-2 justify-center md:justify-end">
-            <FlamePulse size={14} />
-            "Maranatha — The Lord is coming."
+          <p className="font-script text-2xl md:text-3xl text-accent flex items-center gap-3 justify-center md:justify-end leading-none">
+            <FlamePulse size={16} />
+            Maranatha — The Lord is coming.
           </p>
         </div>
       </div>

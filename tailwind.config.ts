@@ -14,8 +14,18 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['"Cormorant Garamond"', 'ui-serif', 'Georgia', 'serif'],
-        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        // Cinzel — Roman ecclesiastical inscriptions (cathedrals, Pantocrator) — display
+        display: ['Cinzel', 'ui-serif', 'Georgia', 'serif'],
+        // Cormorant Garamond — Renaissance illuminated manuscripts — scripture verses (italic)
+        editorial: ['"Cormorant Garamond"', 'ui-serif', 'Georgia', 'serif'],
+        // EB Garamond — Geneva Bible / Vatican press lineage — body, UI, paragraphs
+        // (replaces Inter — every word on the site now reads like a sacred page)
+        sans: ['"EB Garamond"', '"Cormorant Garamond"', 'ui-serif', 'Georgia', 'serif'],
+        body: ['"EB Garamond"', '"Cormorant Garamond"', 'ui-serif', 'Georgia', 'serif'],
+        // Cardo — biblical scholarship typeface (Greek/Hebrew/Coptic glyphs) — liturgical labels
+        liturgical: ['Cardo', 'ui-serif', 'Georgia', 'serif'],
+        // Tangerine — calligraphic flourish, the wind of the Spirit — rare ornament
+        script: ['Tangerine', 'cursive'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -174,6 +184,20 @@ export default {
         heartbeat: "heartbeat 1.4s ease-in-out infinite",
         ascend: "ascend 1.4s cubic-bezier(0.16, 1, 0.3, 1) both",
         "flame-flicker": "flame-flicker 4s ease-in-out infinite",
+        "procession-rise": "procession-rise 1.1s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "altar-pulse": "altar-pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        litany: "litany 0.8s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "veil-part": "veil-part 0.7s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "benediction-pass": "benediction-pass 1.6s cubic-bezier(0.4, 0, 0.6, 1)",
+        "text-rise": "text-rise 1s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "word-rise": "word-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "letter-settle": "letter-settle 1.1s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "title-bloom": "title-bloom 1.3s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "eyebrow-spread": "eyebrow-spread 1s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "underline-draw": "underline-draw 1.2s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "ink-rise": "ink-rise 1.4s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "veil-split": "veil-split 0.9s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "dropcap-breath": "dropcap-breath 5s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
     },
   },

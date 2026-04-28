@@ -131,11 +131,23 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    font-feature-settings: "ss01", "cv11";
+    /* EB Garamond classical ligatures + lining figures for sacred reading */
+    font-feature-settings: "liga", "kern", "lnum";
+    /* Slight bump — EB Garamond has lower x-height than Inter, needs +1px for matched perceived size */
+    font-size: 17px;
   }
 
+  /* Cinzel — Roman engraved capitals: looser tracking, tighter leading */
   h1, h2, h3, h4 {
-    @apply font-display tracking-tight;
+    @apply font-display;
+    letter-spacing: 0.015em;
+    line-height: 1.08;
+  }
+  h1 { letter-spacing: 0.008em; }
+
+  /* Inputs, buttons, textareas inherit body sacred serif */
+  input, textarea, select, button {
+    font-family: inherit;
   }
 }
 
@@ -270,6 +282,28 @@
   .reverence {
     padding-block: clamp(6rem, 12vw, 10rem);
   }
+
+  /* Vertical-text utility for editorial date strips (magazine masthead style) */
+  .writing-vertical-rl {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  /* OpenType features — activate ligatures + small caps + tabular numbers
+     globally on the sacred font stack. Cinzel + EB Garamond + Cardo respond
+     well to dlig/liga/smcp/onum and the visual lift is significant. */
+  .font-display {
+    font-feature-settings: "liga" 1, "dlig" 1, "calt" 1, "kern" 1;
+  }
+  .font-body {
+    font-feature-settings: "liga" 1, "dlig" 1, "onum" 1, "kern" 1;
+  }
+  .font-liturgical {
+    font-feature-settings: "smcp" 1, "c2sc" 1, "tnum" 1, "kern" 1;
+  }
+  .font-editorial {
+    font-feature-settings: "liga" 1, "dlig" 1, "kern" 1;
+  }
 }
 
 @keyframes breath {
@@ -320,6 +354,108 @@
   75% { transform: scale(1.02) rotate(-0.5deg); opacity: 0.98; }
 }
 
+/* Navbar — procession reveal (links rise & fade in like illuminated ink settling on parchment) */
+@keyframes procession-rise {
+  0% { opacity: 0; transform: translateY(12px); letter-spacing: 0.4em; filter: blur(4px); }
+  60% { filter: blur(0); }
+  100% { opacity: 1; transform: translateY(0); letter-spacing: 0.24em; filter: blur(0); }
+}
+
+/* Navbar — dingbat genuflection (cross bows when scrolling, like a slow bow of reverence) */
+@keyframes genuflect {
+  0%, 100% { transform: translateY(-50%) rotate(0deg); opacity: 0.25; }
+  50% { transform: translateY(-50%) rotate(0deg); opacity: 0.45; }
+}
+
+/* Navbar — manuscript ink flow (the central altar dot pulses, ink seeps outward) */
+@keyframes altar-pulse {
+  0%, 100% { opacity: 0.55; transform: scaleX(1); }
+  50% { opacity: 1; transform: scaleX(1.15); }
+}
+
+/* Navbar — pinstripe descent (vertical column ink flows down on logo hover) */
+@keyframes pinstripe-flow {
+  0% { background-position: 0 -100%; }
+  100% { background-position: 0 100%; }
+}
+
+/* Navbar — mobile link procession (each line rises in sequence like a litany) */
+@keyframes litany {
+  0% { opacity: 0; transform: translateX(-24px); filter: blur(6px); }
+  60% { filter: blur(0); }
+  100% { opacity: 1; transform: translateX(0); filter: blur(0); }
+}
+
+/* Navbar — sheet veil (mobile sheet enters as a parted veil, not a slide) */
+@keyframes veil-part {
+  0% { opacity: 0; clip-path: inset(0 50% 0 50%); }
+  100% { opacity: 1; clip-path: inset(0 0 0 0); }
+}
+
+/* Navbar — route-change benediction (subtle horizontal shimmer on the manuscript rule) */
+@keyframes benediction-pass {
+  0% { transform: translateX(-100%); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateX(100%); opacity: 0; }
+}
+
+/* Text reveal — paragraph rises from below with blur clearing (settling ink) */
+@keyframes text-rise {
+  0% { opacity: 0; transform: translateY(28px); filter: blur(6px); }
+  60% { filter: blur(0); }
+  100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+/* Word cascade — each word rises in sequence (use with stagger via animation-delay) */
+@keyframes word-rise {
+  0% { opacity: 0; transform: translateY(0.5em); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Letter cascade — each letter ascends with letter-spacing collapse (calligraphic settle) */
+@keyframes letter-settle {
+  0% { opacity: 0; transform: translateY(0.4em); letter-spacing: 0.3em; filter: blur(4px); }
+  60% { filter: blur(0); letter-spacing: 0.05em; }
+  100% { opacity: 1; transform: translateY(0); letter-spacing: 0; filter: blur(0); }
+}
+
+/* Title bloom — letter-spacing expands from tight to designed (engraving in motion) */
+@keyframes title-bloom {
+  0% { opacity: 0; letter-spacing: -0.05em; transform: translateY(12px); }
+  100% { opacity: 1; letter-spacing: 0; transform: translateY(0); }
+}
+
+/* Eyebrow spread — small caps tracking widens out (ceremonial roll-out) */
+@keyframes eyebrow-spread {
+  0% { opacity: 0; letter-spacing: 0; transform: translateY(8px); }
+  100% { opacity: 1; letter-spacing: 0.32em; transform: translateY(0); }
+}
+
+/* Underline draw — left-to-right sweep (signature flourish) */
+@keyframes underline-draw {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+
+/* Ink fill — vertical mask sweep upward (the manuscript ink rising) */
+@keyframes ink-rise {
+  0% { clip-path: inset(100% 0 0 0); opacity: 0; }
+  20% { opacity: 1; }
+  100% { clip-path: inset(0 0 0 0); opacity: 1; }
+}
+
+/* Veil split — clip-path opens horizontally from center */
+@keyframes veil-split {
+  0% { clip-path: inset(0 50% 0 50%); opacity: 0; }
+  100% { clip-path: inset(0 0 0 0); opacity: 1; }
+}
+
+/* Drop-cap glow — first-letter gets a slow accent breath */
+@keyframes dropcap-breath {
+  0%, 100% { text-shadow: 0 0 0 hsl(1 100% 44% / 0); }
+  50% { text-shadow: 0 0 24px hsl(1 100% 44% / 0.35); }
+}
+
 /* Respect reduced motion — covers BOTH custom utility classes and Tailwind animate-* utilities */
 @media (prefers-reduced-motion: reduce) {
   .breathe, .breathe-soft, .anoint, .heartbeat, .light-beam::before { animation: none; }
@@ -332,7 +468,26 @@
   [class*="animate-flame-flicker"],
   [class*="animate-fade-in"],
   [class*="animate-scale-in"],
-  [class*="animate-slow-zoom"] {
+  [class*="animate-slow-zoom"],
+  [class*="animate-procession"],
+  [class*="animate-genuflect"],
+  [class*="animate-altar-pulse"],
+  [class*="animate-litany"],
+  [class*="animate-veil-part"],
+  [class*="animate-benediction"],
+  [class*="animate-text-rise"],
+  [class*="animate-word-rise"],
+  [class*="animate-letter-settle"],
+  [class*="animate-title-bloom"],
+  [class*="animate-eyebrow-spread"],
+  [class*="animate-underline-draw"],
+  [class*="animate-ink-rise"],
+  [class*="animate-veil-split"],
+  [class*="animate-dropcap-breath"] {
     animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    clip-path: none !important;
   }
 }

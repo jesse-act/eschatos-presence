@@ -1,47 +1,41 @@
-import { useState } from "react";
-import { PlayCircle } from "lucide-react";
+import { useEffect, useState } from "react";
+import { PlayCircle, ExternalLink } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import { useLanguage } from "@/i18n/LanguageContext";
 import sermonsCover from "@/assets/sermons-cover.jpg";
-import { cn } from "@/lib/utils";
 import {
   LightBeam,
   ScriptureRef,
   SacredEyebrow,
   CrossWatermark,
-  BreathingDot,
 } from "@/components/sacred";
-
-type Sermon = {
-  id: string;
-  title: string;
-  speaker: string;
-  date: string;
-  category: "latest" | "popular";
-  youtubeId: string;
-};
-
-const sermons: Sermon[] = [
-  { id: "1", title: "The God Who Sees You", speaker: "Ps. Daniel Amrani", date: "Apr 21, 2026", category: "latest", youtubeId: "dQw4w9WgXcQ" },
-  { id: "2", title: "Anchored in Hope", speaker: "Ps. Sarah Bensaid", date: "Apr 14, 2026", category: "latest", youtubeId: "jNQXAC9IVRw" },
-  { id: "3", title: "When Faith Feels Heavy", speaker: "Ps. Daniel Amrani", date: "Apr 07, 2026", category: "latest", youtubeId: "9bZkp7q19f0" },
-  { id: "4", title: "Belong Before You Believe", speaker: "Ps. Karim Tazi", date: "Mar 31, 2026", category: "popular", youtubeId: "tVj0ZTS4WF4" },
-  { id: "5", title: "The Wild Generosity of God", speaker: "Ps. Sarah Bensaid", date: "Mar 24, 2026", category: "popular", youtubeId: "kJQP7kiw5Fk" },
-  { id: "6", title: "Maranatha — He is Coming", speaker: "Ps. Daniel Amrani", date: "Mar 17, 2026", category: "popular", youtubeId: "OPf0YbXqDm0" },
-];
+import { RevealOnView } from "@/components/animation";
+import {
+  VIDEOS,
+  channelUrl,
+  embedUrl,
+  formatPublishedDate,
+  type Video,
+} from "@/data/videos";
 
 const Sermons = () => {
-  const { t } = useLanguage();
-  const [filter, setFilter] = useState<"latest" | "popular" | "all">("latest");
-  const [active, setActive] = useState<Sermon | null>(null);
+  const { t, lang } = useLanguage();
+  const [active, setActive] = useState<Video | null>(null);
 
-  const filtered = sermons.filter((s) => filter === "all" || s.category === filter);
-
-  const tabs: { key: "latest" | "popular" | "all"; label: string }[] = [
-    { key: "latest", label: t.sermons.tabs.latest },
-    { key: "popular", label: t.sermons.tabs.popular },
-    { key: "all", label: t.sermons.tabs.all },
-  ];
+  // Lock body scroll while the modal is open + close on Escape.
+  useEffect(() => {
+    if (!active) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setActive(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [active]);
 
   return (
     <>
@@ -57,69 +51,115 @@ const Sermons = () => {
         <LightBeam intensity="soft" />
         <div className="relative z-10 mx-auto max-w-5xl px-6 md:px-10">
           <div className="mb-8 flex justify-center">
-            <SacredEyebrow variant="light">La Parole vivante</SacredEyebrow>
+            <RevealOnView variant="eyebrow-spread">
+              <SacredEyebrow variant="light">La Parole vivante</SacredEyebrow>
+            </RevealOnView>
           </div>
-          <ScriptureRef
-            verse="Toute Écriture est inspirée de Dieu, et utile pour enseigner, pour convaincre, pour corriger, pour instruire dans la justice."
-            reference="2 Timothée 3:16"
-            size="lg"
-            align="center"
-            className="text-primary-foreground"
-          />
+          <RevealOnView variant="ink-rise" delay={120}>
+            <ScriptureRef
+              verse="Toute Écriture est inspirée de Dieu, et utile pour enseigner, pour convaincre, pour corriger, pour instruire dans la justice."
+              reference="2 Timothée 3:16"
+              size="lg"
+              align="center"
+              className="text-primary-foreground"
+            />
+          </RevealOnView>
         </div>
       </section>
 
       <section className="bg-background py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6 md:px-10">
-          {/* Tabs */}
-          <div className="mb-12 flex flex-wrap items-center gap-2">
-            {tabs.map((tab) => (
-              <button
-                key={tab.key}
-                type="button"
-                onClick={() => setFilter(tab.key)}
-                className={cn(
-                  "rounded-full border px-5 py-2 text-sm font-medium transition-all",
-                  filter === tab.key
-                    ? "border-accent bg-accent text-accent-foreground shadow-elegant shadow-anoint"
-                    : "border-border bg-card text-foreground/70 hover:border-accent hover:text-foreground",
-                )}
+          {VIDEOS.length === 0 ? (
+            <RevealOnView variant="rise" className="py-20 text-center">
+              <p className="font-editorial italic text-lg text-muted-foreground">
+                {lang === "fr"
+                  ? "Les vidéos seront bientôt disponibles."
+                  : "Videos will be available soon."}
+              </p>
+              <a
+                href={channelUrl()}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-6 inline-flex items-center gap-2 border-b border-foreground/30 pb-1 font-liturgical text-[10px] font-bold uppercase tracking-[0.4em] text-foreground transition-[letter-spacing,border-color] duration-500 hover:tracking-[0.5em] hover:border-accent hover:text-accent"
               >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((s) => (
-              <button
-                key={s.id}
-                type="button"
-                onClick={() => setActive(s)}
-                className="group text-left"
-              >
-                <div className="relative aspect-video overflow-hidden rounded-2xl border border-transparent shadow-soft transition-all duration-500 group-hover:border-accent group-hover:shadow-elegant group-hover:shadow-anoint">
-                  <img
-                    src={`https://i.ytimg.com/vi/${s.youtubeId}/hqdefault.jpg`}
-                    alt={s.title}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                {lang === "fr" ? "Visiter notre chaîne YouTube" : "Visit our YouTube channel"}
+                <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+              </a>
+            </RevealOnView>
+          ) : (
+            <>
+              <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
+                <div>
+                  <SacredEyebrow>
+                    {lang === "fr" ? "Dernières prédications" : "Latest sermons"}
+                  </SacredEyebrow>
+                  <p className="mt-3 font-editorial italic text-base text-muted-foreground">
+                    {lang === "fr"
+                      ? `${VIDEOS.length} vidéos · directement depuis notre chaîne YouTube`
+                      : `${VIDEOS.length} videos · straight from our YouTube channel`}
+                  </p>
+                </div>
+                <a
+                  href={channelUrl()}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group inline-flex items-center gap-2 border-b border-foreground/30 pb-1 font-liturgical text-[10px] font-bold uppercase tracking-[0.4em] text-foreground transition-[letter-spacing,border-color] duration-500 hover:tracking-[0.5em] hover:border-accent hover:text-accent"
+                >
+                  {lang === "fr" ? "Voir toute la chaîne" : "View full channel"}
+                  <ExternalLink
+                    className="h-3.5 w-3.5 transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                    aria-hidden="true"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent transition-opacity duration-500 group-hover:from-primary/60" />
-                  <PlayCircle className="absolute inset-0 m-auto h-14 w-14 text-accent drop-shadow-sm transition-transform duration-500 group-hover:scale-110 animate-breath-soft" />
-                </div>
-                <div className="mt-5">
-                  <SacredEyebrow>{s.date}</SacredEyebrow>
-                  <h3 className="mt-2 font-display text-2xl leading-snug">{s.title}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">{s.speaker}</p>
-                </div>
-              </button>
-            ))}
-          </div>
+                </a>
+              </div>
+
+              <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                {VIDEOS.map((v, i) => (
+                  <RevealOnView key={v.id} variant="rise" delay={i * 80}>
+                    <button
+                      type="button"
+                      onClick={() => setActive(v)}
+                      className="group w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                      aria-label={`${lang === "fr" ? "Lire la vidéo" : "Play video"}: ${v.title}`}
+                    >
+                      <div className="relative aspect-video overflow-hidden rounded-2xl border border-transparent shadow-soft transition-all duration-500 group-hover:border-accent group-hover:shadow-elegant group-hover:shadow-anoint">
+                        <img
+                          src={v.thumbnail}
+                          alt=""
+                          loading="lazy"
+                          width={480}
+                          height={360}
+                          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent transition-opacity duration-500 group-hover:from-primary/60" />
+                        <PlayCircle
+                          className="absolute inset-0 m-auto h-14 w-14 text-accent drop-shadow-sm transition-transform duration-500 group-hover:scale-110 animate-breath-soft"
+                          aria-hidden="true"
+                        />
+                      </div>
+                      <div className="mt-5">
+                        <SacredEyebrow>
+                          {formatPublishedDate(v.publishedAt, lang)}
+                        </SacredEyebrow>
+                        <h3 className="mt-2 font-display text-2xl leading-snug line-clamp-2">
+                          {v.title}
+                        </h3>
+                        {v.author && (
+                          <p className="mt-1 font-editorial italic text-sm text-muted-foreground">
+                            {v.author}
+                          </p>
+                        )}
+                      </div>
+                    </button>
+                  </RevealOnView>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </section>
 
-      {/* Modal */}
+      {/* Video modal */}
       {active && (
         <div
           role="dialog"
@@ -136,23 +176,29 @@ const Sermons = () => {
             <div className="aspect-video w-full">
               <iframe
                 title={active.title}
-                src={`https://www.youtube.com/embed/${active.youtubeId}?autoplay=1`}
+                src={embedUrl(active.id, true)}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 className="h-full w-full"
               />
             </div>
-            <div className="flex items-center justify-between p-6">
-              <div>
-                <h3 className="font-display text-2xl">{active.title}</h3>
-                <p className="text-sm text-muted-foreground">{active.speaker} · {active.date}</p>
+            <div className="flex items-center justify-between gap-4 p-6">
+              <div className="min-w-0">
+                <h3 className="font-display text-2xl leading-tight line-clamp-2">
+                  {active.title}
+                </h3>
+                <p className="mt-1 font-editorial italic text-sm text-muted-foreground">
+                  {active.author}
+                  {active.author ? " · " : ""}
+                  {formatPublishedDate(active.publishedAt, lang)}
+                </p>
               </div>
               <button
                 type="button"
                 onClick={() => setActive(null)}
-                className="rounded-full border border-border px-4 py-2 text-sm font-medium hover:border-accent hover:text-accent"
+                className="shrink-0 rounded-full border border-border px-4 py-2 text-sm font-medium hover:border-accent hover:text-accent"
               >
-                Close
+                {t.common.close}
               </button>
             </div>
           </div>

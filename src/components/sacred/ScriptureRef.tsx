@@ -27,16 +27,17 @@ const ScriptureRef = ({
     <figure className={cn("max-w-4xl", alignClass, className)}>
       <blockquote
         className={cn(
-          "font-display leading-[1.1] tracking-tight text-balance",
+          // Editorial serif (Cormorant Garamond) — better for long-form verse than Cinzel capitals
+          "font-editorial leading-[1.15] tracking-tight text-balance italic",
           sizeClasses,
         )}
       >
-        <span aria-hidden="true" className="mr-2 align-top text-accent">
-          "
+        <span aria-hidden="true" className="mr-1 font-script text-5xl md:text-7xl text-accent leading-none align-top">
+          &ldquo;
         </span>
         {verse}
-        <span aria-hidden="true" className="ml-1 align-top text-accent">
-          "
+        <span aria-hidden="true" className="ml-1 font-script text-5xl md:text-7xl text-accent leading-none align-top">
+          &rdquo;
         </span>
       </blockquote>
       <figcaption className="mt-6 text-xs font-medium uppercase tracking-[0.32em] text-accent">

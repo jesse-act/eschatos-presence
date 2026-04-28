@@ -80,13 +80,15 @@ const Leadership = () => {
             <SanctuaryLights />
             <Cross3D
               position={[0, 0.5, 0]}
-              scale={1.3}
-              rotationSpeed={0.05}
-              color="#1a1a1a"
-              metalness={0.25}
-              roughness={0.7}
+              scale={1.4}
+              rotationSpeed={0.15}
+              color="#fafafa"
+              metalness={0.65}
+              roughness={0.3}
+              emissive="#E10600"
+              emissiveIntensity={0.4}
             />
-            <LightParticles count={100} spread={7} size={0.022} />
+            <LightParticles count={200} spread={9} size={0.045} />
           </Scene3D>
         </div>
 

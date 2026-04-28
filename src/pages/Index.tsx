@@ -10,7 +10,8 @@ import {
   CrossWatermark,
   VeilDivider,
 } from "@/components/sacred";
-import { Scene3D, Cross3D, LightParticles, SanctuaryLights } from "@/components/sacred3d";
+import { Scene3D, Cross3D, LightParticles, SanctuaryLights, Flame3D } from "@/components/sacred3d";
+import { RevealOnView, SplitText } from "@/components/animation";
 import heroImg from "@/assets/hero-worship.jpg";
 
 const Index = () => {
@@ -33,6 +34,29 @@ const Index = () => {
         </div>
 
         <LightBeam intensity="bold" />
+
+        {/* Hero 3D layer — visible cross floating + light particles */}
+        <div aria-hidden="true" className="absolute inset-0 z-[1] pointer-events-none">
+          <Scene3D
+            className="h-full w-full"
+            camera={{ position: [0, 0, 5], fov: 55 }}
+            dpr={[1, 1.5]}
+          >
+            <SanctuaryLights />
+            <LightParticles count={220} spread={11} size={0.04} color="#ffffff" />
+            <group position={[3.5, 0.8, 0]}>
+              <Cross3D
+                scale={0.85}
+                rotationSpeed={0.25}
+                color="#ffffff"
+                metalness={0.65}
+                roughness={0.3}
+                emissive="#E10600"
+                emissiveIntensity={0.4}
+              />
+            </group>
+          </Scene3D>
+        </div>
 
         <div className="relative z-[2] mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-end px-6 pb-24 pt-40 md:px-10 md:pb-32">
           <SacredEyebrow variant="light" className="mb-8">{t.hero.eyebrow}</SacredEyebrow>
@@ -73,20 +97,28 @@ const Index = () => {
       {/* ACT II — BREATH (welcome / belonging) */}
       <section className="bg-background reverence">
         <div className="mx-auto max-w-4xl px-6 md:px-10 text-center">
-          <SacredEyebrow className="mb-8 justify-center">{t.intro.eyebrow}</SacredEyebrow>
-          <h2 className="font-display text-4xl leading-[1.1] text-balance md:text-6xl lg:text-7xl animate-ascend">
-            {t.intro.title}
-          </h2>
-          <p className="mx-auto mt-10 max-w-2xl text-base leading-[1.75] text-muted-foreground md:text-lg">
-            {t.intro.body}
-          </p>
-          <div className="mt-12 flex justify-center">
-            <Button asChild variant="hero" size="lg" className="glory">
-              <Link to="/about">
-                {t.intro.cta} <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
+          <RevealOnView variant="eyebrow-spread" threshold={0.2}>
+            <SacredEyebrow className="mb-8 justify-center">{t.intro.eyebrow}</SacredEyebrow>
+          </RevealOnView>
+          <RevealOnView variant="title-bloom" delay={120} threshold={0.2}>
+            <h2 className="font-display text-4xl leading-[1.1] text-balance md:text-6xl lg:text-7xl animate-ascend">
+              {t.intro.title}
+            </h2>
+          </RevealOnView>
+          <RevealOnView variant="rise" delay={240} threshold={0.2}>
+            <p className="mx-auto mt-10 max-w-2xl text-base leading-[1.75] text-muted-foreground md:text-lg">
+              {t.intro.body}
+            </p>
+          </RevealOnView>
+          <RevealOnView variant="rise" delay={360} threshold={0.2}>
+            <div className="mt-12 flex justify-center">
+              <Button asChild variant="hero" size="lg" className="glory">
+                <Link to="/about">
+                  {t.intro.cta} <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+          </RevealOnView>
         </div>
       </section>
 
@@ -102,31 +134,37 @@ const Index = () => {
             <SanctuaryLights />
             <Cross3D
               position={[0, 0, 0]}
-              scale={1.4}
-              rotationSpeed={0.08}
-              color="#0a0a0a"
-              metalness={0.3}
-              roughness={0.6}
+              scale={1.5}
+              rotationSpeed={0.18}
+              color="#fafafa"
+              metalness={0.65}
+              roughness={0.3}
+              emissive="#E10600"
+              emissiveIntensity={0.4}
             />
-            <LightParticles count={140} spread={8} size={0.03} />
+            <LightParticles count={250} spread={10} size={0.045} />
           </Scene3D>
         </div>
 
         <LightBeam intensity="medium" />
         <div className="relative z-10 mx-auto max-w-5xl px-6 md:px-10 w-full">
           <VeilDivider className="mb-16" />
-          <div className="mb-10 flex justify-center">
-            <SacredEyebrow variant="light">
-              {lang === "fr" ? "Sa présence" : "His presence"}
-            </SacredEyebrow>
-          </div>
-          <ScriptureRef
-            verse={t.scripture.verse}
-            reference={t.scripture.ref}
-            size="xl"
-            align="center"
-            className="text-primary-foreground"
-          />
+          <RevealOnView variant="eyebrow-spread" threshold={0.2}>
+            <div className="mb-10 flex justify-center">
+              <SacredEyebrow variant="light">
+                {lang === "fr" ? "Sa présence" : "His presence"}
+              </SacredEyebrow>
+            </div>
+          </RevealOnView>
+          <RevealOnView variant="ink-rise" delay={200} threshold={0.2}>
+            <ScriptureRef
+              verse={t.scripture.verse}
+              reference={t.scripture.ref}
+              size="xl"
+              align="center"
+              className="text-primary-foreground"
+            />
+          </RevealOnView>
           <VeilDivider className="mt-16" />
         </div>
       </section>
@@ -134,22 +172,41 @@ const Index = () => {
       {/* ACT IV — FIRE (a single voice / testimony) */}
       <section className="bg-background reverence">
         <div className="mx-auto max-w-4xl px-6 md:px-10">
-          <div className="mb-10 flex justify-center">
-            <SacredEyebrow>
-              {lang === "fr" ? "Témoignage" : "Testimony"}
-            </SacredEyebrow>
-          </div>
-          <blockquote className="font-display text-3xl leading-[1.2] text-balance text-foreground md:text-4xl lg:text-5xl text-center">
-            <span aria-hidden="true" className="text-accent mr-2 align-top">"</span>
-            {t.testimonials.items[0].quote}
-            <span aria-hidden="true" className="text-accent ml-1 align-top">"</span>
-          </blockquote>
-          <figcaption className="mt-12 text-center">
-            <span className="inline-flex items-center gap-3 text-xs font-medium uppercase tracking-[0.32em] text-muted-foreground">
-              <BreathingDot variant="muted" />
-              {t.testimonials.items[0].name}
-            </span>
-          </figcaption>
+          <RevealOnView variant="eyebrow-spread" threshold={0.2}>
+            <div className="mb-10 flex justify-center">
+              <SacredEyebrow>
+                {lang === "fr" ? "Témoignage" : "Testimony"}
+              </SacredEyebrow>
+            </div>
+          </RevealOnView>
+          <RevealOnView variant="ink-rise" delay={200} threshold={0.2}>
+            <blockquote className="font-display text-3xl leading-[1.2] text-balance text-foreground md:text-4xl lg:text-5xl text-center">
+              <span aria-hidden="true" className="text-accent mr-2 align-top">"</span>
+              {t.testimonials.items[0].quote}
+              <span aria-hidden="true" className="text-accent ml-1 align-top">"</span>
+            </blockquote>
+          </RevealOnView>
+          <RevealOnView variant="rise" delay={360} threshold={0.2}>
+            <figcaption className="mt-12 text-center">
+              <span className="inline-flex items-center gap-3 text-xs font-medium uppercase tracking-[0.32em] text-muted-foreground">
+                <BreathingDot variant="muted" />
+                {t.testimonials.items[0].name}
+              </span>
+            </figcaption>
+          </RevealOnView>
+          <RevealOnView variant="rise" delay={480} threshold={0.2}>
+            <div className="mt-12 flex justify-center">
+              <Link
+                to="/temoignages"
+                className="group inline-flex items-center gap-2 font-liturgical text-[10px] font-bold uppercase tracking-[0.32em] text-foreground/70 transition-[letter-spacing,color] duration-500 ease-[var(--ease-divine)] hover:tracking-[0.4em] hover:text-accent"
+              >
+                {lang === "fr" ? "Lire tous les témoignages" : "Read all testimonies"}
+                <span aria-hidden="true" className="inline-block transition-transform duration-500 ease-[var(--ease-divine)] group-hover:translate-x-1">
+                  →
+                </span>
+              </Link>
+            </div>
+          </RevealOnView>
         </div>
       </section>
 
@@ -158,36 +215,48 @@ const Index = () => {
         <CrossWatermark opacity={0.04} />
         <LightBeam intensity="soft" />
         <div className="relative z-10 mx-auto max-w-5xl px-6 md:px-10 text-center text-primary-foreground">
-          <SacredEyebrow variant="light" className="mb-8 justify-center">
-            {lang === "fr" ? "Bénédiction" : "Benediction"}
-          </SacredEyebrow>
-          <h2 className="font-display text-5xl leading-[1.05] text-balance md:text-7xl">
-            {t.giveCta.title}
-          </h2>
-          <p className="mx-auto mt-8 max-w-xl text-base leading-relaxed text-primary-foreground/75 md:text-lg">
-            {t.giveCta.body}
-          </p>
+          <RevealOnView variant="eyebrow-spread" threshold={0.2}>
+            <SacredEyebrow variant="light" className="mb-8 justify-center">
+              {lang === "fr" ? "Bénédiction" : "Benediction"}
+            </SacredEyebrow>
+          </RevealOnView>
+          <RevealOnView variant="title-bloom" delay={120} threshold={0.2}>
+            <h2 className="font-display text-5xl leading-[1.05] text-balance md:text-7xl">
+              {t.giveCta.title}
+            </h2>
+          </RevealOnView>
+          <RevealOnView variant="rise" delay={240} threshold={0.2}>
+            <p className="mx-auto mt-8 max-w-xl text-base leading-relaxed text-primary-foreground/75 md:text-lg">
+              {t.giveCta.body}
+            </p>
+          </RevealOnView>
 
           {/* Three quiet links — not cards */}
           <div className="mt-16 flex flex-col items-center gap-1 md:flex-row md:justify-center md:gap-12">
-            <Link to="/visit" className="group inline-flex items-center gap-3 py-3 text-sm uppercase tracking-[0.28em] text-primary-foreground/80 transition-colors hover:text-accent">
-              <MapPin className="h-4 w-4" />
-              <span className="border-b border-transparent group-hover:border-accent pb-0.5">
-                {lang === "fr" ? "Nous rendre visite" : "Plan your visit"}
-              </span>
-            </Link>
-            <Link to="/ministries" className="group inline-flex items-center gap-3 py-3 text-sm uppercase tracking-[0.28em] text-primary-foreground/80 transition-colors hover:text-accent">
-              <Users className="h-4 w-4" />
-              <span className="border-b border-transparent group-hover:border-accent pb-0.5">
-                {lang === "fr" ? "Rejoindre un ministère" : "Join a ministry"}
-              </span>
-            </Link>
-            <Link to="/donate" className="group inline-flex items-center gap-3 py-3 text-sm uppercase tracking-[0.28em] text-primary-foreground/80 transition-colors hover:text-accent">
-              <ArrowRight className="h-4 w-4" />
-              <span className="border-b border-transparent group-hover:border-accent pb-0.5">
-                {lang === "fr" ? "Apporter une offrande" : "Bring an offering"}
-              </span>
-            </Link>
+            <RevealOnView variant="rise" delay={360} threshold={0.2}>
+              <Link to="/visit" className="group inline-flex items-center gap-3 py-3 text-sm uppercase tracking-[0.28em] text-primary-foreground/80 transition-colors hover:text-accent">
+                <MapPin className="h-4 w-4" />
+                <span className="border-b border-transparent group-hover:border-accent pb-0.5">
+                  {lang === "fr" ? "Nous rendre visite" : "Plan your visit"}
+                </span>
+              </Link>
+            </RevealOnView>
+            <RevealOnView variant="rise" delay={480} threshold={0.2}>
+              <Link to="/ministries" className="group inline-flex items-center gap-3 py-3 text-sm uppercase tracking-[0.28em] text-primary-foreground/80 transition-colors hover:text-accent">
+                <Users className="h-4 w-4" />
+                <span className="border-b border-transparent group-hover:border-accent pb-0.5">
+                  {lang === "fr" ? "Rejoindre un ministère" : "Join a ministry"}
+                </span>
+              </Link>
+            </RevealOnView>
+            <RevealOnView variant="rise" delay={600} threshold={0.2}>
+              <Link to="/donate" className="group inline-flex items-center gap-3 py-3 text-sm uppercase tracking-[0.28em] text-primary-foreground/80 transition-colors hover:text-accent">
+                <ArrowRight className="h-4 w-4" />
+                <span className="border-b border-transparent group-hover:border-accent pb-0.5">
+                  {lang === "fr" ? "Apporter une offrande" : "Bring an offering"}
+                </span>
+              </Link>
+            </RevealOnView>
           </div>
         </div>
       </section>

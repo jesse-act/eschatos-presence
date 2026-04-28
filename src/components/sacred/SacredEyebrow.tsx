@@ -15,7 +15,8 @@ const SacredEyebrow = ({
   return (
     <p
       className={cn(
-        "inline-flex items-center gap-3 text-xs font-medium uppercase tracking-[0.32em]",
+        // Cardo — designed for biblical scholarship, more solemn than body
+        "font-liturgical inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[0.32em]",
         variant === "accent"
           ? "text-accent"
           : "text-primary-foreground/80",

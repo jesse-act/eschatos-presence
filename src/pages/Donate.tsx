@@ -18,6 +18,7 @@ import {
   LightParticles,
   SanctuaryLights,
 } from "@/components/sacred3d";
+import { RevealOnView, SplitText } from "@/components/animation";
 
 const presets = [100, 250, 500, 1000];
 const causeIcons = [HandHeart, Building2, Globe2];
@@ -54,30 +55,37 @@ const Donate = () => {
       <section className="bg-background py-20 md:py-28">
         <div className="mx-auto grid max-w-6xl gap-16 px-6 md:px-10 lg:grid-cols-5 lg:items-start">
           {/* Form */}
-          <form
-            onSubmit={onSubmit}
-            className="lg:col-span-3 rounded-2xl border border-border bg-card p-8 shadow-elegant md:p-10"
-          >
+          <RevealOnView variant="rise" delay={80} className="lg:col-span-3">
+            <form
+              onSubmit={onSubmit}
+              className="rounded-2xl border border-border bg-card p-8 shadow-elegant md:p-10"
+            >
             {/* Liturgical header — Malachi 3:10 lives within the offering */}
             <div className="mb-10 border-b border-border pb-8">
-              <SacredEyebrow className="mb-4">
-                {lang === "fr" ? "L'offrande" : "The offering"}
-              </SacredEyebrow>
-              <p className="font-display text-2xl leading-snug text-foreground md:text-3xl text-balance">
-                {lang === "fr"
-                  ? "Apportez à la maison du trésor toutes les dîmes."
-                  : "Bring the whole tithe into the storehouse."}
-              </p>
-              <p className="mt-3 text-xs uppercase tracking-[0.32em] text-accent">
-                {lang === "fr" ? "Malachie 3:10" : "Malachi 3:10"}
-              </p>
+              <RevealOnView variant="eyebrow-spread" delay={120}>
+                <SacredEyebrow className="mb-4">
+                  {lang === "fr" ? "L'offrande" : "The offering"}
+                </SacredEyebrow>
+              </RevealOnView>
+              <RevealOnView variant="ink-rise" delay={200}>
+                <p className="font-display text-2xl leading-snug text-foreground md:text-3xl text-balance">
+                  {lang === "fr"
+                    ? "Apportez à la maison du trésor toutes les dîmes."
+                    : "Bring the whole tithe into the storehouse."}
+                </p>
+                <p className="mt-3 text-xs uppercase tracking-[0.32em] text-accent">
+                  {lang === "fr" ? "Malachie 3:10" : "Malachi 3:10"}
+                </p>
+              </RevealOnView>
             </div>
 
             {/* Frequency — editorial radio-as-line */}
             <div className="mb-10">
-              <p className="text-xs font-semibold uppercase tracking-[0.32em] text-muted-foreground mb-4">
-                {lang === "fr" ? "Je donne" : "I give"}
-              </p>
+              <RevealOnView variant="eyebrow-spread" delay={120}>
+                <p className="text-xs font-semibold uppercase tracking-[0.32em] text-muted-foreground mb-4">
+                  {lang === "fr" ? "Je donne" : "I give"}
+                </p>
+              </RevealOnView>
               <div className="flex gap-8">
                 <label className="cursor-pointer group">
                   <input
@@ -138,12 +146,14 @@ const Donate = () => {
 
             {/* Custom amount — single-line typography input */}
             <div className="mb-10">
-              <label
-                htmlFor="custom"
-                className="mb-3 block text-xs font-semibold uppercase tracking-[0.32em] text-muted-foreground"
-              >
-                {t.donate.custom}
-              </label>
+              <RevealOnView variant="eyebrow-spread" delay={120}>
+                <label
+                  htmlFor="custom"
+                  className="mb-3 block text-xs font-semibold uppercase tracking-[0.32em] text-muted-foreground"
+                >
+                  {t.donate.custom}
+                </label>
+              </RevealOnView>
               <div className="flex items-baseline">
                 <input
                   id="custom"
@@ -174,23 +184,25 @@ const Donate = () => {
             <p className="mt-5 flex items-center justify-center gap-2 text-xs text-muted-foreground">
               <ShieldCheck className="h-3.5 w-3.5 text-muted-foreground" /> {t.donate.secureNote}
             </p>
-          </form>
+            </form>
+          </RevealOnView>
 
           {/* Side */}
           <aside className="lg:col-span-2 space-y-6">
             {t.donate.causes.map((c, i) => {
               const Icon = causeIcons[i] ?? HandHeart;
               return (
-                <div
-                  key={c.title}
-                  className="rounded-2xl border border-border bg-card p-6 shadow-soft transition-all hover:shadow-anoint"
-                >
-                  <div className="mb-4 inline-grid h-11 w-11 place-items-center rounded-full bg-accent-soft text-accent">
-                    <Icon className="h-5 w-5" />
+                <RevealOnView key={c.title} variant="rise" delay={i * 100}>
+                  <div
+                    className="rounded-2xl border border-border bg-card p-6 shadow-soft transition-all hover:shadow-anoint"
+                  >
+                    <div className="mb-4 inline-grid h-11 w-11 place-items-center rounded-full bg-accent-soft text-accent">
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <h3 className="font-display text-xl">{c.title}</h3>
+                    <p className="mt-2 text-sm text-muted-foreground">{c.body}</p>
                   </div>
-                  <h3 className="font-display text-xl">{c.title}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground">{c.body}</p>
-                </div>
+                </RevealOnView>
               );
             })}
 
@@ -208,8 +220,8 @@ const Donate = () => {
             dpr={[1, 1.5]}
           >
             <SanctuaryLights />
-            <Flame3D position={[0, -1, 0]} scale={1.5} />
-            <LightParticles count={120} spread={6} size={0.025} color="#FFB347" />
+            <Flame3D position={[0, -1.0, 0]} scale={1.8} />
+            <LightParticles count={200} spread={8} size={0.045} color="#FFB347" />
           </Scene3D>
         </div>
 
@@ -217,13 +229,15 @@ const Donate = () => {
         <CrossWatermark opacity={0.04} />
 
         <div className="relative z-10 mx-auto max-w-5xl px-6 md:px-10 w-full">
-          <ScriptureRef
-            verse={t.donate.verse}
-            reference={t.donate.verseRef}
-            size="lg"
-            align="center"
-            className="text-primary-foreground"
-          />
+          <RevealOnView variant="ink-rise" delay={200}>
+            <ScriptureRef
+              verse={t.donate.verse}
+              reference={t.donate.verseRef}
+              size="lg"
+              align="center"
+              className="text-primary-foreground"
+            />
+          </RevealOnView>
         </div>
       </section>
     </>

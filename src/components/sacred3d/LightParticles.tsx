@@ -11,10 +11,10 @@ interface LightParticlesProps {
 }
 
 const LightParticles = ({
-  count = 180,
+  count = 200,
   color = "#ffffff",
-  size = 0.025,
-  spread = 6,
+  size = 0.04,
+  spread = 7,
 }: LightParticlesProps) => {
   const pointsRef = useRef<THREE.Points>(null);
   const reducedMotion = useReducedMotion();
@@ -54,7 +54,7 @@ const LightParticles = ({
         size={size}
         sizeAttenuation
         transparent
-        opacity={0.6}
+        opacity={0.75}
         depthWrite={false}
         blending={THREE.AdditiveBlending}
       />
