@@ -3,6 +3,7 @@ import { ArrowRight, Coffee, HeartHandshake, MapPin, Music, Sparkles } from "luc
 import PageHero from "@/components/PageHero";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { LightBeam, ScriptureRef, SacredEyebrow, CrossWatermark } from "@/components/sacred";
 import welcomeImg from "@/assets/visit-welcome.jpg";
 
 const icons = [HeartHandshake, Music, Sparkles, Coffee];
@@ -18,11 +19,28 @@ const Visit = () => {
         image={welcomeImg}
       />
 
+      {/* Scripture invitation */}
+      <section className="bg-background reverence">
+        <div className="mx-auto max-w-4xl px-6 md:px-10 text-center">
+          <div className="mb-8 flex justify-center">
+            <SacredEyebrow>Venez à Moi</SacredEyebrow>
+          </div>
+          <ScriptureRef
+            verse="Venez à moi, vous tous qui êtes fatigués et chargés, et je vous donnerai du repos."
+            reference="Matthieu 11:28"
+            size="lg"
+            align="center"
+          />
+        </div>
+      </section>
+
       {/* Expect */}
       <section className="bg-background py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6 md:px-10">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="eyebrow mb-4 justify-center">{t.visit.expect.eyebrow}</p>
+            <div className="mb-4 flex justify-center">
+              <SacredEyebrow>{t.visit.expect.eyebrow}</SacredEyebrow>
+            </div>
             <h2 className="font-display text-4xl md:text-5xl">{t.visit.expect.title}</h2>
           </div>
           <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -31,10 +49,10 @@ const Visit = () => {
               return (
                 <div
                   key={it.title}
-                  className="group rounded-2xl border border-border bg-card p-8 shadow-soft transition-all duration-500 hover:-translate-y-1 hover:border-accent hover:shadow-elegant"
+                  className="group rounded-2xl border border-border bg-card p-8 shadow-soft transition-all duration-500 hover:-translate-y-1 hover:border-accent hover:shadow-anoint"
                 >
                   <div className="mb-5 inline-grid h-11 w-11 place-items-center rounded-full bg-accent-soft text-accent transition-transform duration-500 group-hover:rotate-6">
-                    <Icon className="h-5 w-5" />
+                    <Icon className="h-5 w-5 animate-breath-soft" />
                   </div>
                   <h3 className="font-display text-xl">{it.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{it.body}</p>
@@ -48,32 +66,36 @@ const Visit = () => {
       {/* Schedule */}
       <section className="bg-secondary/40 py-20 md:py-28">
         <div className="mx-auto max-w-5xl px-6 md:px-10">
-          <p className="eyebrow mb-4">{t.visit.when.eyebrow}</p>
+          <div className="mb-4">
+            <SacredEyebrow>{t.visit.when.eyebrow}</SacredEyebrow>
+          </div>
           <h2 className="mb-12 font-display text-4xl md:text-5xl">{t.visit.when.title}</h2>
           <div className="grid gap-6 md:grid-cols-2">
-            <div className="rounded-2xl bg-card p-8 shadow-soft">
+            <div className="rounded-2xl bg-card p-8 shadow-soft transition-all duration-300 hover:border-accent hover:shadow-anoint">
               <p className="text-xs uppercase tracking-[0.25em] text-accent">Casablanca</p>
-              <h3 className="mt-3 font-display text-3xl">{t.about.casaSchedule}</h3>
+              <h3 className="mt-3 font-display text-3xl text-accent animate-breath-soft">{t.about.casaSchedule}</h3>
               <p className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
-                <MapPin className="h-4 w-4 text-accent" /> 12 Rue Tahar Sebti
+                <MapPin className="h-4 w-4 text-accent animate-breath-soft" /> 12 Rue Tahar Sebti
               </p>
             </div>
-            <div className="rounded-2xl bg-card p-8 shadow-soft">
+            <div className="rounded-2xl bg-card p-8 shadow-soft transition-all duration-300 hover:border-accent hover:shadow-anoint">
               <p className="text-xs uppercase tracking-[0.25em] text-accent">Rabat</p>
-              <h3 className="mt-3 font-display text-3xl">{t.about.rabatSchedule}</h3>
+              <h3 className="mt-3 font-display text-3xl text-accent animate-breath-soft">{t.about.rabatSchedule}</h3>
               <p className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
-                <MapPin className="h-4 w-4 text-accent" /> 45 Avenue Mohammed V
+                <MapPin className="h-4 w-4 text-accent animate-breath-soft" /> 45 Avenue Mohammed V
               </p>
             </div>
           </div>
 
-          <div className="mt-10 rounded-2xl border border-border bg-background p-8 shadow-soft">
-            <h3 className="font-display text-2xl">{t.visit.arrive.title}</h3>
-            <p className="mt-3 max-w-2xl text-muted-foreground">{t.visit.arrive.body}</p>
+          <div className="relative overflow-hidden cross-watermark mt-10 rounded-2xl bg-gradient-navy p-8 shadow-elegant">
+            <CrossWatermark opacity={0.04} />
+            <LightBeam intensity="soft" />
+            <h3 className="font-display text-2xl text-primary-foreground">{t.visit.arrive.title}</h3>
+            <p className="mt-3 max-w-2xl text-primary-foreground/80">{t.visit.arrive.body}</p>
           </div>
 
           <div className="mt-12 text-center">
-            <Button asChild variant="hero" size="xl">
+            <Button asChild variant="hero" size="xl" className="glory">
               <Link to="/contact">
                 {t.visit.cta} <ArrowRight className="h-4 w-4" />
               </Link>

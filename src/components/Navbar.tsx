@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import Logo from "./Logo";
 import LanguageToggle from "./LanguageToggle";
 import { Button } from "@/components/ui/button";
+import { BreathingDot } from "@/components/sacred";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { cn } from "@/lib/utils";
 
@@ -38,36 +39,38 @@ const Navbar = () => {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-500",
+        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
         scrolled
-          ? "bg-background/85 backdrop-blur-md shadow-soft"
-          : "bg-transparent",
+          ? "bg-background/95 backdrop-blur-md shadow-soft"
+          : "bg-background/85 backdrop-blur-sm",
       )}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 md:px-10">
-        <Logo />
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-3 md:px-10">
+        <div className="animate-breath-soft">
+          <Logo tone="dark" />
+        </div>
 
         <nav aria-label="Primary" className="hidden items-center gap-8 lg:flex">
           {links.map((l) => (
-            <NavLink
-              key={l.to}
-              to={l.to}
-              end={l.to === "/"}
-              className={({ isActive }) =>
-                cn(
-                  "gold-underline text-sm font-medium tracking-wide transition-colors",
-                  isActive ? "text-accent" : "text-foreground/80 hover:text-foreground",
-                )
-              }
-            >
-              {l.label}
+            <NavLink key={l.to} to={l.to} end={l.to === "/"}>
+              {({ isActive }) => (
+                <span
+                  className={cn(
+                    "inline-flex items-center text-sm font-medium tracking-wide transition-colors",
+                    isActive ? "text-accent" : "text-foreground/75 hover:text-foreground",
+                  )}
+                >
+                  {isActive && <BreathingDot className="mr-2" />}
+                  {l.label}
+                </span>
+              )}
             </NavLink>
           ))}
         </nav>
 
         <div className="hidden items-center gap-3 lg:flex">
-          <LanguageToggle />
-          <Button asChild variant="hero" size="sm">
+          <LanguageToggle tone="dark" />
+          <Button asChild variant="hero" size="sm" className="glory">
             <Link to="/donate">{t.nav.donate}</Link>
           </Button>
         </div>
@@ -83,32 +86,42 @@ const Navbar = () => {
         </button>
       </div>
 
+      {scrolled && (
+        <div aria-hidden="true" className="veil-divider absolute inset-x-0 bottom-0" />
+      )}
+
       {/* Mobile sheet */}
       <div
         className={cn(
-          "lg:hidden overflow-hidden border-t border-border bg-background/95 backdrop-blur-md transition-[max-height,opacity] duration-500",
+          "lg:hidden overflow-hidden border-t border-border bg-background/98 backdrop-blur-md transition-[max-height,opacity] duration-500",
           open ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0",
         )}
       >
         <div className="flex flex-col gap-1 px-6 py-6">
-          {links.map((l) => (
+          {links.map((l, i) => (
             <NavLink
               key={l.to}
               to={l.to}
               end={l.to === "/"}
-              className={({ isActive }) =>
-                cn(
-                  "rounded-md px-3 py-3 font-display text-2xl tracking-tight transition-colors",
-                  isActive ? "text-accent" : "text-foreground hover:text-accent",
-                )
-              }
+              style={open ? { animationDelay: `${i * 60}ms` } : undefined}
             >
-              {l.label}
+              {({ isActive }) => (
+                <span
+                  className={cn(
+                    "inline-flex items-center rounded-md px-3 py-3 font-display text-2xl tracking-tight transition-colors",
+                    open && "animate-ascend",
+                    isActive ? "text-accent" : "text-foreground hover:text-accent",
+                  )}
+                >
+                  {isActive && <BreathingDot className="mr-2" />}
+                  {l.label}
+                </span>
+              )}
             </NavLink>
           ))}
           <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
-            <LanguageToggle />
-            <Button asChild variant="hero" size="sm">
+            <LanguageToggle tone="dark" />
+            <Button asChild variant="hero" size="sm" className="glory">
               <Link to="/donate">{t.nav.donate}</Link>
             </Button>
           </div>

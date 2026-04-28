@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Calendar, Clock, MapPin, X } from "lucide-react";
 import PageHero from "@/components/PageHero";
+import { ScriptureRef, SacredEyebrow, CrossWatermark } from "@/components/sacred";
 import { useLanguage } from "@/i18n/LanguageContext";
 import youthImg from "@/assets/ministry-youth.jpg";
 import worshipImg from "@/assets/ministry-worship.jpg";
@@ -40,6 +41,20 @@ const Events = () => {
         image={youthImg}
       />
 
+      <section className="bg-background reverence">
+        <div className="mx-auto max-w-4xl px-6 md:px-10 text-center">
+          <div className="mb-8 flex justify-center">
+            <SacredEyebrow>Temps fixés</SacredEyebrow>
+          </div>
+          <ScriptureRef
+            verse="Il y a un temps pour tout, un temps pour toute chose sous les cieux."
+            reference="Ecclésiaste 3:1"
+            size="md"
+            align="center"
+          />
+        </div>
+      </section>
+
       <section className="bg-background py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6 md:px-10">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -48,7 +63,7 @@ const Events = () => {
                 key={e.id}
                 type="button"
                 onClick={() => setActive(e)}
-                className="group overflow-hidden rounded-2xl bg-card text-left shadow-soft transition-all duration-500 hover:-translate-y-1 hover:shadow-elegant"
+                className="group overflow-hidden rounded-2xl border border-transparent bg-card text-left shadow-soft transition-all duration-500 hover:-translate-y-1 hover:border-accent hover:shadow-elegant hover:shadow-anoint"
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <img
@@ -59,7 +74,7 @@ const Events = () => {
                     height={896}
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute left-4 top-4 rounded-lg bg-background/95 px-3 py-2 text-center font-display leading-none shadow-soft">
+                  <div className="absolute left-4 top-4 rounded-lg bg-background/95 px-3 py-2 text-center font-display leading-none shadow-soft animate-breath-soft">
                     <div className="text-xl font-semibold">{e.date.d}</div>
                     <div className="text-[10px] uppercase tracking-widest text-accent">{e.date.m}</div>
                   </div>
@@ -71,7 +86,7 @@ const Events = () => {
                   <h3 className="font-display text-2xl">{e.title}</h3>
                   <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
                     <span className="inline-flex items-center gap-1.5"><Clock className="h-3.5 w-3.5 text-accent" /> {e.time}</span>
-                    <span className="inline-flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 text-accent" /> {e.city}</span>
+                    <span className="inline-flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 text-accent animate-breath-soft" /> {e.city}</span>
                   </div>
                 </div>
               </button>
@@ -89,14 +104,15 @@ const Events = () => {
           onClick={() => setActive(null)}
         >
           <div
-            className="relative w-full max-w-3xl overflow-hidden rounded-t-2xl bg-background shadow-elegant sm:rounded-2xl"
+            className="relative w-full max-w-3xl overflow-hidden rounded-t-2xl bg-background shadow-elegant sm:rounded-2xl cross-watermark"
             onClick={(e) => e.stopPropagation()}
           >
+            <CrossWatermark opacity={0.04} />
             <button
               type="button"
               onClick={() => setActive(null)}
               aria-label="Close"
-              className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-background/90 text-foreground hover:text-accent"
+              className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-background/90 text-foreground hover:text-accent hover:shadow-anoint"
             >
               <X className="h-5 w-5" />
             </button>
@@ -104,7 +120,7 @@ const Events = () => {
               <img src={active.img} alt={active.title} className="h-full w-full object-cover" />
             </div>
             <div className="p-8">
-              <p className="eyebrow mb-3">{active.city}</p>
+              <div className="mb-3"><SacredEyebrow>{active.city}</SacredEyebrow></div>
               <h3 className="font-display text-3xl">{active.title}</h3>
               <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
                 <span className="inline-flex items-center gap-2"><Calendar className="h-4 w-4 text-accent" /> {active.date.full}</span>

@@ -2,60 +2,82 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ESCHATOS Church — Design System
-   Deep midnight navy + warm gold on ivory cream.
-   All colors are HSL. Never use raw color classes in components.
-*/
+/* ESCHATOS Church — Design System / Black + Red on Off-White — brand palette from the church logo. */
 
 @layer base {
   :root {
     /* Surfaces */
-    --background: 40 33% 97%;            /* ivory cream */
-    --foreground: 224 45% 12%;           /* deep navy ink */
+    --background: 0 0% 98%;              /* off-white #FAFAFA */
+    --foreground: 0 0% 10%;              /* near-black for readability */
 
     --card: 0 0% 100%;
-    --card-foreground: 224 45% 12%;
+    --card-foreground: 0 0% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 224 45% 12%;
+    --popover-foreground: 0 0% 10%;
 
     /* Brand */
-    --primary: 224 55% 14%;              /* midnight navy */
-    --primary-foreground: 40 33% 97%;
-    --primary-glow: 224 60% 28%;
+    --primary: 0 0% 0%;                  /* pure black */
+    --primary-foreground: 0 0% 100%;     /* white */
+    --primary-glow: 0 0% 20%;
 
-    --secondary: 40 25% 92%;             /* warm sand */
-    --secondary-foreground: 224 45% 12%;
+    --secondary: 0 0% 95%;               /* soft gray */
+    --secondary-foreground: 0 0% 10%;
 
-    --muted: 40 20% 94%;
-    --muted-foreground: 224 12% 40%;
+    --muted: 0 0% 91%;
+    --muted-foreground: 0 0% 48%;        /* gray #7A7A7A */
 
-    --accent: 40 75% 52%;                /* warm gold */
-    --accent-foreground: 224 55% 10%;
-    --accent-soft: 40 80% 88%;
+    --accent: 1 100% 44%;                /* red #E10600 */
+    --accent-foreground: 0 0% 100%;      /* white on red */
+    --accent-soft: 0 100% 97%;           /* very pale red tint */
 
-    --destructive: 0 70% 50%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 40 15% 86%;
-    --input: 40 15% 86%;
-    --ring: 40 75% 52%;
+    --border: 0 0% 82%;
+    --input: 0 0% 82%;
+    --ring: 1 100% 44%;                  /* red focus rings */
 
     --radius: 0.75rem;
 
     /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(224 55% 10% / 0.85), hsl(224 60% 18% / 0.55));
-    --gradient-gold: linear-gradient(135deg, hsl(40 80% 60%), hsl(35 70% 45%));
-    --gradient-navy: linear-gradient(135deg, hsl(224 55% 14%), hsl(230 50% 22%));
-    --gradient-soft: linear-gradient(180deg, hsl(40 33% 97%), hsl(40 25% 92%));
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 0% / 0.80), hsl(0 0% 0% / 0.45));
+    --gradient-gold: linear-gradient(135deg, hsl(1 100% 44%), hsl(0 100% 35%));
+    --gradient-navy: linear-gradient(135deg, hsl(0 0% 0%), hsl(0 0% 12%));
+    --gradient-soft: linear-gradient(180deg, hsl(0 0% 98%), hsl(0 0% 95%));
 
     /* Shadows */
-    --shadow-soft: 0 4px 24px -8px hsl(224 45% 12% / 0.12);
-    --shadow-elegant: 0 20px 60px -20px hsl(224 55% 14% / 0.25);
-    --shadow-gold: 0 10px 40px -10px hsl(40 75% 52% / 0.45);
+    --shadow-soft: 0 4px 24px -8px hsl(0 0% 0% / 0.10);
+    --shadow-elegant: 0 20px 60px -20px hsl(0 0% 0% / 0.20);
+    --shadow-gold: 0 10px 40px -10px hsl(1 100% 44% / 0.40);
 
     /* Motion */
     --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+    /* Sacred motion easings */
+    --ease-divine: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-breath: cubic-bezier(0.4, 0, 0.6, 1);
+
+    /* Sacred durations */
+    --breath-cycle: 5s;
+    --anoint-cycle: 3s;
+    --ascension: 1.4s;
+
+    /* Divine gradients (presence of God) */
+    --gradient-light-beam: radial-gradient(ellipse 80% 60% at 50% 0%, hsl(0 0% 100% / 0.18), transparent 65%);
+    --gradient-sanctuary: radial-gradient(ellipse 100% 70% at 50% 100%, hsl(1 100% 44% / 0.10), transparent 60%);
+    --gradient-flame: linear-gradient(180deg, hsl(1 100% 55%) 0%, hsl(1 100% 44%) 50%, hsl(0 100% 30%) 100%);
+    --gradient-veil: linear-gradient(90deg, transparent 0%, hsl(0 0% 60% / 0.4) 20%, hsl(1 100% 44% / 0.6) 50%, hsl(0 0% 60% / 0.4) 80%, transparent 100%);
+    --gradient-glory: radial-gradient(circle at 50% 50%, hsl(0 0% 100% / 0.08) 0%, transparent 70%);
+    --gradient-pentecost: conic-gradient(from 180deg at 50% 50%, hsl(1 100% 44%) 0deg, hsl(0 100% 30%) 90deg, hsl(0 0% 0%) 180deg, hsl(0 100% 30%) 270deg, hsl(1 100% 44%) 360deg);
+
+    /* Anointing shadows */
+    --shadow-anoint: 0 0 60px -10px hsl(1 100% 44% / 0.35);
+    --shadow-glory: 0 -20px 80px -10px hsl(0 0% 100% / 0.15), 0 20px 80px -10px hsl(1 100% 44% / 0.25);
+    --shadow-presence: 0 0 120px hsl(1 100% 44% / 0.15);
+
+    /* Sacred grain (subtle paper/parchment overlay) */
+    --noise-sacred: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -68,27 +90,29 @@
   }
 
   .dark {
-    --background: 224 50% 6%;
-    --foreground: 40 33% 95%;
-    --card: 224 45% 9%;
-    --card-foreground: 40 33% 95%;
-    --popover: 224 45% 9%;
-    --popover-foreground: 40 33% 95%;
-    --primary: 40 75% 55%;
-    --primary-foreground: 224 55% 10%;
-    --primary-glow: 40 80% 65%;
-    --secondary: 224 40% 14%;
-    --secondary-foreground: 40 33% 95%;
-    --muted: 224 30% 16%;
-    --muted-foreground: 40 15% 70%;
-    --accent: 40 75% 55%;
-    --accent-foreground: 224 55% 10%;
-    --accent-soft: 224 40% 18%;
+    --background: 0 0% 4%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 1 100% 44%;               /* red as primary in dark mode */
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 1 100% 55%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
+    --accent: 1 100% 50%;
+    --accent-foreground: 0 0% 100%;
+    --accent-soft: 0 100% 15%;
     --destructive: 0 62% 45%;
     --destructive-foreground: 0 0% 100%;
-    --border: 224 30% 18%;
-    --input: 224 30% 18%;
-    --ring: 40 75% 55%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 1 100% 50%;
+    --gradient-light-beam: radial-gradient(ellipse 80% 60% at 50% 0%, hsl(0 0% 100% / 0.10), transparent 65%);
+    --gradient-sanctuary: radial-gradient(ellipse 100% 70% at 50% 100%, hsl(1 100% 50% / 0.18), transparent 60%);
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -131,5 +155,184 @@
   .eyebrow::before {
     content: "";
     @apply h-px w-8 bg-accent;
+  }
+}
+
+@layer utilities {
+  /* Breathing animations — life of the Spirit */
+  .breathe {
+    animation: breath var(--breath-cycle) var(--ease-breath) infinite;
+  }
+  .breathe-soft {
+    animation: breath-soft var(--breath-cycle) var(--ease-breath) infinite;
+  }
+
+  /* Anointing — flame pulse on accent elements */
+  .anoint {
+    animation: anoint var(--anoint-cycle) ease-in-out infinite;
+  }
+
+  /* Heartbeat — for live indicators */
+  .heartbeat {
+    animation: heartbeat 1.4s ease-in-out infinite;
+  }
+
+  /* Ascension — text reveals upward */
+  .ascend {
+    animation: ascend var(--ascension) var(--ease-divine) both;
+  }
+
+  /* Light beam overlay — divine presence breaking through */
+  .light-beam {
+    position: relative;
+    isolation: isolate;
+  }
+  .light-beam::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-light-beam);
+    pointer-events: none;
+    z-index: 1;
+    animation: light-beam-shift 12s ease-in-out infinite;
+  }
+
+  /* Sacred grain — subtle paper texture overlay */
+  .sacred-grain {
+    position: relative;
+  }
+  .sacred-grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--noise-sacred);
+    background-size: 180px 180px;
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Veil divider — the curtain torn in two */
+  .veil-divider {
+    height: 1px;
+    background: var(--gradient-veil);
+    width: 100%;
+  }
+
+  /* Ink-fill underline — the Word being written (compositor-friendly via scaleX) */
+  .ink-fill {
+    position: relative;
+  }
+  .ink-fill::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: -4px;
+    width: 100%; height: 2px;
+    background: hsl(var(--accent));
+    transform: scaleX(0);
+    transform-origin: left center;
+    animation: ink-fill 2s var(--ease-divine) 0.5s both;
+  }
+
+  /* Glory glow — for sacred CTAs */
+  .glory {
+    box-shadow: var(--shadow-anoint);
+    transition: box-shadow 600ms var(--ease-divine);
+  }
+  .glory:hover {
+    box-shadow: 0 0 80px -5px hsl(1 100% 44% / 0.55);
+  }
+
+  /* Sanctuary section — vertical pull, dark presence */
+  .sanctuary {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    position: relative;
+    isolation: isolate;
+  }
+  .sanctuary::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-sanctuary);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Cross watermark is rendered via the <CrossWatermark /> React component using SVG. */
+  /* The .cross-watermark class on a section now serves only as a positioning hook. */
+  .cross-watermark {
+    position: relative;
+  }
+
+  /* Reverence — generous breathing room */
+  .reverence {
+    padding-block: clamp(6rem, 12vw, 10rem);
+  }
+}
+
+@keyframes breath {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.015); }
+}
+
+@keyframes breath-soft {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+
+@keyframes anoint {
+  0%, 100% {
+    box-shadow: 0 0 24px hsl(1 100% 44% / 0.30);
+  }
+  50% {
+    box-shadow: 0 0 60px hsl(1 100% 44% / 0.55);
+  }
+}
+
+@keyframes heartbeat {
+  0%, 60%, 100% { transform: scale(1); }
+  20% { transform: scale(1.18); }
+  40% { transform: scale(1.05); }
+}
+
+@keyframes ascend {
+  0% { transform: translateY(48px); opacity: 0; filter: blur(10px); letter-spacing: -0.04em; }
+  60% { filter: blur(0); }
+  100% { transform: translateY(0); opacity: 1; filter: blur(0); letter-spacing: -0.02em; }
+}
+
+@keyframes light-beam-shift {
+  0%, 100% { opacity: 0.6; transform: translateX(-2%); }
+  50% { opacity: 1; transform: translateX(2%); }
+}
+
+@keyframes ink-fill {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+
+@keyframes flame-flicker {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.95; }
+  25% { transform: scale(1.04) rotate(-1deg); opacity: 1; }
+  50% { transform: scale(0.98) rotate(0.5deg); opacity: 0.92; }
+  75% { transform: scale(1.02) rotate(-0.5deg); opacity: 0.98; }
+}
+
+/* Respect reduced motion — covers BOTH custom utility classes and Tailwind animate-* utilities */
+@media (prefers-reduced-motion: reduce) {
+  .breathe, .breathe-soft, .anoint, .heartbeat, .light-beam::before { animation: none; }
+  .ascend { animation: none; }
+  .ink-fill::after { animation: none; transform: scaleX(1); }
+  [class*="animate-breath"],
+  [class*="animate-anoint"],
+  [class*="animate-heartbeat"],
+  [class*="animate-ascend"],
+  [class*="animate-flame-flicker"],
+  [class*="animate-fade-in"],
+  [class*="animate-scale-in"],
+  [class*="animate-slow-zoom"] {
+    animation: none !important;
   }
 }

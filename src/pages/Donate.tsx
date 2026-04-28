@@ -2,25 +2,25 @@ import { useState } from "react";
 import { ShieldCheck, HandHeart, Building2, Globe2 } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import donateImg from "@/assets/donate-hero.jpg";
 import { toast } from "@/hooks/use-toast";
 import { useLanguage } from "@/i18n/LanguageContext";
+import {
+  LightBeam,
+  ScriptureRef,
+  SacredEyebrow,
+  CrossWatermark,
+} from "@/components/sacred";
 
 const presets = [100, 250, 500, 1000];
 const causeIcons = [HandHeart, Building2, Globe2];
 
 const Donate = () => {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [amount, setAmount] = useState<number>(250);
   const [custom, setCustom] = useState<string>("");
-  const [freq, setFreq] = useState<"once" | "monthly">("monthly");
-
-  const frequencies = [
-    { key: "once" as const, label: t.donate.once },
-    { key: "monthly" as const, label: t.donate.monthly },
-  ];
+  const [frequency, setFrequency] = useState<"once" | "monthly">("monthly");
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +31,7 @@ const Donate = () => {
     }
     toast({
       title: t.donate.thanks,
-      description: `${t.donate.thanksDesc} ${finalAmount} MAD (${freq === "monthly" ? t.donate.monthly : t.donate.once}).`,
+      description: `${t.donate.thanksDesc} ${finalAmount} MAD (${frequency === "monthly" ? t.donate.monthly : t.donate.once}).`,
     });
   };
 
@@ -51,52 +51,94 @@ const Donate = () => {
             onSubmit={onSubmit}
             className="lg:col-span-3 rounded-2xl border border-border bg-card p-8 shadow-elegant md:p-10"
           >
-            <p className="eyebrow mb-4">{t.donate.secure}</p>
-            <h2 className="font-display text-3xl md:text-4xl">{t.donate.chooseGift}</h2>
-
-            {/* Frequency */}
-            <div className="mt-8 inline-flex rounded-full border border-border bg-background p-1">
-              {frequencies.map((f) => (
-                <button
-                  key={f.key}
-                  type="button"
-                  onClick={() => setFreq(f.key)}
-                  className={cn(
-                    "rounded-full px-5 py-2 text-sm font-medium transition-all",
-                    freq === f.key ? "bg-accent text-accent-foreground shadow-gold" : "text-foreground/70",
-                  )}
-                >
-                  {f.label}
-                </button>
-              ))}
+            {/* Liturgical header — Malachi 3:10 lives within the offering */}
+            <div className="mb-10 border-b border-border pb-8">
+              <SacredEyebrow className="mb-4">
+                {lang === "fr" ? "L'offrande" : "The offering"}
+              </SacredEyebrow>
+              <p className="font-display text-2xl leading-snug text-foreground md:text-3xl text-balance">
+                {lang === "fr"
+                  ? "Apportez à la maison du trésor toutes les dîmes."
+                  : "Bring the whole tithe into the storehouse."}
+              </p>
+              <p className="mt-3 text-xs uppercase tracking-[0.32em] text-accent">
+                {lang === "fr" ? "Malachie 3:10" : "Malachi 3:10"}
+              </p>
             </div>
 
-            {/* Presets */}
-            <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {presets.map((p) => (
-                <button
-                  key={p}
-                  type="button"
-                  onClick={() => {
-                    setAmount(p);
-                    setCustom("");
-                  }}
-                  className={cn(
-                    "rounded-xl border px-4 py-4 text-center font-display text-xl transition-all",
-                    amount === p && !custom
-                      ? "border-accent bg-accent-soft text-foreground shadow-soft"
-                      : "border-border bg-background hover:border-accent",
-                  )}
-                >
-                  {p} <span className="text-xs font-sans text-muted-foreground">MAD</span>
-                </button>
-              ))}
+            {/* Frequency — editorial radio-as-line */}
+            <div className="mb-10">
+              <p className="text-xs font-semibold uppercase tracking-[0.32em] text-muted-foreground mb-4">
+                {lang === "fr" ? "Je donne" : "I give"}
+              </p>
+              <div className="flex gap-8">
+                <label className="cursor-pointer group">
+                  <input
+                    type="radio"
+                    name="frequency"
+                    value="once"
+                    checked={frequency === "once"}
+                    onChange={() => setFrequency("once")}
+                    className="sr-only peer"
+                  />
+                  <span className="font-display text-2xl text-muted-foreground transition-colors peer-checked:text-foreground hover:text-foreground border-b-2 border-transparent peer-checked:border-accent pb-1">
+                    {t.donate.once}
+                  </span>
+                </label>
+                <label className="cursor-pointer group">
+                  <input
+                    type="radio"
+                    name="frequency"
+                    value="monthly"
+                    checked={frequency === "monthly"}
+                    onChange={() => setFrequency("monthly")}
+                    className="sr-only peer"
+                  />
+                  <span className="font-display text-2xl text-muted-foreground transition-colors peer-checked:text-foreground hover:text-foreground border-b-2 border-transparent peer-checked:border-accent pb-1">
+                    {t.donate.monthly}
+                  </span>
+                </label>
+              </div>
             </div>
 
-            <div className="mt-5">
-              <label htmlFor="custom" className="mb-2 block text-sm font-medium">{t.donate.custom}</label>
-              <div className="relative">
-                <Input
+            {/* Amount presets — editorial display serif row */}
+            <div className="flex flex-wrap gap-x-8 gap-y-4 items-baseline mb-6">
+              {presets.map((p) => {
+                const isSelected = amount === p && !custom;
+                return (
+                  <button
+                    key={p}
+                    type="button"
+                    onClick={() => {
+                      setAmount(p);
+                      setCustom("");
+                    }}
+                    className={cn(
+                      "font-display text-3xl md:text-4xl border-b-2 transition-all pb-1 cursor-pointer",
+                      isSelected
+                        ? "text-foreground border-accent"
+                        : "text-muted-foreground border-transparent hover:text-foreground hover:border-accent/40",
+                    )}
+                  >
+                    {p}
+                    <span className="ml-2 text-xs font-sans uppercase tracking-[0.32em] text-muted-foreground">
+                      MAD
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Custom amount — single-line typography input */}
+            <div className="mb-10">
+              <label
+                htmlFor="custom"
+                className="mb-3 block text-xs font-semibold uppercase tracking-[0.32em] text-muted-foreground"
+              >
+                {t.donate.custom}
+              </label>
+              <div className="flex items-baseline">
+                <input
                   id="custom"
                   type="number"
                   min={1}
@@ -105,18 +147,25 @@ const Donate = () => {
                   value={custom}
                   onChange={(e) => setCustom(e.target.value)}
                   placeholder="500"
-                  className="pr-16"
+                  className="font-display text-3xl md:text-4xl bg-transparent border-0 border-b border-border focus:border-accent focus:outline-none focus:ring-0 px-0 py-1 w-32 placeholder:text-muted-foreground/40"
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs uppercase tracking-widest text-muted-foreground">MAD</span>
+                <span className="text-xs uppercase tracking-[0.32em] text-muted-foreground ml-3">
+                  MAD
+                </span>
               </div>
             </div>
 
-            <Button type="submit" variant="hero" size="xl" className="mt-8 w-full">
-              {t.donate.give} {custom || amount} MAD {freq === "monthly" ? t.donate.perMonth : t.donate.nowSuffix}
+            <Button
+              type="submit"
+              variant="hero"
+              size="xl"
+              className="mt-2 w-full glory"
+            >
+              {lang === "fr" ? "Apporter mon offrande" : "Bring my offering"}
             </Button>
 
             <p className="mt-5 flex items-center justify-center gap-2 text-xs text-muted-foreground">
-              <ShieldCheck className="h-3.5 w-3.5 text-accent" /> {t.donate.secureNote}
+              <ShieldCheck className="h-3.5 w-3.5 text-muted-foreground" /> {t.donate.secureNote}
             </p>
           </form>
 
@@ -125,7 +174,10 @@ const Donate = () => {
             {t.donate.causes.map((c, i) => {
               const Icon = causeIcons[i] ?? HandHeart;
               return (
-                <div key={c.title} className="rounded-2xl border border-border bg-card p-6 shadow-soft">
+                <div
+                  key={c.title}
+                  className="rounded-2xl border border-border bg-card p-6 shadow-soft transition-all hover:shadow-anoint"
+                >
                   <div className="mb-4 inline-grid h-11 w-11 place-items-center rounded-full bg-accent-soft text-accent">
                     <Icon className="h-5 w-5" />
                   </div>
@@ -135,12 +187,20 @@ const Donate = () => {
               );
             })}
 
-            <blockquote className="rounded-2xl bg-gradient-navy p-8 text-primary-foreground shadow-elegant">
-              <p className="font-display text-2xl leading-snug">
-                {t.donate.verse}
-              </p>
-              <footer className="mt-4 text-xs uppercase tracking-[0.3em] text-accent">{t.donate.verseRef}</footer>
-            </blockquote>
+            {/* Closing benediction — 2 Cor 9:7 */}
+            <section className="cross-watermark relative overflow-hidden rounded-2xl bg-gradient-navy p-8 text-primary-foreground shadow-elegant">
+              <CrossWatermark opacity={0.05} />
+              <LightBeam intensity="soft" />
+              <div className="relative z-10">
+                <ScriptureRef
+                  verse={t.donate.verse}
+                  reference={t.donate.verseRef}
+                  size="lg"
+                  align="center"
+                  className="text-primary-foreground"
+                />
+              </div>
+            </section>
           </aside>
         </div>
       </section>

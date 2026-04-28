@@ -12,6 +12,14 @@ dist
 dist-ssr
 *.local
 
+# Third-party tooling and references (not project source)
+awesome-design-md/
+graphify/
+graphify-out/
+
+# Local Claude config
+.claude/settings.local.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
