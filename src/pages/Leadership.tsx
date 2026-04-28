@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import PageHero from "@/components/PageHero";
 import { useLanguage } from "@/i18n/LanguageContext";
 import aboutImg from "@/assets/about-church.jpg";
@@ -5,9 +6,17 @@ import {
   LightBeam,
   ScriptureRef,
   SacredEyebrow,
-  CrossWatermark,
   VeilDivider,
 } from "@/components/sacred";
+import {
+  Scene3D,
+  Cross3D,
+  LightParticles,
+  SanctuaryLights,
+  useReducedMotion,
+} from "@/components/sacred3d";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 const PASTOR_PHOTOS: string[] = [
   "/pasteurs/Jane Loue Casa/Jane Loue Casa.png",
@@ -19,6 +28,36 @@ const Leadership = () => {
   const pastors = t.leadership.pastors;
   const cities = lang === "fr" ? ["Casablanca", "Rabat"] : ["Casablanca", "Rabat"];
 
+  const diptychRef = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotion();
+
+  useGSAP(
+    () => {
+      if (reducedMotion) return;
+      const el = diptychRef.current;
+      if (!el) return;
+      const images = el.querySelectorAll("img");
+
+      const handleMove = (e: MouseEvent) => {
+        const rect = el.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        images.forEach((img) => {
+          gsap.to(img, {
+            x: x * -8,
+            y: y * -8,
+            duration: 1,
+            ease: "power3.out",
+          });
+        });
+      };
+
+      el.addEventListener("mousemove", handleMove);
+      return () => el.removeEventListener("mousemove", handleMove);
+    },
+    { dependencies: [reducedMotion] }
+  );
+
   return (
     <>
       <PageHero
@@ -26,11 +65,31 @@ const Leadership = () => {
         title={<>{t.leadership.title}</>}
         subtitle={t.leadership.subtitle}
         image={aboutImg}
+        enableParticles={false}
       />
 
-      {/* Scripture call — L'appel pastoral */}
-      <section className="sanctuary cross-watermark relative overflow-hidden reverence">
-        <CrossWatermark opacity={0.04} />
+      {/* L'appel pastoral — Scripture section with 3D cross */}
+      <section className="sanctuary cross-watermark relative overflow-hidden reverence min-h-[60svh]">
+        {/* 3D divine layer */}
+        <div aria-hidden="true" className="absolute inset-0 z-0 pointer-events-none">
+          <Scene3D
+            className="h-full w-full"
+            camera={{ position: [0, 0, 7], fov: 45 }}
+            dpr={[1, 1.5]}
+          >
+            <SanctuaryLights />
+            <Cross3D
+              position={[0, 0.5, 0]}
+              scale={1.3}
+              rotationSpeed={0.05}
+              color="#1a1a1a"
+              metalness={0.25}
+              roughness={0.7}
+            />
+            <LightParticles count={100} spread={7} size={0.022} />
+          </Scene3D>
+        </div>
+
         <LightBeam intensity="soft" />
         <div className="relative z-10 mx-auto max-w-4xl px-6 md:px-10">
           <div className="mb-8 flex justify-center">
@@ -50,7 +109,7 @@ const Leadership = () => {
 
       {/* Diptych — two portraits as one image divided */}
       <section className="bg-background">
-        <div className="relative grid grid-cols-1 md:grid-cols-2 isolate">
+        <div ref={diptychRef} className="relative grid grid-cols-1 md:grid-cols-2 isolate">
           {/* Vertical gutter with city labels */}
           <div className="pointer-events-none absolute inset-y-0 left-1/2 hidden md:flex w-px -translate-x-1/2 items-center justify-center z-10">
             <div className="h-full w-px bg-gradient-to-b from-transparent via-accent/40 to-transparent" />

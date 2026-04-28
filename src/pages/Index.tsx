@@ -10,6 +10,7 @@ import {
   CrossWatermark,
   VeilDivider,
 } from "@/components/sacred";
+import { Scene3D, Cross3D, LightParticles, SanctuaryLights } from "@/components/sacred3d";
 import heroImg from "@/assets/hero-worship.jpg";
 
 const Index = () => {
@@ -91,7 +92,26 @@ const Index = () => {
 
       {/* ACT III — WORD (a single Scripture moment, full viewport) */}
       <section className="sanctuary cross-watermark relative isolate overflow-hidden flex items-center min-h-[80svh]">
-        <CrossWatermark opacity={0.05} />
+        {/* 3D divine layer — cross + light particles */}
+        <div aria-hidden="true" className="absolute inset-0 z-0 pointer-events-none">
+          <Scene3D
+            className="h-full w-full"
+            camera={{ position: [0, 0, 6], fov: 50 }}
+            dpr={[1, 1.5]}
+          >
+            <SanctuaryLights />
+            <Cross3D
+              position={[0, 0, 0]}
+              scale={1.4}
+              rotationSpeed={0.08}
+              color="#0a0a0a"
+              metalness={0.3}
+              roughness={0.6}
+            />
+            <LightParticles count={140} spread={8} size={0.03} />
+          </Scene3D>
+        </div>
+
         <LightBeam intensity="medium" />
         <div className="relative z-10 mx-auto max-w-5xl px-6 md:px-10 w-full">
           <VeilDivider className="mb-16" />

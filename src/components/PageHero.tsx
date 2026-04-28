@@ -1,5 +1,6 @@
 import { type ReactNode } from "react";
 import { LightBeam, SacredEyebrow, BreathingDot } from "@/components/sacred";
+import { Scene3D, LightParticles, useReducedMotion } from "@/components/sacred3d";
 
 type Props = {
   eyebrow?: string;
@@ -7,9 +8,13 @@ type Props = {
   subtitle?: ReactNode;
   image: string;
   align?: "center" | "left";
+  /** Set to false on pages that mount their own Scene3D to avoid 2 simultaneous WebGL contexts */
+  enableParticles?: boolean;
 };
 
-const PageHero = ({ eyebrow, title, subtitle, image, align = "center" }: Props) => {
+const PageHero = ({ eyebrow, title, subtitle, image, align = "center", enableParticles = true }: Props) => {
+  const reducedMotion = useReducedMotion();
+
   return (
     <section className="sacred-grain relative isolate overflow-hidden pt-32 md:pt-40 pb-20 md:pb-28 text-primary-foreground">
       <div className="absolute inset-0 -z-10">
@@ -23,6 +28,18 @@ const PageHero = ({ eyebrow, title, subtitle, image, align = "center" }: Props) 
         <div className="absolute inset-0 bg-gradient-hero" />
       </div>
       <LightBeam intensity="medium" />
+      {enableParticles && !reducedMotion && (
+        <div aria-hidden="true" className="absolute inset-0 z-[1] pointer-events-none">
+          <Scene3D
+            className="h-full w-full"
+            camera={{ position: [0, 0, 5], fov: 60 }}
+            dpr={[1, 1.5]}
+          >
+            <ambientLight intensity={0.5} />
+            <LightParticles count={120} spread={9} size={0.02} color="#FFFFFF" />
+          </Scene3D>
+        </div>
+      )}
       <div
         className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-accent/15 via-accent/5 to-transparent z-[2]"
         aria-hidden="true"

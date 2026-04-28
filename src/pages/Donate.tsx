@@ -12,6 +12,12 @@ import {
   SacredEyebrow,
   CrossWatermark,
 } from "@/components/sacred";
+import {
+  Scene3D,
+  Flame3D,
+  LightParticles,
+  SanctuaryLights,
+} from "@/components/sacred3d";
 
 const presets = [100, 250, 500, 1000];
 const causeIcons = [HandHeart, Building2, Globe2];
@@ -42,6 +48,7 @@ const Donate = () => {
         title={<>{t.donate.title}</>}
         subtitle={t.donate.subtitle}
         image={donateImg}
+        enableParticles={false}
       />
 
       <section className="bg-background py-20 md:py-28">
@@ -187,21 +194,36 @@ const Donate = () => {
               );
             })}
 
-            {/* Closing benediction — 2 Cor 9:7 */}
-            <section className="cross-watermark relative overflow-hidden rounded-2xl bg-gradient-navy p-8 text-primary-foreground shadow-elegant">
-              <CrossWatermark opacity={0.05} />
-              <LightBeam intensity="soft" />
-              <div className="relative z-10">
-                <ScriptureRef
-                  verse={t.donate.verse}
-                  reference={t.donate.verseRef}
-                  size="lg"
-                  align="center"
-                  className="text-primary-foreground"
-                />
-              </div>
-            </section>
           </aside>
+        </div>
+      </section>
+
+      {/* Closing benediction — 2 Corinthians 9:7 with 3D flame */}
+      <section className="sanctuary cross-watermark relative overflow-hidden reverence min-h-[60svh] flex items-center">
+        {/* 3D flame layer — the offering rising */}
+        <div aria-hidden="true" className="absolute inset-0 z-0 pointer-events-none">
+          <Scene3D
+            className="h-full w-full"
+            camera={{ position: [0, 0, 6], fov: 45 }}
+            dpr={[1, 1.5]}
+          >
+            <SanctuaryLights />
+            <Flame3D position={[0, -1, 0]} scale={1.5} />
+            <LightParticles count={120} spread={6} size={0.025} color="#FFB347" />
+          </Scene3D>
+        </div>
+
+        <LightBeam intensity="soft" />
+        <CrossWatermark opacity={0.04} />
+
+        <div className="relative z-10 mx-auto max-w-5xl px-6 md:px-10 w-full">
+          <ScriptureRef
+            verse={t.donate.verse}
+            reference={t.donate.verseRef}
+            size="lg"
+            align="center"
+            className="text-primary-foreground"
+          />
         </div>
       </section>
     </>

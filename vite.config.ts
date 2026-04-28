@@ -19,4 +19,20 @@ export default defineConfig(({ mode }) => ({
     },
     dedupe: ["react", "react-dom", "react/jsx-runtime", "react/jsx-dev-runtime", "@tanstack/react-query", "@tanstack/query-core"],
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (
+            id.includes("node_modules/three/") ||
+            id.includes("node_modules/@react-three/") ||
+            id.includes("node_modules/three-stdlib/") ||
+            id.includes("node_modules/postprocessing/")
+          ) {
+            return "three-vendor";
+          }
+        },
+      },
+    },
+  },
 }));

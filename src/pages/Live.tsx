@@ -9,6 +9,7 @@ import {
   FlamePulse,
   CrossWatermark,
 } from "@/components/sacred";
+import { Scene3D, HeartbeatSphere, SanctuaryLights } from "@/components/sacred3d";
 import liveImg from "@/assets/live-stream.jpg";
 
 const CHANNEL_ID = "UCuAXFkgsw1L7xaCfnd5JJOw"; // placeholder channel
@@ -28,6 +29,19 @@ const Live = () => {
       <section className="relative overflow-hidden bg-primary py-16 md:py-24 cross-watermark">
         <CrossWatermark opacity={0.05} />
         <LightBeam intensity="medium" />
+
+        {/* 3D heartbeat — top-right of player section */}
+        <div aria-hidden="true" className="absolute top-8 right-8 h-24 w-24 z-[5] pointer-events-none hidden md:block">
+          <Scene3D
+            className="h-full w-full"
+            camera={{ position: [0, 0, 3], fov: 50 }}
+            dpr={[1, 1.5]}
+          >
+            <SanctuaryLights />
+            <HeartbeatSphere position={[0, 0, 0]} color="#E10600" baseScale={0.8} />
+          </Scene3D>
+        </div>
+
         <div className="relative z-10 mx-auto max-w-5xl px-6 md:px-10">
 
           {/* LIVE badge — heartbeat of the body of Christ */}

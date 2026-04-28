@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import PageHero from "@/components/PageHero";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { LightBeam, ScriptureRef, SacredEyebrow, FlamePulse, CrossWatermark } from "@/components/sacred";
+import { LightBeam, ScriptureRef, SacredEyebrow, CrossWatermark } from "@/components/sacred";
+import { Scene3D, Flame3D, LightParticles, SanctuaryLights } from "@/components/sacred3d";
 
 type MinistryItem = {
   slug: string;
@@ -149,6 +150,7 @@ const Ministries = () => {
         title={<>{t.ministries.title}</>}
         subtitle={t.ministries.subtitle}
         image="/Chorale Gospel Ensemble Pour Toujours/Chorale Gospel Ensemble Pour Toujours.jpeg"
+        enableParticles={false}
       />
 
       {/* Featured ministry spotlight — dark editorial section */}
@@ -191,14 +193,39 @@ const Ministries = () => {
         </div>
       </section>
 
-      {/* Pentecost flame section */}
-      <section className="sanctuary cross-watermark relative overflow-hidden reverence">
+      {/* Pentecost flame section — 3D scene with 8 flames (one per ministry) */}
+      <section className="sanctuary cross-watermark relative overflow-hidden reverence min-h-[70svh]">
         <CrossWatermark opacity={0.04} />
         <LightBeam intensity="soft" />
+
+        {/* 3D Pentecost flames — Acts 2:3 "tongues of fire on each of them" */}
+        <div aria-hidden="true" className="absolute inset-0 z-0 pointer-events-none">
+          <Scene3D
+            className="h-full w-full"
+            camera={{ position: [0, 0, 8], fov: 55 }}
+            dpr={[1, 1.5]}
+          >
+            <SanctuaryLights />
+            <LightParticles count={80} spread={10} size={0.025} color="#FFB347" />
+
+            {Array.from({ length: 6 }).map((_, i) => {
+              const angle = (i / 6) * Math.PI * 2;
+              const radius = 4.5;
+              const x = Math.cos(angle) * radius;
+              const y = Math.sin(angle) * radius * 0.4 - 0.5;
+              const z = Math.sin(angle * 2) * 0.5 - 1;
+              return (
+                <Flame3D
+                  key={i}
+                  position={[x, y, z]}
+                  scale={0.7 + (i % 3) * 0.15}
+                />
+              );
+            })}
+          </Scene3D>
+        </div>
+
         <div className="relative z-10 mx-auto max-w-4xl px-6 md:px-10">
-          <div className="mb-8 flex justify-center">
-            <FlamePulse size={32} />
-          </div>
           <div className="mb-6 flex justify-center">
             <SacredEyebrow variant="light">Pentecôte</SacredEyebrow>
           </div>
