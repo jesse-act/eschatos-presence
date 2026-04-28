@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { PlayCircle } from "lucide-react";
 import PageHero from "@/components/PageHero";
+import { useLanguage } from "@/i18n/LanguageContext";
 import sermonsCover from "@/assets/sermons-cover.jpg";
 import { cn } from "@/lib/utils";
 
@@ -22,24 +23,25 @@ const sermons: Sermon[] = [
   { id: "6", title: "Maranatha — He is Coming", speaker: "Ps. Daniel Amrani", date: "Mar 17, 2026", category: "popular", youtubeId: "OPf0YbXqDm0" },
 ];
 
-const tabs: { key: "latest" | "popular" | "all"; label: string }[] = [
-  { key: "latest", label: "Latest" },
-  { key: "popular", label: "Popular" },
-  { key: "all", label: "All" },
-];
-
 const Sermons = () => {
+  const { t } = useLanguage();
   const [filter, setFilter] = useState<"latest" | "popular" | "all">("latest");
   const [active, setActive] = useState<Sermon | null>(null);
 
   const filtered = sermons.filter((s) => filter === "all" || s.category === filter);
 
+  const tabs: { key: "latest" | "popular" | "all"; label: string }[] = [
+    { key: "latest", label: t.sermons.tabs.latest },
+    { key: "popular", label: t.sermons.tabs.popular },
+    { key: "all", label: t.sermons.tabs.all },
+  ];
+
   return (
     <>
       <PageHero
-        eyebrow="Messages"
-        title={<>Sermons to feed your faith.</>}
-        subtitle="Watch this week's message and explore our growing library of teaching from Eschatos Church."
+        eyebrow={t.sermons.eyebrow}
+        title={<>{t.sermons.title}</>}
+        subtitle={t.sermons.subtitle}
         image={sermonsCover}
       />
 
@@ -47,19 +49,19 @@ const Sermons = () => {
         <div className="mx-auto max-w-6xl px-6 md:px-10">
           {/* Tabs */}
           <div className="mb-12 flex flex-wrap items-center gap-2">
-            {tabs.map((t) => (
+            {tabs.map((tab) => (
               <button
-                key={t.key}
+                key={tab.key}
                 type="button"
-                onClick={() => setFilter(t.key)}
+                onClick={() => setFilter(tab.key)}
                 className={cn(
                   "rounded-full border px-5 py-2 text-sm font-medium transition-all",
-                  filter === t.key
+                  filter === tab.key
                     ? "border-accent bg-accent text-accent-foreground shadow-gold"
                     : "border-border bg-card text-foreground/70 hover:border-accent hover:text-foreground",
                 )}
               >
-                {t.label}
+                {tab.label}
               </button>
             ))}
           </div>

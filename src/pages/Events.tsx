@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Calendar, Clock, MapPin, X } from "lucide-react";
 import PageHero from "@/components/PageHero";
+import { useLanguage } from "@/i18n/LanguageContext";
 import youthImg from "@/assets/ministry-youth.jpg";
 import worshipImg from "@/assets/ministry-worship.jpg";
 import outreachImg from "@/assets/ministry-outreach.jpg";
@@ -27,14 +28,15 @@ const events: Evt[] = [
 ];
 
 const Events = () => {
+  const { t } = useLanguage();
   const [active, setActive] = useState<Evt | null>(null);
 
   return (
     <>
       <PageHero
-        eyebrow="What's coming"
-        title={<>Gather. Grow. Go.</>}
-        subtitle="From Sunday celebrations to nights of prayer, here's everything happening across Casablanca and Rabat."
+        eyebrow={t.events.eyebrow}
+        title={<>{t.events.title}</>}
+        subtitle={t.events.subtitle}
         image={youthImg}
       />
 
