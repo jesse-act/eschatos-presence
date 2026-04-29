@@ -14,6 +14,7 @@ dist-ssr
 
 # Third-party tooling and references (not project source)
 awesome-design-md/
+design-system/
 graphify/
 graphify-out/
 
