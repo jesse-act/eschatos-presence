@@ -417,16 +417,21 @@ const Navbar = () => {
         />
       </div>
 
-      {/* MOBILE SHEET — sanctuary feel with cross watermark + service time */}
+      {/* MOBILE SHEET — sanctuary feel with cross watermark + service time.
+          Outer keeps overflow-hidden for the clip-path / max-h reveal animation.
+          Inner takes overflow-y-auto + overscroll-contain so the menu scrolls
+          internally on small phones (8 links + KARAR card + footer easily
+          exceed viewport on a 375×667 device). svh keeps the height stable
+          when the mobile address bar collapses; vh is a fallback. */}
       <div
         className={cn(
           "lg:hidden overflow-hidden border-t border-border bg-background/98 backdrop-blur-md transition-[max-height,opacity,clip-path] duration-700 ease-divine",
           open
-            ? "max-h-[92vh] opacity-100 [clip-path:inset(0_0_0_0)]"
+            ? "max-h-[85vh] max-h-[85svh] opacity-100 [clip-path:inset(0_0_0_0)]"
             : "max-h-0 opacity-0 [clip-path:inset(0_50%_0_50%)]",
         )}
       >
-        <div className="relative flex flex-col px-6 py-6">
+        <div className="relative flex max-h-[85vh] max-h-[85svh] flex-col overflow-y-auto overscroll-contain px-6 py-6">
           <p
             className={cn(
               "mb-5 flex items-center justify-center gap-3 font-liturgical text-[10px] font-bold uppercase tracking-[0.32em] text-muted-foreground",

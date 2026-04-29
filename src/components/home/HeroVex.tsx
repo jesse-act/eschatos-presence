@@ -28,11 +28,13 @@ const HeroVex = () => {
   ];
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-black font-sans text-white">
-      {/* Full-bleed background video — no overlay layer; legibility comes from
-          a localized bottom gradient + per-element text-shadow further down. */}
+    <section className="relative min-h-screen min-h-[100svh] w-full overflow-hidden bg-black font-sans text-white">
+      {/* Full-bleed background video.
+          On mobile portrait, object-cover crops the 16:9 frame too aggressively,
+          so we object-contain below md (full video visible, bg-black absorbs
+          the bands) and object-cover from md+ (cinematic full-bleed). */}
       <video
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-contain object-center md:object-cover"
         src={VIDEO_URL}
         poster="/home/eschots.png"
         autoPlay
