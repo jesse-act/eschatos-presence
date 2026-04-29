@@ -7,6 +7,7 @@ import {
   Music2,
   Instagram,
   Youtube,
+  Facebook,
   ArrowUpRight,
 } from "lucide-react";
 import PageHero from "@/components/PageHero";
@@ -31,10 +32,33 @@ const schema = z.object({
 
 type FieldErrors = Partial<Record<"name" | "email" | "message", string>>;
 
-const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"] as const;
+const ROMAN = [
+  "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",
+  "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX",
+] as const;
+
+interface FaqGroup {
+  id: string;
+  roman: string;
+  romanLower: string;
+  labelEn: string;
+  labelFr: string;
+  count: number;
+}
+
+// Sums of `count` must equal t.contact.faq.length (20). Order mirrors the
+// translations array — do not reorder one without the other.
+const FAQ_GROUPS: ReadonlyArray<FaqGroup> = [
+  { id: "first-visit", roman: "I", romanLower: "i", labelEn: "First visit", labelFr: "Première visite", count: 5 },
+  { id: "family-tongue", roman: "II", romanLower: "ii", labelEn: "Family & tongue", labelFr: "Famille & langue", count: 3 },
+  { id: "belonging", roman: "III", romanLower: "iii", labelEn: "Belonging", labelFr: "Appartenance", count: 2 },
+  { id: "serving", roman: "IV", romanLower: "iv", labelEn: "Serving & partnership", labelFr: "Servir & partenariat", count: 4 },
+  { id: "pastoral", roman: "V", romanLower: "v", labelEn: "Pastoral care", labelFr: "Soins pastoraux", count: 3 },
+  { id: "stay-in-touch", roman: "VI", romanLower: "vi", labelEn: "Stay in touch", labelFr: "Rester en lien", count: 3 },
+];
 
 const Contact = () => {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<FieldErrors>({});
 
@@ -278,50 +302,245 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* FAQ — Quaestio Thomiste */}
-      <section className="bg-background py-20 md:py-28">
-        <div className="mx-auto max-w-4xl px-6 md:px-10">
-          <RevealOnView variant="eyebrow-spread" className="mb-4">
-            <SacredEyebrow>{t.contact.faqEyebrow}</SacredEyebrow>
-          </RevealOnView>
-          <RevealOnView
-            as="h2"
-            variant="title-bloom"
-            delay={120}
-            className="mb-12 font-display text-4xl md:text-5xl"
-          >
-            {t.contact.faqTitle}
-          </RevealOnView>
+      {/* FAQ — Scriptorium · six Pars, twenty quaestiones */}
+      <section className="relative bg-background py-24 md:py-32">
+        <CrossWatermark className="opacity-[0.03]" />
+        <div className="relative mx-auto max-w-7xl px-6 md:px-10">
+          {/* Header — eyebrow + title + lede */}
+          <div className="mx-auto max-w-4xl">
+            <RevealOnView variant="eyebrow-spread" className="mb-5">
+              <SacredEyebrow>{t.contact.faqEyebrow}</SacredEyebrow>
+            </RevealOnView>
+            <RevealOnView
+              as="h2"
+              variant="title-bloom"
+              delay={120}
+              className="font-display text-4xl leading-[1.05] tracking-tight md:text-6xl lg:text-7xl"
+              style={{ letterSpacing: "-0.015em" }}
+            >
+              {t.contact.faqTitle}
+            </RevealOnView>
+            <RevealOnView
+              as="p"
+              variant="rise"
+              delay={280}
+              className="mt-6 max-w-xl font-editorial italic text-base text-muted-foreground md:text-lg"
+            >
+              {lang === "fr"
+                ? "Six chapitres. Vingt questions. Ouvrez celle qui vous habite."
+                : "Six chapters. Twenty questions. Open the one that lives in you."}
+            </RevealOnView>
+          </div>
 
-          <Accordion type="single" collapsible className="w-full">
-            {t.contact.faq.map((item, i) => (
-              <RevealOnView key={item.q} variant="letter-settle" delay={i * 140}>
-                <AccordionItem
-                  value={`item-${i}`}
-                  className="border-b border-border/60"
-                >
-                  <AccordionTrigger className="group py-6 text-left hover:no-underline">
-                    <span className="grid grid-cols-[3rem_1fr] items-baseline gap-4 md:grid-cols-[4rem_1fr] md:gap-6">
-                      <span
-                        aria-hidden="true"
-                        className="font-liturgical text-[10px] font-bold uppercase tracking-[0.32em] text-accent"
+          <div className="mt-16 grid grid-cols-1 gap-12 lg:mt-20 lg:grid-cols-12 lg:gap-x-16">
+            {/* LEFT — Sticky chapter index (desktop only) */}
+            <aside className="hidden lg:col-span-4 lg:block">
+              <nav
+                aria-label={lang === "fr" ? "Table des chapitres" : "Chapter index"}
+                className="sticky top-32"
+              >
+                <RevealOnView variant="eyebrow-spread">
+                  <p className="mb-8 font-liturgical text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground">
+                    {lang === "fr" ? "Table des chapitres" : "Table of chapters"}
+                  </p>
+                </RevealOnView>
+                <ol className="space-y-5">
+                  {FAQ_GROUPS.map((g, gi) => (
+                    <RevealOnView
+                      key={g.id}
+                      as="li"
+                      variant="rise"
+                      delay={120 + gi * 70}
+                    >
+                      <a
+                        href={`#faq-${g.id}`}
+                        className="group grid grid-cols-[1.75rem_1fr_auto] items-baseline gap-4 border-b border-transparent py-1 transition-colors duration-500 hover:border-accent/40"
                       >
-                        {ROMAN[i]}
-                      </span>
-                      <span className="font-display text-xl text-foreground transition-colors duration-500 group-hover:text-accent md:text-2xl">
-                        {item.q}
-                      </span>
-                    </span>
-                  </AccordionTrigger>
-                  <AccordionContent className="pl-12 pr-6 pb-8 md:pl-20">
-                    <p className="font-editorial italic text-base leading-[1.7] text-muted-foreground md:text-lg">
-                      {item.a}
-                    </p>
-                  </AccordionContent>
-                </AccordionItem>
-              </RevealOnView>
-            ))}
-          </Accordion>
+                        <span className="font-liturgical text-[10px] font-bold uppercase tracking-[0.32em] text-accent transition-[letter-spacing] duration-500 group-hover:tracking-[0.42em]">
+                          {g.roman}
+                        </span>
+                        <span className="font-display text-lg leading-snug text-foreground/85 transition-colors duration-500 group-hover:text-accent">
+                          {lang === "fr" ? g.labelFr : g.labelEn}
+                        </span>
+                        <span className="font-liturgical text-[10px] tracking-[0.28em] text-muted-foreground/55 tabular-nums">
+                          {String(g.count).padStart(2, "0")}
+                        </span>
+                      </a>
+                    </RevealOnView>
+                  ))}
+                </ol>
+
+                <RevealOnView variant="rise" delay={620}>
+                  <div className="mt-12 h-px w-12 bg-accent/40" aria-hidden="true" />
+                  <p className="mt-6 max-w-[24ch] font-editorial italic text-sm leading-relaxed text-muted-foreground">
+                    {lang === "fr"
+                      ? "Une question manque ? Écrivez-nous : la table reste ouverte."
+                      : "A question missing? Write to us — the table stays open."}
+                  </p>
+                </RevealOnView>
+              </nav>
+            </aside>
+
+            {/* RIGHT — Pars chapters · each wrapped in an illuminated folio */}
+            <div className="lg:col-span-8">
+              <Accordion type="single" collapsible className="w-full">
+                {FAQ_GROUPS.map((g, gi) => {
+                  const start = FAQ_GROUPS.slice(0, gi).reduce(
+                    (sum, p) => sum + p.count,
+                    0,
+                  );
+                  const items = t.contact.faq.slice(start, start + g.count);
+
+                  return (
+                    <RevealOnView
+                      key={g.id}
+                      variant="ink-rise"
+                      delay={80}
+                      className="scroll-mt-32 first:mt-0 mt-20"
+                    >
+                      <article
+                        id={`faq-${g.id}`}
+                        aria-labelledby={`faq-${g.id}-title`}
+                        className="relative isolate px-6 py-14 md:px-12 md:py-20"
+                      >
+                        {/* ── Manuscript folio frame ── */}
+                        {/* Top hairline — drawn from center outward */}
+                        <span
+                          aria-hidden="true"
+                          className="pointer-events-none absolute left-10 right-10 top-0 h-px origin-center bg-gradient-to-r from-transparent via-foreground/30 to-transparent animate-underline-draw md:left-14 md:right-14"
+                          style={{ animationDelay: "120ms" }}
+                        />
+                        {/* Bottom hairline */}
+                        <span
+                          aria-hidden="true"
+                          className="pointer-events-none absolute left-10 right-10 bottom-0 h-px origin-center bg-gradient-to-r from-transparent via-foreground/25 to-transparent animate-underline-draw md:left-14 md:right-14"
+                          style={{ animationDelay: "320ms" }}
+                        />
+                        {/* Left vertical hairline (md+) */}
+                        <span
+                          aria-hidden="true"
+                          className="pointer-events-none absolute top-10 bottom-10 left-0 hidden w-px bg-gradient-to-b from-transparent via-foreground/22 to-transparent md:block"
+                        />
+                        {/* Right vertical hairline (md+) */}
+                        <span
+                          aria-hidden="true"
+                          className="pointer-events-none absolute top-10 bottom-10 right-0 hidden w-px bg-gradient-to-b from-transparent via-foreground/22 to-transparent md:block"
+                        />
+
+                        {/* Four corner fleurons — breathing rosettes */}
+                        <Fleuron className="-top-3 -left-3" />
+                        <Fleuron className="-top-3 -right-3" delay="700ms" />
+                        <Fleuron className="-bottom-3 -right-3" delay="1400ms" />
+                        <Fleuron className="-bottom-3 -left-3" delay="2100ms" />
+
+                        {/* Incipit marker — top center plaque */}
+                        <span
+                          aria-hidden="true"
+                          className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 bg-background px-3 font-liturgical text-[9px] font-bold uppercase tracking-[0.5em] text-accent"
+                        >
+                          ✦ Incipit · Pars {g.roman} ✦
+                        </span>
+
+                        {/* Pars header — eyebrow + display title */}
+                        <header className="mb-10 text-center md:mb-12">
+                          <RevealOnView variant="eyebrow-spread" delay={220}>
+                            <p className="font-liturgical text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground">
+                              {lang === "fr" ? "Chapitre" : "Chapter"} · {g.roman}
+                            </p>
+                          </RevealOnView>
+                          <RevealOnView variant="title-bloom" delay={360}>
+                            <h3
+                              id={`faq-${g.id}-title`}
+                              className="mt-3 font-display text-3xl leading-tight text-foreground md:text-4xl"
+                              style={{ letterSpacing: "-0.01em" }}
+                            >
+                              {lang === "fr" ? g.labelFr : g.labelEn}
+                            </h3>
+                          </RevealOnView>
+                          {/* Decorative trefoil rule under the title */}
+                          <RevealOnView
+                            variant="eyebrow-spread"
+                            delay={520}
+                            className="mt-5 flex items-center justify-center gap-3"
+                          >
+                            <span
+                              aria-hidden="true"
+                              className="h-px w-12 origin-right bg-gradient-to-l from-accent/70 to-transparent animate-underline-draw"
+                              style={{ animationDelay: "600ms" }}
+                            />
+                            <span
+                              aria-hidden="true"
+                              className="font-liturgical text-[14px] text-accent animate-breath-soft"
+                            >
+                              ✠
+                            </span>
+                            <span
+                              aria-hidden="true"
+                              className="h-px w-12 origin-left bg-gradient-to-r from-accent/70 to-transparent animate-underline-draw"
+                              style={{ animationDelay: "600ms" }}
+                            />
+                          </RevealOnView>
+                        </header>
+
+                        {/* Quaestiones */}
+                        <div className="mx-auto max-w-2xl">
+                          {items.map((item, localI) => {
+                            const globalI = start + localI;
+                            const folio = `${g.romanLower}.${String(localI + 1).padStart(2, "0")}`;
+                            return (
+                              <RevealOnView
+                                key={item.q}
+                                variant="letter-settle"
+                                delay={520 + localI * 90}
+                              >
+                                <AccordionItem
+                                  value={`item-${globalI}`}
+                                  className="border-b border-border/50 last:border-b-0"
+                                >
+                                  <AccordionTrigger className="group py-5 text-left hover:no-underline data-[state=open]:py-6">
+                                    <span className="grid grid-cols-[2.75rem_1fr] items-baseline gap-4 transition-[padding] duration-500 ease-divine md:grid-cols-[3.5rem_1fr] md:gap-6 group-data-[state=open]:pl-2">
+                                      <span
+                                        aria-hidden="true"
+                                        className="font-liturgical text-[10px] font-bold uppercase tracking-[0.28em] text-muted-foreground/65 tabular-nums transition-colors duration-500 group-hover:text-accent group-data-[state=open]:text-accent"
+                                      >
+                                        {folio}
+                                      </span>
+                                      <span className="font-display text-lg leading-snug text-foreground transition-colors duration-500 group-hover:text-accent md:text-xl">
+                                        {item.q}
+                                      </span>
+                                    </span>
+                                  </AccordionTrigger>
+                                  <AccordionContent className="pl-11 pr-2 pb-7 md:pl-[3.5rem] md:pr-4">
+                                    <p className="font-editorial italic text-base leading-[1.8] text-muted-foreground md:text-[17px]">
+                                      <span
+                                        aria-hidden="true"
+                                        className="float-left mr-2 mt-0.5 select-none text-accent/80"
+                                      >
+                                        ¶
+                                      </span>
+                                      {item.a}
+                                    </p>
+                                  </AccordionContent>
+                                </AccordionItem>
+                              </RevealOnView>
+                            );
+                          })}
+                        </div>
+
+                        {/* Explicit marker — bottom center plaque */}
+                        <span
+                          aria-hidden="true"
+                          className="absolute left-1/2 bottom-0 z-10 -translate-x-1/2 translate-y-1/2 bg-background px-3 font-liturgical text-[9px] font-bold uppercase tracking-[0.5em] text-accent/80"
+                        >
+                          ✦ Explicit · Pars {g.roman} ✦
+                        </span>
+                      </article>
+                    </RevealOnView>
+                  );
+                })}
+              </Accordion>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -430,8 +649,9 @@ const Contact = () => {
           <ul className="divide-y divide-border/60">
             {[
               { Icon: Mail, label: t.contact.emailLabel, value: t.contact.contactEmail, href: `mailto:${t.contact.contactEmail}`, handle: "@eschatos" },
-              { Icon: Music2, label: "TikTok", value: "tiktok.com/@dhmm_emem", href: t.church.tiktok, handle: "@dhmm_emem" },
+              { Icon: Facebook, label: "Facebook", value: "facebook.com/groups/eschatos", href: t.church.facebook, handle: "Eschatos · Groupe" },
               { Icon: Instagram, label: "Instagram", value: "instagram.com/dhmm.emem", href: t.church.instagram, handle: "@dhmm.emem" },
+              { Icon: Music2, label: "TikTok", value: "tiktok.com/@dhmm_emem", href: t.church.tiktok, handle: "@dhmm_emem" },
               { Icon: Youtube, label: "YouTube", value: "youtube.com/@dhmm-emem", href: t.church.youtube, handle: "@dhmm-emem" },
             ].map(({ Icon, label, value, href, handle }, i) => (
               <RevealOnView
@@ -562,5 +782,40 @@ const FieldRow = ({
     </div>
   );
 };
+
+/**
+ * Fleuron — a manuscript-style four-pointed rosette used at folio corners.
+ * Pulses gently via animate-breath-soft; offset delay lets the four corners
+ * breathe out of phase, evoking ink slowly settling on parchment.
+ */
+const Fleuron = ({
+  className,
+  delay = "0ms",
+}: {
+  className: string;
+  delay?: string;
+}) => (
+  <span
+    aria-hidden="true"
+    className={`pointer-events-none absolute z-10 grid h-6 w-6 place-items-center bg-background ${className}`}
+  >
+    <svg
+      viewBox="0 0 32 32"
+      className="h-5 w-5 text-accent animate-breath-soft"
+      style={{ animationDelay: delay }}
+    >
+      <line x1="16" y1="6" x2="16" y2="13" stroke="currentColor" strokeWidth="0.9" strokeLinecap="round" />
+      <line x1="16" y1="19" x2="16" y2="26" stroke="currentColor" strokeWidth="0.9" strokeLinecap="round" />
+      <line x1="6" y1="16" x2="13" y2="16" stroke="currentColor" strokeWidth="0.9" strokeLinecap="round" />
+      <line x1="19" y1="16" x2="26" y2="16" stroke="currentColor" strokeWidth="0.9" strokeLinecap="round" />
+      <circle cx="16" cy="6" r="1.2" fill="currentColor" />
+      <circle cx="16" cy="26" r="1.2" fill="currentColor" />
+      <circle cx="6" cy="16" r="1.2" fill="currentColor" />
+      <circle cx="26" cy="16" r="1.2" fill="currentColor" />
+      <circle cx="16" cy="16" r="1.6" fill="currentColor" />
+      <circle cx="16" cy="16" r="3" fill="none" stroke="currentColor" strokeWidth="0.5" />
+    </svg>
+  </span>
+);
 
 export default Contact;

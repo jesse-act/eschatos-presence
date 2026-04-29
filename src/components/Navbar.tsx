@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowRight, Sparkles } from "lucide-react";
 import Logo from "./Logo";
 import LanguageToggle from "./LanguageToggle";
 import { Button } from "@/components/ui/button";
 import { BreathingDot } from "@/components/sacred";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { cn } from "@/lib/utils";
+import { getFeaturedEvent, getEventTranslated } from "@/data/events";
 
 /**
  * Hand-cut SVG cross dingbat — replaces every Unicode glyph
@@ -107,6 +108,12 @@ const Navbar = () => {
       ? "Mercredi · 18h00 — Culte Impacte"
       : "Wednesday · 18:00 — Culte Impacte";
 
+  // Featured event alert — always renders ABOVE Tier 1, doesn't auto-hide on
+  // scroll. Falls back to null when no event is flagged featured.
+  const featured = getFeaturedEvent();
+  const fv = featured ? getEventTranslated(featured, lang) : null;
+  const fmonth = featured ? (lang === "fr" ? featured.monthFr : featured.monthEn) : "";
+
   // Lapidary link styling — tracking-out hover, hairline rule from center
   const linkBase = cn(
     "relative font-liturgical text-[11px] font-bold uppercase",
@@ -158,6 +165,70 @@ const Navbar = () => {
           : "bg-background/85 backdrop-blur-sm",
       )}
     >
+      {/* TIER 0 — featured event alert (persistent, doesn't hide on scroll).
+          Renders only when an event has featured: true. */}
+      {featured && fv && (
+        <Link
+          to={`/events/${featured.slug}`}
+          aria-label={`${lang === "fr" ? "Événement vedette : " : "Featured event: "}${fv.title}`}
+          className="group block bg-foreground text-primary-foreground transition-colors duration-500 hover:bg-foreground/90"
+        >
+          <div className="mx-auto flex max-w-7xl items-center justify-center gap-3 px-6 py-3 md:gap-4 md:px-10">
+            {/* Pulsing dot — alert badge */}
+            <span className="relative flex h-2.5 w-2.5 shrink-0" aria-hidden="true">
+              <span className="absolute inline-flex h-full w-full animate-heartbeat rounded-full bg-accent opacity-75" />
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-accent" />
+            </span>
+
+            {/* Poster thumbnail — square mini-flyer that scales subtly on hover.
+                Sized for legibility (the 3 dancers + KARAR lettering must read
+                at a glance). Ring + accent border anchor it visually. */}
+            <span
+              aria-hidden="true"
+              className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-white/20 bg-black shadow-[0_2px_12px_rgba(0,0,0,0.4)] ring-2 ring-accent/60 transition-transform duration-500 ease-divine group-hover:scale-105 sm:h-14 sm:w-14"
+            >
+              <img
+                src={featured.image}
+                alt=""
+                loading="eager"
+                className="h-full w-full object-cover"
+              />
+            </span>
+
+            {/* Eyebrow tag — "Bientôt / Coming" */}
+            <span className="hidden font-liturgical text-[10px] font-bold uppercase tracking-[0.4em] text-accent sm:inline-flex sm:items-center sm:gap-1.5">
+              <Sparkles className="h-3 w-3" aria-hidden="true" />
+              {lang === "fr" ? "Bientôt" : "Coming"}
+            </span>
+
+            {/* Hairline separator */}
+            <span aria-hidden="true" className="hidden h-3 w-px bg-primary-foreground/25 sm:block" />
+
+            {/* Event line — title + date + city, condensed */}
+            <span className="flex flex-1 items-center justify-center gap-2.5 truncate font-liturgical text-[10px] font-bold uppercase tracking-[0.32em] text-primary-foreground sm:gap-3 md:text-[11px]">
+              <span className="truncate">{fv.title}</span>
+              <span aria-hidden="true" className="text-accent/80">×</span>
+              <span className="hidden tabular-nums sm:inline">
+                {featured.day} {fmonth}
+              </span>
+              <span aria-hidden="true" className="hidden text-accent/80 sm:inline">×</span>
+              <span className="hidden md:inline">{featured.city}</span>
+            </span>
+
+            {/* CTA arrow — letter-spacing + arrow translate on hover */}
+            <span className="inline-flex shrink-0 items-center gap-1.5 font-liturgical text-[10px] font-bold uppercase tracking-[0.32em] text-primary-foreground transition-[letter-spacing,color] duration-500 ease-divine group-hover:tracking-[0.4em] group-hover:text-accent">
+              <span className="hidden sm:inline">
+                {lang === "fr" ? "Découvrir" : "Discover"}
+              </span>
+              <ArrowRight
+                className="h-3 w-3 transition-transform duration-500 group-hover:translate-x-0.5"
+                aria-hidden="true"
+              />
+            </span>
+          </div>
+        </Link>
+      )}
+
       {/* TIER 1 — utility (retreats on scroll) */}
       <div
         className={cn(
@@ -366,6 +437,43 @@ const Navbar = () => {
             <CrossDingbat className="text-border" size={9} />
             <span>{utilityImpact}</span>
           </p>
+
+          {/* Featured event card — mobile sheet alert (only when an event is flagged featured) */}
+          {featured && fv && (
+            <Link
+              to={`/events/${featured.slug}`}
+              onClick={() => setOpen(false)}
+              className={cn(
+                "mb-6 flex items-center gap-4 rounded-xl border border-foreground/15 bg-foreground p-4 text-primary-foreground transition-colors hover:border-accent",
+                open && "animate-fade-in",
+              )}
+            >
+              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg border border-white/10 bg-black">
+                <img
+                  src={featured.image}
+                  alt=""
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <div className="flex flex-1 flex-col gap-1 overflow-hidden">
+                <div className="flex items-center gap-2">
+                  <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
+                    <span className="absolute inline-flex h-full w-full animate-heartbeat rounded-full bg-accent opacity-75" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+                  </span>
+                  <span className="font-liturgical text-[9px] font-bold uppercase tracking-[0.4em] text-accent">
+                    {lang === "fr" ? "Bientôt" : "Coming"}
+                  </span>
+                </div>
+                <p className="truncate font-display text-base leading-tight">{fv.title}</p>
+                <p className="font-liturgical text-[9px] font-bold uppercase tracking-[0.32em] text-primary-foreground/65">
+                  {featured.day} {fmonth} · {featured.city}
+                </p>
+              </div>
+              <ArrowRight className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+            </Link>
+          )}
 
           <ul className="flex flex-col">
             {links.map((l, i) => (

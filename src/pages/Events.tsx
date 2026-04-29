@@ -1,14 +1,17 @@
 import { Link } from "react-router-dom";
-import { Clock, MapPin, ArrowUpRight } from "lucide-react";
+import { Clock, MapPin, ArrowUpRight, ArrowRight, Sparkles } from "lucide-react";
 import PageHero from "@/components/PageHero";
-import { ScriptureRef, SacredEyebrow } from "@/components/sacred";
+import { ScriptureRef, SacredEyebrow, LightBeam } from "@/components/sacred";
 import { RevealOnView } from "@/components/animation";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { EVENTS, getEventTranslated } from "@/data/events";
+import { EVENTS, getEventTranslated, getFeaturedEvent } from "@/data/events";
 import youthImg from "@/assets/ministry-youth.jpg";
 
 const Events = () => {
   const { t, lang } = useLanguage();
+  const featured = getFeaturedEvent();
+  // Filter out the featured event from the grid — it gets its own hero card.
+  const rest = featured ? EVENTS.filter((e) => e.slug !== featured.slug) : EVENTS;
 
   return (
     <>
@@ -42,11 +45,126 @@ const Events = () => {
         </div>
       </section>
 
-      {/* Grid — each card links to its own detail page */}
+      {/* Featured event — the upcoming highlight gets a giant editorial spread */}
+      {featured && (() => {
+        const fv = getEventTranslated(featured, lang);
+        const fmonth = lang === "fr" ? featured.monthFr : featured.monthEn;
+        return (
+          <section className="relative isolate overflow-hidden bg-foreground py-20 text-primary-foreground md:py-28">
+            <LightBeam intensity="soft" />
+            <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10">
+              <RevealOnView variant="eyebrow-spread" className="mb-6 flex items-center gap-3">
+                <Sparkles className="h-4 w-4 text-accent animate-breath-soft" aria-hidden="true" />
+                <SacredEyebrow variant="light">
+                  {lang === "fr" ? "Événement vedette · à grand pas" : "Featured event · coming soon"}
+                </SacredEyebrow>
+              </RevealOnView>
+
+              <Link
+                to={`/events/${featured.slug}`}
+                className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-foreground"
+                aria-label={`${lang === "fr" ? "Découvrir" : "Discover"} ${fv.title}`}
+              >
+                <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14 lg:items-center">
+                  {/* Poster — square flyer, ring + soft scale on hover */}
+                  <div className="lg:col-span-5">
+                    <div className="relative aspect-square overflow-hidden rounded-2xl border border-white/15 bg-black shadow-elegant">
+                      <img
+                        src={featured.image}
+                        alt={fv.title}
+                        loading="eager"
+                        fetchPriority="high"
+                        width={1080}
+                        height={1080}
+                        className="h-full w-full object-cover transition-transform duration-[1400ms] ease-divine group-hover:scale-[1.03]"
+                      />
+                      {/* Date badge over poster */}
+                      <div className="absolute left-4 top-4 rounded-lg bg-background/95 px-3 py-2 text-center font-display leading-none text-foreground shadow-soft">
+                        <div className="text-2xl font-semibold">{featured.day}</div>
+                        <div className="text-[10px] uppercase tracking-widest text-accent">{fmonth}</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Editorial column */}
+                  <div className="lg:col-span-7">
+                    <RevealOnView
+                      as="h2"
+                      variant="title-bloom"
+                      delay={120}
+                      className="font-display text-4xl leading-[1.05] md:text-5xl lg:text-6xl"
+                      style={{ letterSpacing: "-0.02em" }}
+                    >
+                      {fv.title}
+                    </RevealOnView>
+
+                    <RevealOnView
+                      as="p"
+                      variant="rise"
+                      delay={260}
+                      className="mt-6 max-w-xl font-editorial italic text-lg text-primary-foreground/85 md:text-xl"
+                    >
+                      {fv.tagline}
+                    </RevealOnView>
+
+                    <RevealOnView
+                      variant="rise"
+                      delay={400}
+                      className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 font-liturgical text-[10px] font-bold uppercase tracking-[0.32em] text-primary-foreground/75"
+                    >
+                      <span className="inline-flex items-center gap-2">
+                        <Clock className="h-3 w-3 text-accent" aria-hidden="true" />
+                        {featured.time}
+                      </span>
+                      <span aria-hidden="true" className="text-accent/55">×</span>
+                      <span className="inline-flex items-center gap-2">
+                        <MapPin className="h-3 w-3 text-accent" aria-hidden="true" />
+                        {featured.city}
+                      </span>
+                      <span aria-hidden="true" className="text-accent/55">×</span>
+                      <span>{fv.fullDate}</span>
+                    </RevealOnView>
+
+                    <RevealOnView
+                      as="p"
+                      variant="rise"
+                      delay={520}
+                      className="mt-8 max-w-2xl text-base leading-relaxed text-primary-foreground/80 md:text-lg"
+                    >
+                      {fv.summary}
+                    </RevealOnView>
+
+                    <RevealOnView
+                      variant="rise"
+                      delay={660}
+                      className="mt-10 inline-flex items-center gap-3 border-b border-white/35 pb-2 font-liturgical text-[11px] font-bold uppercase tracking-[0.32em] text-primary-foreground transition-[letter-spacing,border-color,color] duration-500 ease-divine group-hover:tracking-[0.42em] group-hover:border-accent group-hover:text-accent"
+                    >
+                      {fv.registerCta}
+                      <ArrowRight
+                        className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1"
+                        aria-hidden="true"
+                      />
+                    </RevealOnView>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          </section>
+        );
+      })()}
+
+      {/* Grid — remaining events (featured already shown above) */}
       <section className="bg-background py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6 md:px-10">
+          {featured && (
+            <RevealOnView variant="eyebrow-spread" className="mb-10">
+              <SacredEyebrow>
+                {lang === "fr" ? "Tous les rassemblements" : "All gatherings"}
+              </SacredEyebrow>
+            </RevealOnView>
+          )}
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {EVENTS.map((e, i) => {
+            {rest.map((e, i) => {
               const ev = getEventTranslated(e, lang);
               const month = lang === "fr" ? e.monthFr : e.monthEn;
               return (

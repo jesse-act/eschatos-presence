@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Music2, Instagram, Youtube, Mail, MapPin, Phone, CalendarDays } from "lucide-react";
+import { Music2, Instagram, Youtube, Facebook, Mail, MapPin, Phone, CalendarDays } from "lucide-react";
 import Logo from "./Logo";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -11,8 +11,9 @@ const Footer = () => {
   const year = new Date().getFullYear();
 
   const socials = [
-    { Icon: Music2, href: t.church.tiktok, label: "TikTok" },
+    { Icon: Facebook, href: t.church.facebook, label: "Facebook" },
     { Icon: Instagram, href: t.church.instagram, label: "Instagram" },
+    { Icon: Music2, href: t.church.tiktok, label: "TikTok" },
     { Icon: Youtube, href: t.church.youtube, label: "YouTube" },
   ];
 

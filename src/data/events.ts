@@ -11,7 +11,8 @@ export type EventCategory =
   | "youth"
   | "outreach"
   | "baptism"
-  | "worship";
+  | "worship"
+  | "festival";
 
 export interface EventTranslated {
   title: string;
@@ -67,6 +68,9 @@ export interface Event {
   mediaType?: EventMediaType;
   /** YouTube/Vimeo embed URL (use the /embed/ form for YT). */
   videoUrl?: string;
+  /** Marks the upcoming highlight event — rendered as a hero card on the
+      events index AND teased on the home page. Only one at a time. */
+  featured?: boolean;
   en: EventTranslated;
   fr: EventTranslated;
 }
@@ -462,10 +466,87 @@ export const EVENTS: Event[] = [
       registerCta: "Je serai présent·e",
     },
   },
+  {
+    slug: "karar-festival-danse-prophetique",
+    day: "14",
+    monthEn: "Jun",
+    monthFr: "Juin",
+    isoDate: "2026-06-14",
+    city: "Casablanca",
+    time: "15:00 – 22:00",
+    category: "festival",
+    image: "/events/KARAR.jpeg",
+    poster: "/events/KARAR.jpeg",
+    posterOrientation: "square",
+    mediaType: "image",
+    featured: true,
+    en: {
+      title: "KARAR — Prophetic Dance Festival",
+      tagline: "When the body becomes the instrument — a divine encounter where dance speaks.",
+      fullDate: "Saturday, June 14, 2026",
+      summary:
+        "More than an event — a divine encounter. Dance ministers consecrated to carry prophetic messages, release atmospheres, and manifest the Holy Spirit.",
+      longDescription: [
+        "KARAR is far more than a simple artistic event: it is a divine encounter where the body becomes an instrument of spiritual expression. Through prophetic dance, this festival invites every heart to live a deep experience with God — where movement says what words cannot.",
+        "During this unique moment, dance ministers — passionate, consecrated — rise to deliver inspired messages, release spiritual atmospheres, and manifest the presence of the Holy Spirit. Every choreography carries a prophetic dimension, bringing edification, restoration, and transformation.",
+        "Whether you are a dancer, a worshipper, or simply someone hungry for an authentic encounter with God, KARAR is for you. Come as you are. Leave changed.",
+      ],
+      whatToExpect: [
+        "Sustained worship through prophetic dance",
+        "Immersion in the manifest presence of God",
+        "Inspired and powerful artistic expressions",
+        "An atmosphere of healing, freedom, and revelation",
+        "Open call for dancers, worshippers, and seekers",
+      ],
+      audience: "Open to all — dancers, worshippers, and anyone hungry for an authentic encounter with God.",
+      address: "Casablanca — venue to be confirmed",
+      scripture: {
+        verse:
+          "Let them praise his name with dancing, making melody to him with tambourine and lyre.",
+        reference: "Psalm 149:3",
+      },
+      registerCta: "I will be there",
+    },
+    fr: {
+      title: "KARAR — Festival de Danse Prophétique",
+      tagline: "Quand le corps devient l'instrument — une rencontre divine où la danse parle.",
+      fullDate: "Samedi 14 juin 2026",
+      summary:
+        "Bien plus qu'un événement — une rencontre divine. Des ministres de danse consacrés se lèvent pour porter des messages prophétiques, libérer des atmosphères, et manifester le Saint-Esprit.",
+      longDescription: [
+        "KARAR est bien plus qu'un simple événement artistique : c'est une rencontre divine où le corps devient un instrument d'expression spirituelle. À travers la danse prophétique, ce festival invite chacun à vivre une expérience profonde avec Dieu, où les mouvements traduisent ce que les mots ne peuvent exprimer.",
+        "Pendant ce moment unique, des ministres de danse — passionnés et consacrés — se lèvent pour transmettre des messages inspirés, libérer des atmosphères spirituelles, et manifester la présence du Saint-Esprit. Chaque chorégraphie est portée par une dimension prophétique, apportant édification, restauration et transformation.",
+        "Que tu sois danseur, adorateur, ou simplement une personne désireuse de vivre une rencontre authentique avec Dieu, KARAR est pour toi. Viens tel que tu es. Repars transformé.",
+      ],
+      whatToExpect: [
+        "Un temps d'adoration intense à travers la danse",
+        "Une immersion dans la présence de Dieu",
+        "Des expressions artistiques inspirées et puissantes",
+        "Une atmosphère de guérison, de liberté et de révélation",
+        "Ouvert aux danseurs, adorateurs, et toute personne en recherche",
+      ],
+      audience: "Ouvert à tous — danseurs, adorateurs, et toute personne désireuse de vivre une rencontre authentique avec Dieu.",
+      address: "Casablanca — lieu à confirmer",
+      scripture: {
+        verse:
+          "Qu'ils louent son nom avec des danses, qu'ils le célèbrent avec le tambourin et la harpe!",
+        reference: "Psaume 149:3",
+      },
+      registerCta: "Je veux y être",
+    },
+  },
 ];
 
 export const getEventBySlug = (slug: string): Event | undefined =>
   EVENTS.find((e) => e.slug === slug);
+
+/**
+ * Returns the single event flagged as the upcoming highlight, or undefined
+ * if none is featured. Used by the home page teaser and the events index
+ * hero card.
+ */
+export const getFeaturedEvent = (): Event | undefined =>
+  EVENTS.find((e) => e.featured);
 
 export const getEventTranslated = (
   event: Event,

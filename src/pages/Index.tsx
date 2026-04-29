@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, PlayCircle, Users, MapPin } from "lucide-react";
+import { ArrowRight, PlayCircle, Users, MapPin, Sparkles, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/i18n/LanguageContext";
 import {
@@ -12,87 +12,123 @@ import {
 } from "@/components/sacred";
 import { Scene3D, Cross3D, LightParticles, SanctuaryLights, Flame3D } from "@/components/sacred3d";
 import { RevealOnView, SplitText } from "@/components/animation";
+import HeroVex from "@/components/home/HeroVex";
+import { getFeaturedEvent, getEventTranslated } from "@/data/events";
 import heroImg from "@/assets/hero-worship.jpg";
 
 const Index = () => {
   const { t, lang } = useLanguage();
+  const featured = getFeaturedEvent();
+  const fv = featured ? getEventTranslated(featured, lang) : null;
+  const fmonth = featured ? (lang === "fr" ? featured.monthFr : featured.monthEn) : "";
 
   return (
     <>
-      {/* ACT I — LIGHT (the Hero, divine breaking through) */}
-      <section className="relative isolate min-h-[100svh] overflow-hidden text-primary-foreground sacred-grain">
-        <div className="absolute inset-0 -z-10">
-          <img
-            src={heroImg}
-            alt="Worshippers raising hands during a service at Eschatos Church"
-            className="h-full w-full object-cover animate-slow-zoom"
-            width={1920}
-            height={1280}
-          />
-          <div className="absolute inset-0 bg-gradient-hero" />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/40 to-transparent" />
-        </div>
+      {/* ACT I — VEX hero (video bg, liquid-glass nav, animated heading) */}
+      <HeroVex />
 
-        <LightBeam intensity="bold" />
+      {/* ACT I.b — Featured event teaser (KARAR) — directly under hero so the
+          most time-sensitive, attention-grabbing piece of content gets the
+          first scroll. Only renders when an event is flagged featured. */}
+      {featured && fv && (
+        <section className="relative isolate overflow-hidden bg-foreground py-16 text-primary-foreground md:py-24">
+          <LightBeam intensity="soft" />
+          <CrossWatermark className="opacity-[0.04]" />
 
-        {/* Hero 3D layer — visible cross floating + light particles */}
-        <div aria-hidden="true" className="absolute inset-0 z-[1] pointer-events-none">
-          <Scene3D
-            className="h-full w-full"
-            camera={{ position: [0, 0, 5], fov: 55 }}
-            dpr={[1, 1.5]}
-          >
-            <SanctuaryLights />
-            <LightParticles count={220} spread={11} size={0.04} color="#ffffff" />
-            <group position={[3.5, 0.8, 0]}>
-              <Cross3D
-                scale={0.85}
-                rotationSpeed={0.25}
-                color="#ffffff"
-                metalness={0.65}
-                roughness={0.3}
-                emissive="#E10600"
-                emissiveIntensity={0.4}
+          <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10">
+            <RevealOnView variant="eyebrow-spread" className="mb-8 flex items-center gap-3">
+              <Sparkles
+                className="h-4 w-4 text-accent animate-breath-soft"
+                aria-hidden="true"
               />
-            </group>
-          </Scene3D>
-        </div>
+              <SacredEyebrow variant="light">
+                {lang === "fr" ? "Bientôt · à grand pas" : "Coming soon · approaching fast"}
+              </SacredEyebrow>
+            </RevealOnView>
 
-        <div className="relative z-[2] mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-end px-6 pb-24 pt-40 md:px-10 md:pb-32">
-          <SacredEyebrow variant="light" className="mb-8">{t.hero.eyebrow}</SacredEyebrow>
-          <h1 className="max-w-3xl font-display text-5xl leading-[1.02] text-balance md:text-7xl lg:text-[5.5rem] animate-ascend">
-            {t.hero.title}
-          </h1>
-          <p className="mt-8 max-w-xl text-base leading-relaxed text-primary-foreground/80 md:text-lg animate-fade-in [animation-delay:240ms]">
-            {t.hero.subtitle}
-          </p>
-          <div className="mt-12 flex flex-wrap items-center gap-4 animate-fade-in [animation-delay:360ms]">
-            <Button asChild variant="hero" size="xl" className="glory">
-              <Link to="/visit">
-                {t.hero.cta1} <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
-            <Button asChild variant="ghostLight" size="xl">
-              <Link to="/sermons">
-                <PlayCircle className="h-4 w-4" /> {t.hero.cta2}
-              </Link>
-            </Button>
+            <Link
+              to={`/events/${featured.slug}`}
+              className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-foreground"
+              aria-label={`${lang === "fr" ? "Découvrir" : "Discover"} ${fv.title}`}
+            >
+              <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-16">
+                {/* LEFT — editorial column */}
+                <div className="order-2 lg:order-1 lg:col-span-7">
+                  <RevealOnView
+                    as="h2"
+                    variant="title-bloom"
+                    delay={120}
+                    className="font-display text-4xl leading-[1.05] md:text-5xl lg:text-6xl xl:text-[5rem]"
+                    style={{ letterSpacing: "-0.02em" }}
+                  >
+                    {fv.title}
+                  </RevealOnView>
+
+                  <RevealOnView
+                    as="p"
+                    variant="rise"
+                    delay={260}
+                    className="mt-6 max-w-xl font-editorial italic text-lg text-primary-foreground/85 md:text-xl"
+                  >
+                    {fv.tagline}
+                  </RevealOnView>
+
+                  <RevealOnView
+                    variant="rise"
+                    delay={400}
+                    className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 font-liturgical text-[10px] font-bold uppercase tracking-[0.32em] text-primary-foreground/75"
+                  >
+                    <span className="inline-flex items-center gap-2">
+                      <Clock className="h-3 w-3 text-accent" aria-hidden="true" />
+                      {featured.time}
+                    </span>
+                    <span aria-hidden="true" className="text-accent/55">×</span>
+                    <span className="inline-flex items-center gap-2">
+                      <MapPin className="h-3 w-3 text-accent" aria-hidden="true" />
+                      {featured.city}
+                    </span>
+                    <span aria-hidden="true" className="text-accent/55">×</span>
+                    <span>{fv.fullDate}</span>
+                  </RevealOnView>
+
+                  <RevealOnView
+                    variant="rise"
+                    delay={560}
+                    className="mt-10 inline-flex items-center gap-3 border-b border-white/35 pb-2 font-liturgical text-[11px] font-bold uppercase tracking-[0.32em] text-primary-foreground transition-[letter-spacing,border-color,color] duration-500 ease-divine group-hover:tracking-[0.42em] group-hover:border-accent group-hover:text-accent"
+                  >
+                    {fv.registerCta}
+                    <ArrowRight
+                      className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1"
+                      aria-hidden="true"
+                    />
+                  </RevealOnView>
+                </div>
+
+                {/* RIGHT — square poster with date badge */}
+                <div className="order-1 lg:order-2 lg:col-span-5">
+                  <div className="relative aspect-square overflow-hidden rounded-2xl border border-white/15 bg-black shadow-elegant">
+                    <img
+                      src={featured.image}
+                      alt={fv.title}
+                      loading="eager"
+                      fetchPriority="high"
+                      width={1080}
+                      height={1080}
+                      className="h-full w-full object-cover transition-transform duration-[1400ms] ease-divine group-hover:scale-[1.03]"
+                    />
+                    <div className="absolute left-4 top-4 rounded-lg bg-background/95 px-3 py-2 text-center font-display leading-none text-foreground shadow-soft animate-breath-soft">
+                      <div className="text-2xl font-semibold">{featured.day}</div>
+                      <div className="text-[10px] uppercase tracking-widest text-accent">
+                        {fmonth}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Link>
           </div>
-
-          {/* Census line — replaces the 3-stat product grid */}
-          <div className="mt-20 flex items-center gap-4 text-sm uppercase tracking-[0.32em] text-primary-foreground/60 animate-fade-in [animation-delay:500ms]">
-            <BreathingDot variant="accent" />
-            <span>
-              {lang === "fr" ? "Une famille · Casablanca + Rabat · Maroc" : "One family · Casablanca + Rabat · Morocco"}
-            </span>
-          </div>
-        </div>
-
-        {/* Threshold marker at bottom */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[3]">
-          <BreathingDot variant="accent" />
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ACT II — BREATH (welcome / belonging) */}
       <section className="bg-background reverence">

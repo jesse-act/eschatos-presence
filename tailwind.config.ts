@@ -21,13 +21,13 @@ export default {
         "1400": "1400ms",
       },
       fontFamily: {
+        // Inter — site-wide sans default for all `font-sans` consumers
+        sans: ['Inter', 'sans-serif'],
         // Cinzel — Roman ecclesiastical inscriptions (cathedrals, Pantocrator) — display
         display: ['Cinzel', 'ui-serif', 'Georgia', 'serif'],
         // Cormorant Garamond — Renaissance illuminated manuscripts — scripture verses (italic)
         editorial: ['"Cormorant Garamond"', 'ui-serif', 'Georgia', 'serif'],
         // EB Garamond — Geneva Bible / Vatican press lineage — body, UI, paragraphs
-        // (replaces Inter — every word on the site now reads like a sacred page)
-        sans: ['"EB Garamond"', '"Cormorant Garamond"', 'ui-serif', 'Georgia', 'serif'],
         body: ['"EB Garamond"', '"Cormorant Garamond"', 'ui-serif', 'Georgia', 'serif'],
         // Cardo — biblical scholarship typeface (Greek/Hebrew/Coptic glyphs) — liturgical labels
         liturgical: ['Cardo', 'ui-serif', 'Georgia', 'serif'],
