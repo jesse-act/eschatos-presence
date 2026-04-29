@@ -5,7 +5,11 @@ import { ScriptureRef, SacredEyebrow, LightBeam } from "@/components/sacred";
 import { RevealOnView } from "@/components/animation";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { EVENTS, getEventTranslated, getFeaturedEvent } from "@/data/events";
-import youthImg from "@/assets/ministry-youth.jpg";
+
+// Hero — communal worship gathering, hands raised at concert (Unsplash · Nicholas Green).
+// 2400w avif/webp via auto=format; q=80 hits a Lighthouse-friendly file size.
+const HERO_IMAGE =
+  "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=2400&q=80&auto=format&fit=crop";
 
 const Events = () => {
   const { t, lang } = useLanguage();
@@ -19,7 +23,7 @@ const Events = () => {
         eyebrow={t.events.eyebrow}
         title={<>{t.events.title}</>}
         subtitle={t.events.subtitle}
-        image={youthImg}
+        image={HERO_IMAGE}
       />
 
       {/* Scripture — Ecclesiastes 3 */}
