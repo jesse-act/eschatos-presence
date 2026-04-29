@@ -5,20 +5,17 @@ import { useLanguage } from "@/i18n/LanguageContext";
 
 const VIDEO_URL = "/home/Church_animation_with_Holy_Spirit_202604291201.mp4";
 
+// max() guarantees enough vertical room for the bottom-anchored title cluster
+// even on short viewports (landscape mobile, small laptops). Below 640px the
+// section becomes scrollable; above that it fills the small viewport height.
+const HERO_MIN_HEIGHT = "max(640px, 100svh)";
+
 const HeroVex = () => {
   const { t, lang } = useLanguage();
 
   // Magazine masthead trick: break the title at the first comma so the second
   // line can sit on its own typographic axis (indented 8vw — asymmetric).
   const titleWithBreak = t.hero.title.replace(/,\s+/, ",\n");
-
-  // Existing church nav slots, mapped onto the spec's center cluster.
-  const navLinks = [
-    { label: t.nav.about, to: "/about" },
-    { label: t.nav.ministries, to: "/ministries" },
-    { label: t.nav.events, to: "/events" },
-    { label: t.nav.sermons, to: "/sermons" },
-  ];
 
   // Tag pillars — three glass pills tied by × dingbats (replaces the single capsule).
   const cities = [
@@ -28,7 +25,10 @@ const HeroVex = () => {
   ];
 
   return (
-    <section className="relative min-h-screen min-h-[100svh] w-full overflow-hidden bg-black font-sans text-white">
+    <section
+      className="relative w-full overflow-hidden bg-black font-sans text-white"
+      style={{ minHeight: HERO_MIN_HEIGHT }}
+    >
       {/* Full-bleed background video.
           On mobile portrait, object-cover crops the 16:9 frame too aggressively,
           so we object-contain below md (full video visible, bg-black absorbs
@@ -82,41 +82,15 @@ const HeroVex = () => {
         <span className="h-12 w-px bg-white/30" />
       </div>
 
-      {/* Foreground stack */}
-      <div className="relative z-10 flex min-h-screen flex-col px-6 pt-6 md:px-12 lg:px-16">
-        {/* Liquid-glass nav */}
-        <nav
-          aria-label={lang === "fr" ? "Navigation principale" : "Primary navigation"}
-          className="liquid-glass flex items-center justify-between rounded-xl px-4 py-2"
-        >
-          <Link to="/" aria-label="Eschatos Church" className="inline-flex items-center">
-            <img
-              src="/logo/logoblanc.png"
-              alt="Eschatos Church"
-              className="h-8 w-auto object-contain md:h-9"
-              width={160}
-              height={36}
-            />
-          </Link>
-          <div className="hidden items-center gap-8 md:flex">
-            {navLinks.map(({ label, to }) => (
-              <Link
-                key={to}
-                to={to}
-                className="text-sm text-white transition-colors hover:text-gray-300"
-              >
-                {label}
-              </Link>
-            ))}
-          </div>
-          <Link
-            to="/visit"
-            className="rounded-lg bg-white px-6 py-2 text-sm font-medium text-black transition-colors hover:bg-gray-100"
-          >
-            {t.hero.cta1}
-          </Link>
-        </nav>
-
+      {/* Foreground stack — the global Navbar (Layout) handles all primary
+          navigation. We removed the previously-duplicated internal liquid-glass
+          nav so (a) only one navbar shows and (b) the title cluster has the
+          full vertical runway and never collides with the global Navbar on
+          short viewports. */}
+      <div
+        className="relative z-10 flex flex-col px-6 md:px-12 lg:px-16"
+        style={{ minHeight: HERO_MIN_HEIGHT }}
+      >
         {/* Editorial spread — pushed to the bottom, leaves room for the deck strip. */}
         <div className="flex flex-1 flex-col justify-end pb-24 lg:pb-32">
           <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-12 lg:gap-12">

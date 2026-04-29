@@ -114,6 +114,21 @@ const Navbar = () => {
   const fv = featured ? getEventTranslated(featured, lang) : null;
   const fmonth = featured ? (lang === "fr" ? featured.monthFr : featured.monthEn) : "";
 
+  // Home page: when the user is at the top, the navbar floats over the dark
+  // video hero. We make the chrome (TIER 1, TIER 2, hairline) transparent and
+  // flip --foreground / --muted-foreground / --border to white via inline
+  // style — that single override propagates to every text-foreground,
+  // text-muted-foreground, border-border/* utility under those subtrees.
+  // TIER 0 (KARAR banner) keeps its own dark palette and is untouched.
+  const isHomeAtTop = location.pathname === "/" && !scrolled;
+  const overlayStyle = isHomeAtTop
+    ? ({
+        ["--foreground" as never]: "0 0% 100%",
+        ["--muted-foreground" as never]: "0 0% 82%",
+        ["--border" as never]: "0 0% 100%",
+      } as React.CSSProperties)
+    : undefined;
+
   // Lapidary link styling — tracking-out hover, hairline rule from center
   const linkBase = cn(
     "relative font-liturgical text-[11px] font-bold uppercase",
@@ -160,9 +175,11 @@ const Navbar = () => {
         "transition-[transform,background-color,backdrop-filter,box-shadow] duration-700 ease-divine",
         // Sanctuary recall — translate up out of view on scroll-down past tier 1
         hidden ? "-translate-y-full" : "translate-y-0",
-        scrolled
-          ? "bg-background/95 backdrop-blur-md shadow-soft"
-          : "bg-background/85 backdrop-blur-sm",
+        isHomeAtTop
+          ? "bg-transparent"
+          : scrolled
+            ? "bg-background/95 backdrop-blur-md shadow-soft"
+            : "bg-background/85 backdrop-blur-sm",
       )}
     >
       {/* TIER 0 — featured event alert (persistent, doesn't hide on scroll).
@@ -231,6 +248,7 @@ const Navbar = () => {
 
       {/* TIER 1 — utility (retreats on scroll) */}
       <div
+        style={overlayStyle}
         className={cn(
           "hidden lg:block overflow-hidden transition-[max-height,opacity,border-color] duration-700 ease-divine",
           scrolled
@@ -281,7 +299,10 @@ const Navbar = () => {
       </div>
 
       {/* TIER 2 — symmetric procession with stanzas + enthroned logo */}
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-3 md:px-10 md:py-4">
+      <div
+        style={overlayStyle}
+        className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-3 md:px-10 md:py-4"
+      >
         {/* Left procession (stanzas A · | · B) */}
         <nav
           aria-label="Primary left"
@@ -379,7 +400,7 @@ const Navbar = () => {
       </div>
 
       {/* Manuscript hairline — tapered SVG rule under tier 2 + altar pulse + benediction shimmer */}
-      <div className="hidden lg:block pointer-events-none relative">
+      <div style={overlayStyle} className="hidden lg:block pointer-events-none relative">
         <svg
           aria-hidden="true"
           viewBox="0 0 1280 4"

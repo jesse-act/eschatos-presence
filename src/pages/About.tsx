@@ -20,6 +20,7 @@ import {
 import { RevealOnView, SplitText } from "@/components/animation";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { cn } from "@/lib/utils";
 import aboutImg from "@/assets/about-church.jpg";
 import casaImg from "@/assets/location-casablanca.jpg";
 import rabatImg from "@/assets/location-rabat.jpg";
@@ -262,29 +263,171 @@ const About = () => {
         </div>
       </section>
 
-      {/* Timeline */}
-      <section className="bg-background py-24 md:py-32">
-        <div className="mx-auto max-w-4xl px-6 md:px-10">
-          <RevealOnView variant="eyebrow-spread" as="div" className="mb-4">
-            <SacredEyebrow>{t.about.journey.eyebrow}</SacredEyebrow>
-          </RevealOnView>
-          <RevealOnView variant="title-bloom" as="h2" delay={120} className="mb-16 font-display text-4xl md:text-5xl">
-            {t.about.journey.title}
-          </RevealOnView>
-          <ol className="relative border-l border-accent/40">
-            {timeline.map((it, i) => (
-              <RevealOnView
-                key={it.year}
-                variant="rise"
-                delay={i * 140}
-                as="li"
-                className="mb-12 ml-8 last:mb-0"
+      {/* Timeline — Chronicle editorial · zigzag md+, single column on mobile */}
+      <section className="relative bg-background py-24 md:py-32">
+        <CrossWatermark className="opacity-[0.03]" />
+        <div className="relative mx-auto max-w-6xl px-6 md:px-10">
+          {/* Header */}
+          <div className="mb-20 text-center md:mb-28">
+            <RevealOnView variant="eyebrow-spread" as="div" className="mb-5">
+              <SacredEyebrow>{t.about.journey.eyebrow}</SacredEyebrow>
+            </RevealOnView>
+            <RevealOnView
+              variant="title-bloom"
+              as="h2"
+              delay={120}
+              className="font-display text-4xl leading-[1.05] md:text-5xl lg:text-6xl"
+              style={{ letterSpacing: "-0.015em" }}
+            >
+              {t.about.journey.title}
+            </RevealOnView>
+            {/* Trefoil rule under title */}
+            <RevealOnView
+              variant="eyebrow-spread"
+              delay={300}
+              as="div"
+              className="mt-8 flex items-center justify-center gap-3"
+            >
+              <span
+                aria-hidden="true"
+                className="h-px w-16 origin-right bg-gradient-to-l from-accent/70 to-transparent animate-underline-draw"
+                style={{ animationDelay: "400ms" }}
+              />
+              <span
+                aria-hidden="true"
+                className="font-liturgical text-[14px] text-accent animate-breath-soft"
               >
-                <span className="absolute -left-[9px] mt-2 h-4 w-4 rounded-full border-2 border-accent bg-background animate-breath-soft" />
-                <div className="font-display text-2xl text-accent">{it.year}</div>
-                <p className="mt-2 max-w-xl text-base leading-relaxed text-muted-foreground">{it.text}</p>
-              </RevealOnView>
-            ))}
+                ✠
+              </span>
+              <span
+                aria-hidden="true"
+                className="h-px w-16 origin-left bg-gradient-to-r from-accent/70 to-transparent animate-underline-draw"
+                style={{ animationDelay: "400ms" }}
+              />
+            </RevealOnView>
+          </div>
+
+          {/* Entries */}
+          <ol className="relative">
+            {/* Mobile vertical rule (left side) */}
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute left-3 top-2 h-[calc(100%-1rem)] w-px bg-gradient-to-b from-accent/50 via-accent/40 to-accent/10 md:hidden"
+            />
+            {/* Desktop center rule */}
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute left-1/2 top-2 hidden h-[calc(100%-1rem)] w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-accent/40 to-accent/10 md:block"
+            />
+
+            {timeline.map((it, i) => {
+              const isLast = i === timeline.length - 1;
+              const isLeft = i % 2 === 0;
+
+              return (
+                <li
+                  key={it.year}
+                  className={cn(
+                    "relative pl-12 md:pl-0",
+                    i > 0 && "mt-14 md:mt-24",
+                  )}
+                >
+                  {/* Mobile dot */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute left-3 top-3 h-3.5 w-3.5 -translate-x-1/2 rounded-full bg-background ring-2 ring-accent animate-breath-soft md:hidden"
+                  />
+                  {/* Desktop marker — small dot for past, larger ringed cross for Today */}
+                  {isLast ? (
+                    <span
+                      aria-hidden="true"
+                      className="absolute left-1/2 top-3 hidden h-9 w-9 -translate-x-1/2 items-center justify-center rounded-full border-2 border-accent bg-background shadow-[0_0_0_4px_hsl(var(--background)),0_0_24px_hsl(var(--accent)/0.35)] md:flex"
+                    >
+                      <span className="font-liturgical text-[18px] leading-none text-accent animate-breath-soft">
+                        ✠
+                      </span>
+                    </span>
+                  ) : (
+                    <span
+                      aria-hidden="true"
+                      className="absolute left-1/2 top-3 hidden h-3.5 w-3.5 -translate-x-1/2 rounded-full bg-background ring-2 ring-accent animate-breath-soft md:block"
+                    />
+                  )}
+
+                  {isLast ? (
+                    /* Today — centered on desktop, full attention */
+                    <RevealOnView
+                      variant="rise"
+                      delay={i * 120}
+                      as="div"
+                      className="md:pt-16 md:text-center"
+                    >
+                      <p className="font-liturgical text-[10px] font-bold uppercase tracking-[0.5em] text-accent">
+                        {lang === "fr" ? "Aujourd'hui · Maintenant" : "Today · Now"}
+                      </p>
+                      <div
+                        className="mt-3 font-display text-5xl text-foreground md:text-7xl lg:text-8xl"
+                        style={{ letterSpacing: "-0.02em" }}
+                      >
+                        {it.year}
+                      </div>
+                      <p className="mx-auto mt-6 max-w-2xl font-editorial italic text-base leading-[1.7] text-muted-foreground md:mt-8 md:text-xl">
+                        {it.text}
+                      </p>
+                    </RevealOnView>
+                  ) : (
+                    /* Standard chronicle entry — alternating zigzag on md+ */
+                    <div className="md:grid md:grid-cols-2 md:gap-12 lg:gap-20">
+                      <RevealOnView
+                        variant="rise"
+                        delay={i * 120}
+                        as="div"
+                        className={cn(
+                          "md:py-2",
+                          isLeft
+                            ? "md:col-start-1 md:pr-12 md:text-right"
+                            : "md:col-start-2 md:pl-12 md:text-left",
+                        )}
+                      >
+                        <div className="flex items-baseline gap-3 md:gap-4 md:[&]:justify-start">
+                          <span
+                            aria-hidden="true"
+                            className={cn(
+                              "font-liturgical text-[10px] font-bold uppercase tracking-[0.4em] text-accent/75",
+                              isLeft && "md:order-2",
+                            )}
+                          >
+                            ※
+                          </span>
+                          <p
+                            className={cn(
+                              "font-liturgical text-[10px] font-bold uppercase tracking-[0.4em] text-muted-foreground",
+                              isLeft && "md:order-1",
+                            )}
+                          >
+                            {lang === "fr" ? "Chapitre" : "Chapter"} · {String(i + 1).padStart(2, "0")}
+                          </p>
+                        </div>
+                        <div
+                          className="mt-3 font-display text-5xl text-accent md:text-6xl lg:text-7xl"
+                          style={{ letterSpacing: "-0.02em" }}
+                        >
+                          {it.year}
+                        </div>
+                        <p
+                          className={cn(
+                            "mt-4 font-editorial italic text-base leading-[1.75] text-muted-foreground md:mt-5 md:text-lg",
+                            isLeft ? "md:ml-auto md:max-w-sm" : "md:max-w-sm",
+                          )}
+                        >
+                          {it.text}
+                        </p>
+                      </RevealOnView>
+                    </div>
+                  )}
+                </li>
+              );
+            })}
           </ol>
         </div>
       </section>
