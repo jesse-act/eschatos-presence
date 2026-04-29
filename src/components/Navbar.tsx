@@ -129,20 +129,43 @@ const Navbar = () => {
       } as React.CSSProperties)
     : undefined;
 
-  // Lapidary link styling — tracking-out hover, hairline rule from center
-  const linkBase = cn(
-    "relative font-liturgical text-[11px] font-bold uppercase",
-    "tracking-[0.24em] text-foreground/70",
-    "transition-[letter-spacing,color] duration-500 ease-divine",
-    "hover:tracking-[0.32em] hover:text-foreground",
-    "after:pointer-events-none after:absolute after:left-1/2 after:-bottom-2",
-    "after:h-px after:w-0 after:bg-foreground",
-    "after:-translate-x-1/2 after:transition-[width,height] after:duration-700",
-    "after:ease-divine",
-    "hover:after:w-[calc(100%+0.75rem)]",
-  );
-  const linkActive =
-    "text-foreground after:h-[1.5px] after:w-[calc(100%+0.75rem)]";
+  // Two link styles. Lapidary (default) for opaque navbar on inner pages.
+  // Glass-chip (overlay) when the navbar floats over the dark hero on home —
+  // each link gets a frosted pill so the title is legible without a solid bar.
+  // Higher opacity + per-character text-shadow keeps contrast even when the
+  // video shows bright frames behind a chip.
+  const linkBase = isHomeAtTop
+    ? cn(
+        "relative inline-flex items-center font-liturgical text-[11px] font-bold uppercase",
+        "tracking-[0.24em] text-foreground",
+        "rounded-full bg-black/30 px-4 py-2 backdrop-blur-md",
+        "ring-1 ring-white/35 shadow-[0_4px_16px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.08)]",
+        "transition-[background-color,letter-spacing,color,box-shadow,border-color] duration-500 ease-divine",
+        "hover:bg-black/45 hover:ring-white/55 hover:tracking-[0.3em] hover:text-foreground",
+      )
+    : cn(
+        "relative font-liturgical text-[11px] font-bold uppercase",
+        "tracking-[0.24em] text-foreground/70",
+        "transition-[letter-spacing,color] duration-500 ease-divine",
+        "hover:tracking-[0.32em] hover:text-foreground",
+        "after:pointer-events-none after:absolute after:left-1/2 after:-bottom-2",
+        "after:h-px after:w-0 after:bg-foreground",
+        "after:-translate-x-1/2 after:transition-[width,height] after:duration-700",
+        "after:ease-divine",
+        "hover:after:w-[calc(100%+0.75rem)]",
+      );
+  const linkActive = isHomeAtTop
+    ? "bg-accent/30 ring-accent/70 text-foreground shadow-[0_4px_18px_rgba(0,0,0,0.55),0_0_0_1px_hsl(var(--accent)/0.5)]"
+    : "text-foreground after:h-[1.5px] after:w-[calc(100%+0.75rem)]";
+
+  // Inline style applied to chip-mode link spans so the lettering itself
+  // carries its own halo independent of the chip background.
+  const linkOverlayTextStyle: React.CSSProperties | undefined = isHomeAtTop
+    ? {
+        textShadow:
+          "0 1px 2px rgba(0,0,0,0.95), 0 2px 8px rgba(0,0,0,0.65), 0 0 18px rgba(0,0,0,0.35)",
+      }
+    : undefined;
 
   // Procession stagger — global index across both processions for a coherent left→right cascade
   const indexOf = (l: { to: string }) => links.findIndex((x) => x.to === l.to);
@@ -158,7 +181,10 @@ const Navbar = () => {
               "animate-procession-rise",
               isActive && linkActive,
             )}
-            style={{ animationDelay: `${120 + i * 70}ms` }}
+            style={{
+              animationDelay: `${120 + i * 70}ms`,
+              ...linkOverlayTextStyle,
+            }}
           >
             {isActive && <BreathingDot className="mr-2" />}
             {l.label}
@@ -308,13 +334,20 @@ const Navbar = () => {
           aria-label="Primary left"
           className="hidden lg:flex flex-1 items-center justify-end"
         >
-          <div className="flex items-center gap-7">{leftA.map(renderLink)}</div>
+          <div className={cn("flex items-center", isHomeAtTop ? "gap-2" : "gap-7")}>
+            {leftA.map(renderLink)}
+          </div>
           <span
             aria-hidden="true"
-            className="mx-6 h-2 w-px bg-foreground/20 animate-fade-in"
+            className={cn(
+              "h-2 w-px bg-foreground/20 animate-fade-in",
+              isHomeAtTop ? "mx-3" : "mx-6",
+            )}
             style={{ animationDelay: "260ms" }}
           />
-          <div className="flex items-center gap-7">{leftB.map(renderLink)}</div>
+          <div className={cn("flex items-center", isHomeAtTop ? "gap-2" : "gap-7")}>
+            {leftB.map(renderLink)}
+          </div>
         </nav>
 
         {/* Mobile logo (left aligned) */}
@@ -355,13 +388,20 @@ const Navbar = () => {
           aria-label="Primary right"
           className="hidden lg:flex flex-1 items-center justify-start"
         >
-          <div className="flex items-center gap-7">{rightA.map(renderLink)}</div>
+          <div className={cn("flex items-center", isHomeAtTop ? "gap-2" : "gap-7")}>
+            {rightA.map(renderLink)}
+          </div>
           <span
             aria-hidden="true"
-            className="mx-6 h-2 w-px bg-foreground/20 animate-fade-in"
+            className={cn(
+              "h-2 w-px bg-foreground/20 animate-fade-in",
+              isHomeAtTop ? "mx-3" : "mx-6",
+            )}
             style={{ animationDelay: "540ms" }}
           />
-          <div className="flex items-center gap-7">{rightB.map(renderLink)}</div>
+          <div className={cn("flex items-center", isHomeAtTop ? "gap-2" : "gap-7")}>
+            {rightB.map(renderLink)}
+          </div>
         </nav>
 
         {/* Mobile right cluster */}

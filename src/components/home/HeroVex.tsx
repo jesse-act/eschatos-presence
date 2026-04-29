@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { AnimatedHeading, FadeIn } from "@/components/animation";
+import { FadeIn } from "@/components/animation";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 const VIDEO_URL = "/home/Church_animation_with_Holy_Spirit_202604291201.mp4";
@@ -12,10 +12,6 @@ const HERO_MIN_HEIGHT = "max(640px, 100svh)";
 
 const HeroVex = () => {
   const { t, lang } = useLanguage();
-
-  // Magazine masthead trick: break the title at the first comma so the second
-  // line can sit on its own typographic axis (indented 8vw — asymmetric).
-  const titleWithBreak = t.hero.title.replace(/,\s+/, ",\n");
 
   // Tag pillars — three glass pills tied by × dingbats (replaces the single capsule).
   const cities = [
@@ -94,24 +90,11 @@ const HeroVex = () => {
         {/* Editorial spread — pushed to the bottom, leaves room for the deck strip. */}
         <div className="flex flex-1 flex-col justify-end pb-24 lg:pb-32">
           <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-12 lg:gap-12">
-            {/* LEFT — title + subtitle + text-link CTAs */}
+            {/* LEFT — subtitle + text-link CTAs (title removed; subtitle becomes the lead) */}
             <div className="lg:col-span-7">
-              <AnimatedHeading
-                text={titleWithBreak}
-                initialDelay={200}
-                charDelay={30}
-                charDuration={500}
-                className="font-normal text-4xl md:text-5xl lg:text-6xl xl:text-7xl [&>span:nth-of-type(2)]:pl-[8vw] [&>span:nth-of-type(2)]:md:pl-[10vw]"
-                style={{
-                  letterSpacing: "-0.04em",
-                  textShadow:
-                    "0 4px 32px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,0.75), 0 1px 2px rgba(0,0,0,0.85)",
-                }}
-              />
-
               {/* Subtitle — editorial italic deck under a hairline divider */}
-              <FadeIn delay={1000} duration={1000}>
-                <div className="mt-10 flex max-w-xl items-start gap-5 lg:gap-6">
+              <FadeIn delay={400} duration={1000}>
+                <div className="flex max-w-xl items-start gap-5 lg:gap-6">
                   <div className="mt-3 h-px w-12 shrink-0 bg-white/40" aria-hidden="true" />
                   <p
                     className="font-editorial italic text-base text-white md:text-lg"
@@ -126,7 +109,7 @@ const HeroVex = () => {
               </FadeIn>
 
               {/* CTAs — text links with letter-spacing + hairline rule, no buttons */}
-              <FadeIn delay={1300} duration={1000}>
+              <FadeIn delay={700} duration={1000}>
                 <div className="mt-10 flex flex-wrap items-center gap-x-10 gap-y-4">
                   <Link
                     to="/visit"
@@ -154,7 +137,7 @@ const HeroVex = () => {
 
             {/* RIGHT — three-pillar tag (Casablanca × Rabat × Maroc) */}
             <div className="flex flex-col items-start gap-3 lg:col-span-5 lg:col-start-9 lg:items-end">
-              <FadeIn delay={1500} duration={1000}>
+              <FadeIn delay={900} duration={1000}>
                 <div className="flex flex-wrap items-center gap-2 lg:justify-end">
                   {cities.map((city, i) => (
                     <div key={city} className="flex items-center gap-2">
@@ -179,7 +162,7 @@ const HeroVex = () => {
 
         {/* Bottom deck strip — service times in liturgical small caps,
             framed by a hairline above. Fixed at the bottom of the section. */}
-        <FadeIn delay={1800} duration={1000}>
+        <FadeIn delay={1100} duration={1000}>
           <div className="absolute inset-x-0 bottom-0 z-20 border-t border-white/20 bg-gradient-to-t from-black/85 to-black/0 px-6 py-4 md:px-12 lg:px-16">
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 font-liturgical text-[10px] font-bold uppercase tracking-[0.4em] text-white/85">
               <span className="flex items-center gap-3">
